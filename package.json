@@ -46,20 +46,20 @@
         "@docusaurus/preset-classic": "^3.8.0",
         "@mdx-js/react": "^3.1.1",
         "prism-react-renderer": "^2.4.1",
-        "react": "^18.3.1",
-        "react-dom": "^18.3.1"
+        "react": "^19.2.8",
+        "react-dom": "^19.2.8"
     },
     "devDependencies": {
         "@commitlint/cli": "^21.0.2",
         "@commitlint/config-conventional": "^21.0.2",
         "@docusaurus/plugin-content-docs": "^3.8.0",
         "@docusaurus/types": "^3.8.0",
-        "@eslint/js": "^9.0.0",
-        "@semantic-release/changelog": "^6.0.3",
-        "@semantic-release/git": "^10.0.1",
+        "@eslint/js": "^10.0.1",
+        "@semantic-release/changelog": "^7.0.0",
+        "@semantic-release/git": "^11.0.1",
         "@types/node": "^26.0.1",
-        "@types/react": "^18.3.18",
-        "eslint": "^9.0.0",
+        "@types/react": "^19.2.17",
+        "eslint": "^10.8.0",
         "eslint-config-prettier": "^10.1.8",
         "husky": "^9.1.7",
         "lint-staged": "^17.0.7",
@@ -67,7 +67,7 @@
         "semantic-release": "^25.0.5",
         "tsup": "^8.0.0",
         "tsx": "^4.0.0",
-        "typescript": "^5.0.0",
+        "typescript": "^7.0.2",
         "typescript-eslint": "^8.0.0",
         "vitest": "^4.1.9"
     }
