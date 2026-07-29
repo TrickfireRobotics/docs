@@ -1,13 +1,14 @@
 #!/bin/bash
 
-set -euo pipefail
+set -e
 
-cd "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PROJECT_ROOT=$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")
+PROJECT_DIR=$1
+LINK_PATH=$PROJECT_ROOT/dev-fixtures/$(basename $PROJECT_DIR)
 
-printf "==> Enter your project path: "
-read filename
-
-PROJECT_DIR=$(realpath $filename)
+if [ -z $PROJECT_DIR ]; then
+    echo "Usage: dev-link-docs <project_path>"
+fi
 
 if [ ! -d "$PROJECT_DIR" ]; then
     echo "Path is not an existing directory"
@@ -19,9 +20,13 @@ if [ ! -d "$PROJECT_DIR/docs" ]; then
     exit 1
 fi
 
-if [ ! -f "$PROJECT_DIR/docs.config.json"]; then
+if [ ! -f "$PROJECT_DIR/docs.config.json" ]; then
     echo "Project does not contain docs.config.json"
     exit 1
 fi
 
-echo "yipee"
+mkdir -p $LINK_PATH
+ln -s $PROJECT_DIR/docs.config.json $LINK_PATH/docs.config.json
+ln -s $PROJECT_DIR/docs $LINK_PATH/docs
+
+echo "Symlink to docs created for project $(basename $PROJECT_DIR)"

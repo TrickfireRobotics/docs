@@ -35,3 +35,7 @@ content/*
 
 # Env
 *.env
+
+# dev doc links
+dev-fixtures/*
+!dev-fixtures/test-subdoc/

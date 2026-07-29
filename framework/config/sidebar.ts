@@ -14,23 +14,23 @@ function isGroup(item: SidebarItem): item is SidebarGroup {
     return "items" in item;
 }
 
-function convertItem(item: SidebarItem): DocusaurusSidebarItem {
+function convertItem(item: SidebarItem, prefix: string): DocusaurusSidebarItem {
     if (isGroup(item)) {
         return {
             type: "category",
             label: item.label,
             collapsed: item.collapsed ?? false,
-            items: item.items.map(convertItem),
+            items: item.items.map((i) => convertItem(i, prefix)),
         };
     }
     if (item.link) {
         return { type: "link", href: item.link, label: item.label };
     }
-    return { type: "doc", id: item.slug ?? item.label, label: item.label };
+    return { type: "doc", id: prefix + (item.slug ?? item.label), label: item.label };
 }
 
-export function convertSidebar(sidebar: SidebarConfig): DocusaurusSidebarItem[] {
-    return sidebar.map(convertItem);
+export function convertSidebar(sidebar: SidebarConfig, prefix = ""): DocusaurusSidebarItem[] {
+    return sidebar.map((item) => convertItem(item, prefix));
 }
 
 export function getFirstDocSlug(items: SidebarConfig): string | null {
