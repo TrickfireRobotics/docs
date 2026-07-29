@@ -1,3 +1,15 @@
+# [1.7.0](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v1.6.2...trickfire-docs-v1.7.0) (2026-07-29)
+
+### Bug Fixes
+
+- added description to the framework itself ([8e2bc37](https://github.com/TrickfireRobotics/docs/commit/8e2bc37558aad9926525cf32492972ca50a02241))
+
+### Features
+
+- dev-fixtures ([e799f8f](https://github.com/TrickfireRobotics/docs/commit/e799f8f5a2c7896533c17060b4c212a23a2b30e2))
+- improved codeblock style ([ec4ac89](https://github.com/TrickfireRobotics/docs/commit/ec4ac89bde9e455b7cbeba46e6b6ab6a4fd48678))
+- improved main page theme and styling ([25e20e1](https://github.com/TrickfireRobotics/docs/commit/25e20e16d44fe408ce41d1e2f894f1928b187edc))
+
 ## [1.6.2](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v1.6.1...trickfire-docs-v1.6.2) (2026-07-19)
 
 ### Bug Fixes
