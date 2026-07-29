@@ -49,6 +49,8 @@ Try to follow these standards, most of these are ripped from the `dashboard` rep
 
 This makes it more clear on whats going on.
 
+When you create a branch it should be for one specific feature, make sure that when you are making a branch it is for one specific purpose and gets merged and deleted when that purpose is met.
+
 ## Commit Messages
 
 Follow these commit naming standards, it makes it more clear what you are doing.
@@ -68,6 +70,12 @@ Follow these commit naming standards, it makes it more clear what you are doing.
 | `perf`     | Performance improvement                         |
 | `ci`       | CI/CD changes                                   |
 | `revert`   | Reverts a previous commit                       |
+
+## Pull requests
+
+Another important aspect of developing code is PR's and PR reviews. When you write code you should make a PR once the feature that you are working on is finished. We have had issues in the past with branches living for months and years and never being merged into main. Once you have finished developing the feature open a PR and request review from the appropriate people.
+
+When you are reviewing a PR make sure to do your due diligence when reviewing code it is very easy to drop a `LGTM!` and move on from the review. Make sure that the code works, is up to standards for the repo, follows proper styling and formatting, and is of general good quality.
 
 # Repo Practices
 
