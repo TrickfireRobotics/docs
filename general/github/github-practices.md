@@ -1,4 +1,6 @@
 ---
+title: GitHub Practices
+description: Best practices for working on code for Trickfire
 sidebar_position: 1
 ---
 
