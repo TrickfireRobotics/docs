@@ -1,0 +1,5 @@
+{
+    "$schema": "https://docs.trickfirerobotics.com/docs.config.schema.json",
+    "name": "General",
+    "description": "General TrickFire documentation."
+}
