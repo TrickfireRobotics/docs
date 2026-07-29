@@ -1,5 +1,9 @@
 {
     "$schema": "https://docs.trickfirerobotics.com/docs.config.schema.json",
     "name": "General",
-    "description": "General TrickFire documentation."
+    "description": "General TrickFire documentation",
+    "sidebar": [
+        { "label": "General Documentation", "slug": "general-docs" },
+        { "label": "GitHub", "items": [{ "label": "Repository", "slug": "github/general" }] }
+    ]
 }
