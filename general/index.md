@@ -1,6 +1,0 @@
----
-title: Meow! :3
-sidebar_position: 1
----
-
-MeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeowMeowmeow
