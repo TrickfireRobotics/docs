@@ -40,7 +40,7 @@ Then commit and push the changes to the branch you're working on.
 
 ## Opening a pull request
 
-Once a feature you're working on is finished, open a PR. We've had issues in the past with branches living for months or even years, without ever being merged into `main`, so as soon as you're done, open a PR and request review from the appropriate people.
+Once a feature you're working on is finished, open a PR. We've had issues in the past with branches living for months or even years, without ever being merged into `main`, so as soon as you're done, open a PR and request review from the appropriate people. (Team lead, collaborators, software lead, and any others you think should review)
 
 ## Reviewing a pull request
 
