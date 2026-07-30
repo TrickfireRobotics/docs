@@ -1,3 +1,18 @@
+# [1.9.0](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v1.8.0...trickfire-docs-v1.9.0) (2026-07-30)
+
+### Bug Fixes
+
+- fix some shtuff ([c0ac49d](https://github.com/TrickfireRobotics/docs/commit/c0ac49d6546eed7afc000f0b49cecedd716a4985))
+- fixed position of dev indicator ([5d47f81](https://github.com/TrickfireRobotics/docs/commit/5d47f81b34628b9eb1058e68338c915561977608))
+- link style ([0cb0721](https://github.com/TrickfireRobotics/docs/commit/0cb0721baa8a768c694a3ab808752e07d6b4de45))
+- made assets a statically served dir ([27b9cbd](https://github.com/TrickfireRobotics/docs/commit/27b9cbd1f7be7f28533ecb7eb9f59e170c47ddeb))
+- types ([faea3e0](https://github.com/TrickfireRobotics/docs/commit/faea3e0fa58d8d62fdd1ee47f5d6715f227e60bc))
+- uncommited change ([f35826d](https://github.com/TrickfireRobotics/docs/commit/f35826dc27d02a081ad5dd1c2d6d3ed87cfdc03d))
+
+### Features
+
+- add Next.js app and Fumadocs site scaffolding ([a108fd6](https://github.com/TrickfireRobotics/docs/commit/a108fd624eb29c754b7c6a294b2d2f7dc9367022))
+
 # [1.8.0](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v1.7.0...trickfire-docs-v1.8.0) (2026-07-30)
 
 ### Bug Fixes
