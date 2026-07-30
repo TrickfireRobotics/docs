@@ -1,22 +1,3 @@
 {
-    "compilerOptions": {
-        "target": "ES2022",
-        "module": "ESNext",
-        "moduleResolution": "Bundler",
-        "strict": true,
-        "skipLibCheck": true,
-        "jsx": "react-jsx",
-        "lib": ["ES2022", "DOM", "DOM.Iterable"],
-        "noEmit": true
-    },
-    "include": ["docusaurus.config.ts", "src"],
-    "exclude": [
-        "framework",
-        "scaffold",
-        "dist-cli",
-        "build",
-        "node_modules",
-        "content",
-        ".trickfire"
-    ]
+    "extends": "./tsconfig.site.json"
 }

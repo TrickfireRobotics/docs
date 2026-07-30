@@ -1,19 +1,16 @@
 ---
 title: Deployment Overview
-sidebar_position: 1
 ---
-
-# Deployment Overview
 
 This section is for server administrators setting up or maintaining the docs infrastructure. Member developers don't need any of this.
 
 ## What needs to be set up once
 
-| Component                         | Guide                                    |
-| --------------------------------- | ---------------------------------------- |
-| Debian server with nginx          | [Server Setup](./server-setup)           |
-| Cloudflare tunnel                 | [Cloudflare Tunnel](./cloudflare-tunnel) |
-| GitHub Actions self-hosted runner | [Below](#github-runner)                  |     |
+| Component                         | Guide                                       |
+| --------------------------------- | ------------------------------------------- |
+| Debian server with nginx          | [Server Setup](./server-setup.md)           |
+| Cloudflare tunnel                 | [Cloudflare Tunnel](./cloudflare-tunnel.md) |
+| GitHub Actions self-hosted runner | [Below](#github-runner)                     |     |
 
 ## Infrastructure at a glance
 
@@ -25,9 +22,9 @@ This section is for server administrators setting up or maintaining the docs inf
 
 ## Setup order
 
-1. **Server Setup** — provision the server, clone the repo, install dependencies, set up nginx
-2. **Cloudflare Tunnel** — install `cloudflared`, create tunnel, point DNS
-3. **GitHub Actions Runner** — register the runner so CI jobs can run on this machine
+1. **Server Setup** - provision the server, clone the repo, install dependencies, set up nginx
+2. **Cloudflare Tunnel** - install `cloudflared`, create tunnel, point DNS
+3. **GitHub Actions Runner** - register the runner so CI jobs can run on this machine
 
 After those three steps, pushing docs to any connected member repo will automatically update the live site.
 
@@ -35,7 +32,7 @@ After those three steps, pushing docs to any connected member repo will automati
 
 | Task                | How                                                       |
 | ------------------- | --------------------------------------------------------- |
-| Update framework    | Push to `main` in this repo — `deploy.yml` handles it     |
+| Update framework    | Push to `main` in this repo - `deploy.yml` handles it     |
 | Add a new project   | Member dev runs `trickfire-docs init` and pushes          |
 | Remove a project    | Delete `/home/trickfire/docs/content/<repo>` and rebuild  |
 | Rebuild manually    | `ssh server 'bash /home/trickfire/docs/scripts/build.sh'` |

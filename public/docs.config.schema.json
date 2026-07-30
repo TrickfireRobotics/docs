@@ -17,8 +17,12 @@
             "type": "string",
             "description": "One-line description shown as the site tagline."
         },
+        "icon": {
+            "type": "string",
+            "description": "lucide-react icon name (e.g. \"LayoutDashboard\") shown in the project switcher and homepage cards."
+        },
         "sidebar": {
-            "description": "Explicit sidebar definition. Omit to let Docusaurus autogenerate it from your docs/ folder.",
+            "description": "Explicit sidebar definition. Omit to auto-generate it from your docs/ folder structure.",
             "$ref": "#/$defs/SidebarConfig"
         },
         "social": {
@@ -27,9 +31,6 @@
             "items": {
                 "$ref": "#/$defs/SocialLink"
             }
-        },
-        "advanced": {
-            "$ref": "#/$defs/AdvancedConfig"
         }
     },
     "$defs": {
@@ -83,10 +84,9 @@
                         "$ref": "#/$defs/SidebarItem"
                     }
                 },
-                "collapsed": {
-                    "type": "boolean",
-                    "description": "Whether the group starts collapsed. Defaults to false.",
-                    "default": false
+                "icon": {
+                    "type": "string",
+                    "description": "lucide-react icon name (e.g. \"Rocket\") shown next to the category label."
                 }
             }
         },
@@ -106,17 +106,6 @@
                 "href": {
                     "type": "string",
                     "format": "uri"
-                }
-            }
-        },
-        "AdvancedConfig": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-                "docusaurus": {
-                    "type": "object",
-                    "description": "Raw Docusaurus config fields merged into the generated config.",
-                    "additionalProperties": true
                 }
             }
         }

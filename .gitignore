@@ -5,10 +5,6 @@
 # Node
 node_modules/
 
-# Docusaurus
-build/
-.docusaurus/
-
 # Test coverage
 coverage/
 
@@ -22,11 +18,17 @@ npm-debug.log*
 .test-repo/
 .framework-test/
 
-#content
+# build
 .trickfire-docs/
-content/*
-!content/.gitkeep
-**/sidebars.generated.js
+
+# Fumadocs site (generated)
+.source/
+.next/
+out/
+content-sources.generated.ts
+content-sources.map.json
+repos.generated.json
+.meta/
 
 # Editor
 .vscode/*
@@ -37,5 +39,6 @@ content/*
 *.env
 
 # dev doc links
-dev-fixtures/*
-!dev-fixtures/test-subdoc/
+content/*
+!content/general/
+!content/test-subdoc/

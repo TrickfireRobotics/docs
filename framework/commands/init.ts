@@ -78,7 +78,7 @@ export async function runInit(projectRoot: string, options: InitOptions = {}): P
 
     // Append trickfire-docs entries to .gitignore
     const gitignorePath = path.join(projectRoot, ".gitignore");
-    const gitignoreAddition = "\n# trickfire-docs\n.trickfire-docs/\ndist/\n";
+    const gitignoreAddition = "\n# trickfire-docs\n.trickfire-docs/\ndist/\ndocs/**/meta.json\n";
     if (existsSync(gitignorePath)) {
         const content = await fs.readFile(gitignorePath, "utf-8");
         if (!content.includes(".trickfire-docs")) {

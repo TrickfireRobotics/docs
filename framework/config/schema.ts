@@ -7,7 +7,8 @@ export interface SidebarLinkItem {
 export interface SidebarGroup {
     label: string;
     items: SidebarItem[];
-    collapsed?: boolean;
+    /** lucide-react icon name, e.g. "Rocket". Rendered next to the category label. */
+    icon?: string;
 }
 
 export type SidebarItem = SidebarLinkItem | SidebarGroup;
@@ -21,21 +22,11 @@ export interface SocialLink {
 
 export type SocialLinks = SocialLink[];
 
-export interface LandingItem {
-    title: string;
-    description: string;
-    link: string;
-}
-
-export interface AdvancedConfig {
-    docusaurus?: Record<string, unknown>;
-}
-
 export interface DocsConfig {
     name: string;
     description: string;
+    /** lucide-react icon name, e.g. "LayoutDashboard". Shown in the project switcher and homepage cards. */
+    icon?: string;
     sidebar?: SidebarConfig;
-    landing?: LandingItem[];
     social?: SocialLinks;
-    advanced?: AdvancedConfig;
 }

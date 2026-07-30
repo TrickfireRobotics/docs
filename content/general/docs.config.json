@@ -1,0 +1,20 @@
+{
+    "$schema": "https://docs.trickfirerobotics.com/docs.config.schema.json",
+    "name": "General",
+    "description": "General TrickFire documentation",
+    "icon": "BookOpen",
+    "sidebar": [
+        { "label": "General Documentation", "slug": "general-docs" },
+        {
+            "label": "GitHub",
+            "icon": "Github",
+            "items": [
+                { "label": "Overview", "slug": "github/general" },
+                { "label": "Pull Requests & Collaboration", "slug": "github/pull-requests" },
+                { "label": "Development Practices", "slug": "github/development-practices" },
+                { "label": "Repository Practices", "slug": "github/repo-practices" },
+                { "label": "Commit Rebasing", "slug": "github/rebasing" }
+            ]
+        }
+    ]
+}

@@ -1,7 +1,8 @@
 node_modules/
 dist-cli/
-build/
-.docusaurus/
+.next/
+.source/
+out/
 coverage/
 pnpm-lock.yaml
 content/

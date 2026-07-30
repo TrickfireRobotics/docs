@@ -3,5 +3,7 @@ allowBuilds:
     core-js: true
     esbuild: true
     sharp: true
+    unrs-resolver: true
+    "@tailwindcss/oxide": true
 patchedDependencies:
-    "@docusaurus/core@3.10.2": patches/@docusaurus__core@3.10.2.patch
+    "@fumadocs/base-ui@16.13.0": patches/@fumadocs__base-ui@16.13.0.patch

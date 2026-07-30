@@ -1,5 +1,5 @@
 #!/bin/bash
-# Tests the CLI in a clean project with no trickfire-docs installation —
+# Tests the CLI in a clean project with no trickfire-docs installation -
 # simulates npx trickfire-docs usage.
 
 set -euo pipefail

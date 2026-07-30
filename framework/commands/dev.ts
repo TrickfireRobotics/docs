@@ -1,52 +1,38 @@
-import fs from "node:fs/promises";
 import path from "node:path";
 import { spawn } from "node:child_process";
 import { loadDocsConfig } from "../config/load.js";
-import { resolveDocsConfig } from "../config/resolve.js";
-import { generateFiles } from "../config/generate.js";
-import { ensureSiteNodeModules, findDocusaurusBin } from "../utils/docusaurus.js";
-import { THEME_CSS } from "../theme.js";
+import { generateMetaFiles } from "../config/meta.js";
+import {
+    copySiteTemplate,
+    ensureSiteNodeModules,
+    ensureSitePublicDir,
+    findNextBin,
+} from "../utils/site.js";
 
-export async function runDev(projectRoot: string): Promise<void> {
-    const raw = await loadDocsConfig(projectRoot);
-    const config = await resolveDocsConfig(projectRoot, raw);
-    const { config: configJs, sidebars, redirectPage } = generateFiles(config, projectRoot);
+export async function runDev(projectRoot: string, port = 3000): Promise<void> {
+    const config = await loadDocsConfig(projectRoot);
 
     const trickfireDir = path.join(projectRoot, ".trickfire-docs");
-    await fs.mkdir(trickfireDir, { recursive: true });
+    copySiteTemplate(trickfireDir);
 
-    await fs.writeFile(path.join(trickfireDir, "custom.css"), THEME_CSS, "utf-8");
-    await fs.writeFile(path.join(trickfireDir, "docusaurus.config.js"), configJs, "utf-8");
-    if (sidebars) {
-        await fs.writeFile(path.join(trickfireDir, "sidebars.js"), sidebars, "utf-8");
-    }
-    if (redirectPage) {
-        const pagesDir = path.join(trickfireDir, "pages");
-        await fs.mkdir(pagesDir, { recursive: true });
-        await fs.writeFile(path.join(pagesDir, "index.jsx"), redirectPage, "utf-8");
-    }
-
-    // Symlink react / react-dom / @mdx-js/react into .trickfire-docs/node_modules
-    // so Docusaurus can find its peer deps without any installation in the project.
+    await generateMetaFiles(
+        config,
+        path.join(projectRoot, "docs"),
+        path.join(trickfireDir, "meta")
+    );
     await ensureSiteNodeModules(path.join(trickfireDir, "node_modules"));
+    await ensureSitePublicDir(path.join(trickfireDir, "public"), projectRoot);
 
-    const bin = await findDocusaurusBin();
+    const bin = await findNextBin();
 
     await new Promise<void>((resolve, reject) => {
-        const child = spawn(
-            process.execPath,
-            [
-                bin,
-                "start",
-                trickfireDir,
-                "--config",
-                path.join(trickfireDir, "docusaurus.config.js"),
-            ],
-            { cwd: projectRoot, stdio: "inherit" }
-        );
+        const child = spawn(process.execPath, [bin, "dev", "--webpack", "-p", String(port)], {
+            cwd: trickfireDir,
+            stdio: "inherit",
+        });
         child.on("close", (code) => {
             if (code === 0 || code === null) resolve();
-            else reject(new Error(`docusaurus exited with code ${code}`));
+            else reject(new Error(`next dev exited with code ${code}`));
         });
         child.on("error", reject);
     });

@@ -23,5 +23,6 @@ npx trickfire-docs build
 Outputs the static site to `dist/`.
 
 :::tip
-Changes to `docs.config.json` (site name, description, sidebar) require restarting the dev server — only content edits under `docs/` hot-reload.
+Changes to `docs.config.json` (site name, description, sidebar) require restarting the dev server - only content edits under `docs/` hot-reload.
+
 :::

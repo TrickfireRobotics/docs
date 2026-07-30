@@ -1,0 +1,17 @@
+{
+    "$schema": "https://docs.trickfirerobotics.com/docs.config.schema.json",
+    "name": "[DEV] Test Subdoc",
+    "description": "Dev-only placeholder subdoc for testing subdoc-related functionality.",
+    "icon": "FlaskConical",
+    "sidebar": [
+        { "label": "Overview", "slug": "overview" },
+        {
+            "label": "Guides",
+            "icon": "Compass",
+            "items": [
+                { "label": "Guide One", "slug": "guides/guide-one" },
+                { "label": "Guide Two", "slug": "guides/guide-two" }
+            ]
+        }
+    ]
+}
