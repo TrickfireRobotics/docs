@@ -8,7 +8,7 @@ Docs are written in Markdown (MDX). A few extras beyond standard Markdown are co
 
 Every file can have a YAML frontmatter block at the top:
 
-```markdown
+```md
 ---
 title: My Page Title
 description: A short summary shown in search results.
@@ -20,13 +20,13 @@ description: A short summary shown in search results.
 | `title`       | Page title shown in the browser tab and sidebar. Defaults to the first H1. |
 | `description` | Meta description for search engines, also shown under the page title.      |
 
-Page order comes from `docs.config.json`'s `sidebar` (see [Sidebar Configuration](./sidebar-config)), or alphabetically by filename if you don't define one.
+Page order comes from `docs.config.json`'s `sidebar` (see [Sidebar Configuration](./sidebar-config.md)), or alphabetically by filename if you don't define one.
 
 ## Headings
 
 Use `#` for the page title (H1) and `##`/`###` for sections. Only one H1 per page.
 
-```markdown
+```md
 # Page Title
 
 ## Section
@@ -38,16 +38,16 @@ Use `#` for the page title (H1) and `##`/`###` for sections. Only one H1 per pag
 
 **To another doc in your project:**
 
-```markdown
-[Getting Started](./getting-started)
-[See the FAQ](./reference/faq)
+```md
+[Getting Started](./getting-started.md)
+[See the FAQ](./reference/faq.md)
 ```
 
-Use relative paths without the `.md` extension.
+Use relative paths including the `.md` extension - the link resolver matches on file path, not URL slug.
 
 **To an external URL:**
 
-```markdown
+```md
 [GitHub](https://github.com/TrickfireRobotics)
 ```
 
@@ -55,7 +55,7 @@ Use relative paths without the `.md` extension.
 
 Place images in `docs/assets/` and reference them relatively:
 
-```markdown
+```md
 ![Wiring diagram](./assets/wiring.png)
 ```
 
@@ -65,7 +65,7 @@ SVG files work the same way.
 
 Fenced code blocks with a language tag get syntax highlighting:
 
-````markdown
+````md
 ```python
 import can
 
@@ -79,7 +79,7 @@ Supported language tags include `python`, `typescript`, `bash`, `yaml`, `json`, 
 
 **Show a filename:**
 
-````markdown
+````md
 ```python title="examples/send_message.py"
 # ...
 ```
@@ -87,7 +87,7 @@ Supported language tags include `python`, `typescript`, `bash`, `yaml`, `json`, 
 
 **Highlight specific lines**, using a `[!code highlight]` comment on the line:
 
-````markdown
+````md
 ```python
 import can
 
@@ -101,7 +101,7 @@ bus.send(msg) # [!code highlight]
 
 Callout boxes for notes, warnings, and tips:
 
-```markdown
+```md
 :::note
 Extra context that's useful but not critical.
 :::
@@ -123,7 +123,7 @@ Leave a blank line before and after the `:::` fences, or the block won't render 
 
 ## Tables
 
-```markdown
+```md
 | Column A | Column B | Column C |
 | -------- | -------- | -------- |
 | Row 1    | Value    | Value    |
@@ -162,4 +162,4 @@ docs/
     └── faq.md
 ```
 
-For custom ordering, labels, icons, or grouped categories, define `sidebar` explicitly - see [Sidebar Configuration](./sidebar-config).
+For custom ordering, labels, icons, or grouped categories, define `sidebar` explicitly - see [Sidebar Configuration](./sidebar-config.md).

@@ -59,7 +59,7 @@ VS Code will autocomplete and validate the config automatically thanks to the `$
 
 ### 3. Write your docs
 
-Replace the scaffold markdown files with real content. See [Writing Content](./writing-content) for the full guide.
+Replace the scaffold markdown files with real content. See [Writing Content](./writing-content.md) for the full guide.
 
 Minimum viable docs:
 

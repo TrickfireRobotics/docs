@@ -33,6 +33,8 @@
         "**/node_modules": true,
         ".husky/_/": true,
         ".source": true,
-        ".next/": true
+        ".next/": true,
+        "docs/**/meta.json": true,
+        "general/**/meta.json": true
     }
 }

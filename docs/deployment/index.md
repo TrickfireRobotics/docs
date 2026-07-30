@@ -6,11 +6,11 @@ This section is for server administrators setting up or maintaining the docs inf
 
 ## What needs to be set up once
 
-| Component                         | Guide                                    |
-| --------------------------------- | ---------------------------------------- |
-| Debian server with nginx          | [Server Setup](./server-setup)           |
-| Cloudflare tunnel                 | [Cloudflare Tunnel](./cloudflare-tunnel) |
-| GitHub Actions self-hosted runner | [Below](#github-runner)                  |     |
+| Component                         | Guide                                       |
+| --------------------------------- | ------------------------------------------- |
+| Debian server with nginx          | [Server Setup](./server-setup.md)           |
+| Cloudflare tunnel                 | [Cloudflare Tunnel](./cloudflare-tunnel.md) |
+| GitHub Actions self-hosted runner | [Below](#github-runner)                     |     |
 
 ## Infrastructure at a glance
 
