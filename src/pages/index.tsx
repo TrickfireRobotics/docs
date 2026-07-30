@@ -26,11 +26,20 @@ type ProjectEntry = { id: string; name: string; description: string; to: string 
 export default function Home(): React.JSX.Element {
     const { siteConfig } = useDocusaurusContext();
     const repoMeta = (siteConfig.customFields?.repoMeta as RepoMeta[]) ?? [];
+    const generalMeta = siteConfig.customFields?.generalMeta as RepoMeta | undefined;
     const frameworkMeta = siteConfig.customFields?.frameworkMeta as FrameworkMeta | undefined;
 
-    const isEmpty = repoMeta.length === 0 && !frameworkMeta;
+    const isEmpty = repoMeta.length === 0 && !generalMeta && !frameworkMeta;
+
+    const toProjectEntry = ({ id, name, description, firstDocId }: RepoMeta): ProjectEntry => ({
+        id,
+        name,
+        description,
+        to: firstDocId ? `/${id}/${firstDocId}/` : `/${id}/`,
+    });
 
     const allProjects: ProjectEntry[] = [
+        ...(generalMeta ? [toProjectEntry(generalMeta)] : []),
         ...(frameworkMeta
             ? [
                   {
@@ -41,12 +50,7 @@ export default function Home(): React.JSX.Element {
                   },
               ]
             : []),
-        ...repoMeta.map(({ id, name, description, firstDocId }) => ({
-            id,
-            name,
-            description,
-            to: firstDocId ? `/${id}/${firstDocId}/` : `/${id}/`,
-        })),
+        ...repoMeta.map(toProjectEntry),
     ];
 
     return (
