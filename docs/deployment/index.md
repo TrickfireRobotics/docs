@@ -1,9 +1,6 @@
 ---
 title: Deployment Overview
-sidebar_position: 1
 ---
-
-# Deployment Overview
 
 This section is for server administrators setting up or maintaining the docs infrastructure. Member developers don't need any of this.
 

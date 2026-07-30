@@ -1,9 +1,6 @@
 ---
 title: Member Guide
-sidebar_position: 3
 ---
-
-# Member Guide
 
 This guide is for TrickFire members who want to add documentation to an existing project repo.
 
@@ -75,7 +72,7 @@ Minimum viable docs:
 npx trickfire-docs dev
 ```
 
-This starts a local Docusaurus server for your project's docs only. Hot-reload is enabled — edits to `docs/` appear instantly. The generated site files are kept in `.trickfire-docs/` (gitignored) and are managed entirely by the CLI.
+This starts a local dev server for your project's docs only. Hot-reload is enabled — edits to `docs/` appear instantly. The generated site files are kept in `.trickfire-docs/` (gitignored) and are managed entirely by the CLI.
 
 ### 5. Push to publish
 

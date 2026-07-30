@@ -28,10 +28,12 @@ Use asides to highlight important information:
 
 :::note
 A neutral callout for extra context.
+
 :::
 
 :::caution
 A warning callout for things readers should be careful about.
+
 :::
 
 ## MDX

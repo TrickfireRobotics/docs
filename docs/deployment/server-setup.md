@@ -1,9 +1,6 @@
 ---
 title: Server Setup
-sidebar_position: 2
 ---
-
-# Server Setup
 
 This project is ran on our Debian server, but this setup should work on any Debian-based server.
 
@@ -46,7 +43,7 @@ cd /home/trickfire/docs
 
 ```bash
 pnpm install --frozen-lockfile
-pnpm website:build
+pnpm site:build
 ```
 
 The first build takes 1–2 minutes. Subsequent builds are faster due to pnpm's cache.
@@ -86,13 +83,13 @@ sudo nginx -t
 sudo nginx -s reload
 ```
 
-The config serves `build/` on `localhost:80`. The Cloudflare tunnel (set up next) is what exposes this to the internet, `nginx` itself only listens on localhost.
+The config serves `out/` on `localhost:80`. The Cloudflare tunnel (set up next) is what exposes this to the internet, `nginx` itself only listens on localhost.
 
 ### 5. Verify the server
 
 ```bash
-curl -s http://localhost/ | grep -i title
-# ...<title data-rh=true>Home | TrickFire Robotics Docs</title>...
+curl -I http://localhost/
+# HTTP/1.1 200 OK
 ```
 
 ## Updating the server

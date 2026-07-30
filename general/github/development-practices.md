@@ -3,8 +3,6 @@ title: Development Practices
 description: Branch naming and commit message conventions
 ---
 
-# Development Practices
-
 Conventions we prefer to standardize on: branch naming, commit naming, and when to push.
 
 ## Branch naming

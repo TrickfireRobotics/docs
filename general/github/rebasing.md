@@ -3,12 +3,11 @@ title: Commit Rebasing
 description: Cleaning up commit history with interactive rebase
 ---
 
-# Commit Rebasing
-
 Rebasing means replaying a series of commits onto a different base commit. In an _interactive_ rebase you also get to rewrite that series as it's replayed, which lets you combine related commits, fix bad messages, or drop commits entirely. Combining several commits into one is called **squashing**, and it's the most common reason we reach for a rebase. Let's say we have some commits titled like so:
 
 :::note
 This is typically reserved for large branches with many commits that could use clarifying.
+
 :::
 
 ```bash
@@ -32,6 +31,7 @@ Rebasing rewrites history. The commits you rebase are replaced by **new commits 
 If someone branched off your branch, their work is now based on commits that aren't in your history anymore. Nothing of theirs is destroyed, but they'll get duplicated commits and messy conflicts the next time they merge.
 
 Reach out to anyone working off your branch and make sure they aren't mid-change before proceeding.
+
 :::
 
 ## Rebasing a few commits
@@ -130,6 +130,7 @@ This gives you exactly two commits:
 
 :::note
 The first line can never be a `squash` or `fixup` — there has to be a `pick` above it to meld into. If you get this wrong, git stops with `error: cannot 'squash' without a previous commit`, and you can fix it with `git rebase --edit-todo`.
+
 :::
 
 ### `squash` vs `fixup`
@@ -143,6 +144,7 @@ Both combine commits — they only differ in what happens to the commit message.
 
 :::tip
 Since the whole point here is usually to get rid of messages like "changed constant again", `fixup` is often what you actually want. Use `squash` when you want to write a proper combined message by hand.
+
 :::
 
 You can also use `reword` to fix a single commit message without combining anything.
@@ -178,6 +180,7 @@ git branch -d feat/motor-interface-rebase
 
 :::tip
 Alternatively, just open the pull request from `feat/motor-interface-rebase` and leave the original branch alone entirely — this is the safest option if other people are branched off it.
+
 :::
 
 ## When the rebase stops partway
@@ -217,6 +220,7 @@ git push --force-with-lease
 Use `--force-with-lease`, not `--force`. `--force-with-lease` refuses to push if someone else has pushed to that branch since you last fetched, so you can't silently wipe out a teammate's work. Plain `--force` will happily destroy it.
 
 Never rebase or force push `main`, or any branch that other people have open pull requests against.
+
 :::
 
 ## If you make a mistake

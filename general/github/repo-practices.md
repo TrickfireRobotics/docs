@@ -3,8 +3,6 @@ title: Repository Practices
 description: Repo naming conventions and what makes a repo pleasant to develop in
 ---
 
-# Repository Practices
-
 Practices for the different aspects of a repo itself, separate from how you work within a branch.
 
 ## Repo naming

@@ -3,8 +3,6 @@ title: Pull Requests & Collaboration
 description: Working in parallel on branches, and how we open and review pull requests
 ---
 
-# Pull Requests & Collaboration
-
 ## Working in parallel on a branch
 
 One of the most common things we've heard from people in the club is that they aren't sure how to work in parallel with someone else on the same branch. Here's what we suggest for changes that are more than a few lines of actual code.

@@ -1,9 +1,6 @@
 ---
 title: Cloudflare Tunnel
-sidebar_position: 3
 ---
-
-# Cloudflare Tunnel
 
 A Cloudflare tunnel replaces the need for an open inbound port or a TLS certificate. The `cloudflared` daemon on the server opens an outbound connection to Cloudflare's network, and Cloudflare forwards HTTPS traffic from `docs.trickfirerobotics.com` through that connection to nginx on `localhost:80`.
 
@@ -120,7 +117,7 @@ Key points in the nginx config:
 
 - Listens only on `127.0.0.1:80` — not reachable from outside
 - No SSL directives
-- `try_files` for Docusaurus SPA routing
+- `try_files` for Next.js static export routing (falls back to `<uri>.html`, then `index.html`)
 - Immutable cache headers for hashed JS/CSS assets
 
 ## Troubleshooting
@@ -138,7 +135,7 @@ Check nginx is running and the build directory exists:
 
 ```bash
 sudo systemctl status nginx
-ls /home/trickfire/docs/build/index.html
+ls /home/trickfire/docs/out/index.html
 ```
 
 **DNS not resolving:**

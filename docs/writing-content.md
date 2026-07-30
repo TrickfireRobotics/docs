@@ -1,11 +1,8 @@
 ---
 title: Writing Content
-sidebar_position: 4
 ---
 
-# Writing Content
-
-Docs are written in Markdown (MDX). Docusaurus extends standard Markdown with a few extras covered below.
+Docs are written in Markdown (MDX). A few extras beyond standard Markdown are covered below.
 
 ## Frontmatter
 
@@ -15,15 +12,15 @@ Every file can have a YAML frontmatter block at the top:
 ---
 title: My Page Title
 description: A short summary shown in search results.
-sidebar_position: 2
 ---
 ```
 
-| Field              | Purpose                                                                    |
-| ------------------ | -------------------------------------------------------------------------- |
-| `title`            | Page title shown in the browser tab and sidebar. Defaults to the first H1. |
-| `description`      | Meta description for search engines.                                       |
-| `sidebar_position` | Controls sort order within its folder. Lower = higher.                     |
+| Field         | Purpose                                                                    |
+| ------------- | -------------------------------------------------------------------------- |
+| `title`       | Page title shown in the browser tab and sidebar. Defaults to the first H1. |
+| `description` | Meta description for search engines, also shown under the page title.      |
+
+Page order comes from `docs.config.json`'s `sidebar` (see [Sidebar Configuration](./sidebar-config)), or alphabetically by filename if you don't define one.
 
 ## Headings
 
@@ -46,7 +43,7 @@ Use `#` for the page title (H1) and `##`/`###` for sections. Only one H1 per pag
 [See the FAQ](./reference/faq)
 ```
 
-Use relative paths without the `.md` extension. Docusaurus validates these at build time and warns on broken links.
+Use relative paths without the `.md` extension.
 
 **To an external URL:**
 
@@ -88,15 +85,15 @@ Supported language tags include `python`, `typescript`, `bash`, `yaml`, `json`, 
 ```
 ````
 
-**Highlight specific lines:**
+**Highlight specific lines**, using a `[!code highlight]` comment on the line:
 
 ````markdown
-```python {3-5}
+```python
 import can
 
 bus = can.Bus(...)
-msg = can.Message(...)
-bus.send(msg)
+msg = can.Message(...) # [!code highlight]
+bus.send(msg) # [!code highlight]
 ```
 ````
 
@@ -122,6 +119,8 @@ Do not do this — data loss or hardware damage possible.
 :::
 ```
 
+Leave a blank line before and after the `:::` fences, or the block won't render as a callout.
+
 ## Tables
 
 ```markdown
@@ -138,30 +137,24 @@ Column alignment with `:---`, `:---:`, and `---:` for left, center, and right.
 Show alternative instructions for different environments. Import the components at the top of the file, then use JSX:
 
 ```jsx
-import Tabs from "@theme/Tabs";
-import TabItem from "@theme/TabItem";
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
 ```
 
 ```jsx
-<Tabs>
-    <TabItem value="linux" label="Linux">
-        Install with apt: `sudo apt install can-utils`
-    </TabItem>
-    <TabItem value="mac" label="macOS">
-        Install with brew: `brew install can-utils`
-    </TabItem>
+<Tabs items={["Linux", "macOS"]}>
+    <Tab value="Linux">Install with apt: `sudo apt install can-utils`</Tab>
+    <Tab value="macOS">Install with brew: `brew install can-utils`</Tab>
 </Tabs>
 ```
 
 ## File organization
 
-Docusaurus autogenerates the sidebar from your folder structure if you don't define one explicitly. The sort order comes from `sidebar_position` in frontmatter, then alphabetically.
+If `docs.config.json` doesn't define a `sidebar`, pages are listed alphabetically by filename with no grouping:
 
 ```
 docs/
-├── getting-started.md      ← sidebar_position: 1
+├── getting-started.md
 ├── guides/
-│   ├── _category_.json     ← optional: set label/position for the folder
 │   ├── installation.md
 │   └── configuration.md
 └── reference/
@@ -169,12 +162,4 @@ docs/
     └── faq.md
 ```
 
-**`_category_.json`** controls how a folder appears in the sidebar:
-
-```json
-{
-    "label": "Guides",
-    "position": 2,
-    "collapsed": false
-}
-```
+For custom ordering, labels, icons, or grouped categories, define `sidebar` explicitly — see [Sidebar Configuration](./sidebar-config).

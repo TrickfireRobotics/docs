@@ -1,9 +1,6 @@
 ---
 title: Configuration Reference
-sidebar_position: 6
 ---
-
-# Configuration Reference
 
 `docs.config.json` lives in the root of your member repo and is the only configuration file you need.
 
@@ -52,7 +49,7 @@ One-line description of the project. Shown on the docs homepage card for your pr
 
 ### `sidebar` (optional)
 
-Explicit sidebar definition. When omitted, Docusaurus autogenerates the sidebar from your `docs/` file structure.
+Explicit sidebar definition. When omitted, the sidebar is generated automatically from your `docs/` file structure.
 
 See [Sidebar Configuration](./sidebar-config) for full documentation.
 
@@ -75,7 +72,6 @@ Each item is either a **doc link** or a **group**:
 ```json
 {
     "label": "Reference",
-    "collapsed": false,
     "items": [{ "label": "API", "slug": "reference/api" }]
 }
 ```
@@ -94,21 +90,6 @@ Extra nav links appended after the built-in GitHub / Notion / TrickFire links.
 ```
 
 `icon` accepts `"github"` or `"external"`.
-
----
-
-### `advanced` (optional)
-
-Pass-through options merged into the Docusaurus plugin config for this project. Use this to enable Docusaurus features not exposed by `docs.config.json`.
-
-```json
-"advanced": {
-    "docusaurus": {
-        "showLastUpdateTime": true,
-        "editUrl": "https://github.com/TrickfireRobotics/my-repo/edit/main/"
-    }
-}
-```
 
 ---
 
