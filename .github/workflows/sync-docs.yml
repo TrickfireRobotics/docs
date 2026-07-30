@@ -13,6 +13,12 @@ jobs:
     sync:
         name: Sync docs and rebuild site
         runs-on: [self-hosted, docs]
+        permissions:
+            contents: read
+            deployments: write
+        environment:
+            name: docs-${{ inputs.repo-name || github.event.repository.name }}
+            url: https://docs.trickfirerobotics.com/${{ inputs.repo-name || github.event.repository.name }}
 
         steps:
             - name: Checkout calling repo
