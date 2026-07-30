@@ -1,3 +1,19 @@
+# [1.8.0](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v1.7.0...trickfire-docs-v1.8.0) (2026-07-30)
+
+### Bug Fixes
+
+- added index ([3c17918](https://github.com/TrickfireRobotics/docs/commit/3c17918511fcbff356290744446fe7bd97438877))
+- renamed folder and added meta ([5eb579d](https://github.com/TrickfireRobotics/docs/commit/5eb579d3720fb46f7e9b3ff51b69a1ac7aa6b704))
+
+### Features
+
+- added general github practices file ([ab4f0dd](https://github.com/TrickfireRobotics/docs/commit/ab4f0ddea6305998589eaea915b5f43c5b832d50))
+- general docs ([b5d694c](https://github.com/TrickfireRobotics/docs/commit/b5d694cb3de6679f6f37db47b91b491b3bcc3064))
+- general docs ([#19](https://github.com/TrickfireRobotics/docs/issues/19)) ([5a11001](https://github.com/TrickfireRobotics/docs/commit/5a11001eb59a466b7b064e0e4ba4ebd479ddf562))
+- implemented sidebar for general ([5f50348](https://github.com/TrickfireRobotics/docs/commit/5f503489498e7693ebe384b54e091e47db3358e1))
+- included some information about pull requests ([6972a23](https://github.com/TrickfireRobotics/docs/commit/6972a23bed51499bd3e91e30656d2dabfef2e925))
+- made proper folder and renamed file ([546bbb7](https://github.com/TrickfireRobotics/docs/commit/546bbb7a14792e636d36531a278a8dfcbc8f53d7))
+
 # [1.7.0](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v1.6.2...trickfire-docs-v1.7.0) (2026-07-29)
 
 ### Bug Fixes
