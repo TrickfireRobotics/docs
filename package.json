@@ -13,7 +13,7 @@
     "files": [
         "dist-cli",
         "scaffold",
-        "site-template",
+        "site",
         "public"
     ],
     "scripts": {

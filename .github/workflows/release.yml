@@ -7,7 +7,7 @@ on:
             - ".github/workflows/release.yml"
             - "framework/**"
             - "scaffold/**"
-            - "site-template/**"
+            - "site/**"
             - "tsup.config.ts"
             - "vitest.config.ts"
             - "tsconfig.cli.json"

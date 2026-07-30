@@ -23,7 +23,7 @@ function findPackageRoot(startDir: string): string {
 }
 
 const PACKAGE_ROOT = findPackageRoot(path.dirname(fileURLToPath(import.meta.url)));
-const SITE_TEMPLATE_DIR = path.join(PACKAGE_ROOT, "site-template");
+const SITE_TEMPLATE_DIR = path.join(PACKAGE_ROOT, "site");
 const FRAMEWORK_PUBLIC_DIR = path.join(PACKAGE_ROOT, "public");
 
 /** Copies the bundled single-project Fumadocs app template into
