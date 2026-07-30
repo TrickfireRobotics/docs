@@ -25,16 +25,28 @@ async function writeMeta(dir: string, meta: Record<string, unknown>): Promise<vo
 }
 
 /**
- * Writes Fumadocs `meta.json` files into the project's docs/ directory (and
- * its subfolders) from the config's `sidebar` array - category groups map to
- * subfolders sharing their items' slug prefix, matching how the aggregator
- * site does this in scripts/generate-sources.mjs. Categories render flat and
- * expanded (no accordion), matching the main site's sidebar.
+ * Writes Fumadocs `meta.json` files into `metaDir` (and its subfolders,
+ * mirroring `docsDir`'s subfolder structure) from the config's `sidebar`
+ * array - category groups map to subfolders sharing their items' slug
+ * prefix, matching how the aggregator site does this in
+ * scripts/generate-sources.mjs. Categories render flat and expanded (no
+ * accordion), matching the main site's sidebar.
+ *
+ * `metaDir` is deliberately never `docsDir` itself - `docs/` should only
+ * ever contain hand-written markdown, so meta.json lives under
+ * `.trickfire-docs/meta/` instead. Fumadocs' source loader matches doc and
+ * meta collections up by relative path (see site/source.config.ts and
+ * site/src/lib/source.ts), so the mirrored subfolder names are what link
+ * `metaDir/guides/meta.json` back to `docsDir/guides/*.md`.
  *
  * A no-op if the project has no explicit `sidebar` - Fumadocs then falls
  * back to auto-ordering from the docs/ file tree, same as before.
  */
-export async function generateMetaFiles(config: DocsConfig, docsDir: string): Promise<void> {
+export async function generateMetaFiles(
+    config: DocsConfig,
+    docsDir: string,
+    metaDir: string
+): Promise<void> {
     const sidebar: SidebarConfig | undefined = config.sidebar;
     if (!sidebar || !existsSync(docsDir)) return;
 
@@ -51,7 +63,7 @@ export async function generateMetaFiles(config: DocsConfig, docsDir: string): Pr
                 .filter((sub): sub is SidebarLinkItem => "slug" in sub && !!sub.slug)
                 .map((sub) => basenameOfSlug(sub.slug!));
 
-            await writeMeta(path.join(docsDir, folderName), {
+            await writeMeta(path.join(metaDir, folderName), {
                 title: item.label,
                 ...(item.icon && { icon: item.icon }),
                 pages: groupPages,
@@ -63,7 +75,7 @@ export async function generateMetaFiles(config: DocsConfig, docsDir: string): Pr
         }
     }
 
-    await writeMeta(docsDir, {
+    await writeMeta(metaDir, {
         title: config.name,
         ...(config.icon && { icon: config.icon }),
         pages: rootPages,

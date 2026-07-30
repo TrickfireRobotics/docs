@@ -1,4 +1,5 @@
 import { loader } from "fumadocs-core/source";
+import { toFumadocsSource } from "fumadocs-mdx/runtime/server";
 import * as generated from "collections/server";
 import varToRepoId from "../../content-sources.map.json" with { type: "json" };
 import repoMeta from "../../repos.generated.json" with { type: "json" };
@@ -15,14 +16,17 @@ export const repos: RepoMeta[] = repoMeta;
 export const repoIds: string[] = repos.map((r) => r.id);
 
 const idToVar = varToRepoId as Record<string, string>;
-const generatedAny = generated as Record<string, { toFumadocsSource: () => unknown }>;
+const generatedAny = generated as Record<string, unknown[]>;
 
 const sources = Object.fromEntries(
     Object.entries(idToVar).map(([varName, repoId]) => [
         repoId,
         loader({
             baseUrl: `/${repoId}`,
-            source: generatedAny[varName].toFumadocsSource() as never,
+            source: toFumadocsSource(
+                generatedAny[`${varName}_docs`] as never,
+                generatedAny[`${varName}_meta`] as never
+            ) as never,
             icon: (name) => resolveIcon(name),
         }),
     ])

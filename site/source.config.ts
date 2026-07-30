@@ -1,15 +1,29 @@
-import { defineConfig, defineDocs } from "fumadocs-mdx/config";
+import { defineCollections, defineConfig } from "fumadocs-mdx/config";
 import { metaSchema, pageSchema } from "fumadocs-core/source/schema";
 import { rehypeCodeDefaultOptions, remarkAdmonition } from "fumadocs-core/mdx-plugins";
 import { transformerDefaultTitle, transformerShellPrompt } from "./src/lib/shiki-transformers";
 
-// `.trickfire-docs/` is always a direct child of the member repo root, so the
-// project's `docs/` folder is always this same relative path - no need to
-// generate this file per-project.
-export const docs = defineDocs({
+// `.trickfire-docs/` is always a direct child of the member repo root, so
+// these relative paths are always correct - no need to generate this file
+// per-project.
+//
+// Docs and meta.json are two independent collections (rather than one
+// `defineDocs()`) so meta.json can live under `.trickfire-docs/meta/`
+// instead of inside the project's `docs/` folder - the project's `docs/`
+// should only ever contain hand-written markdown. Fumadocs matches the two
+// collections up by relative path (see src/lib/source.ts's
+// `toFumadocsSource` call), so `framework/config/meta.ts` mirrors `docs/`'s
+// subfolder structure under `meta/` when it writes these files.
+export const docs = defineCollections({
+    type: "doc",
     dir: "../docs",
-    docs: { schema: pageSchema },
-    meta: { schema: metaSchema },
+    schema: pageSchema,
+});
+
+export const meta = defineCollections({
+    type: "meta",
+    dir: "./meta",
+    schema: metaSchema,
 });
 
 export default defineConfig({

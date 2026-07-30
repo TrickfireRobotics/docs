@@ -17,10 +17,10 @@
         "public"
     ],
     "scripts": {
-        "site:dev": "node scripts/generate-sources.mjs && next dev --webpack -p 3100",
-        "site:build": "NODE_ENV=production node scripts/generate-sources.mjs && next build",
+        "site:dev": "tsx scripts/generate-sources.ts && next dev --webpack -p 3100",
+        "site:build": "NODE_ENV=production tsx scripts/generate-sources.ts && next build",
         "site:start": "serve out -p 3100",
-        "site:typecheck": "node scripts/generate-sources.mjs && next typegen && tsc --noEmit -p tsconfig.site.json",
+        "site:typecheck": "tsx scripts/generate-sources.ts && next typegen && tsc --noEmit -p tsconfig.site.json",
         "framework:dev": "tsx framework/cli.ts",
         "framework:build": "tsup",
         "framework:test": "./scripts/test-cli.sh",
@@ -32,7 +32,7 @@
         "typecheck": "tsc --noEmit -p tsconfig.cli.json",
         "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm site:typecheck",
         "prepare": "husky",
-        "postinstall": "node scripts/generate-sources.mjs && fumadocs-mdx"
+        "postinstall": "tsx scripts/generate-sources.ts && fumadocs-mdx"
     },
     "lint-staged": {
         "*.{ts,tsx,js,jsx,mjs,cjs}": [

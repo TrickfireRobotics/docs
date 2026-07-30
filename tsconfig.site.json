@@ -29,7 +29,7 @@
         "app/**/*.tsx",
         "src/**/*.ts",
         "src/**/*.tsx",
-        "scripts/generate-sources.mjs",
+        "scripts/generate-sources.ts",
         ".next/types/**/*.ts",
         ".next/dev/types/**/*.ts"
     ],

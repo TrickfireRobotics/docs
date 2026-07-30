@@ -28,8 +28,7 @@ out/
 content-sources.generated.ts
 content-sources.map.json
 repos.generated.json
-content/**/meta.json
-docs/**/meta.json
+.meta/
 
 # Editor
 .vscode/*

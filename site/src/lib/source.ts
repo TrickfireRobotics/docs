@@ -1,10 +1,11 @@
 import { loader } from "fumadocs-core/source";
-import { docs } from "collections/server";
+import { toFumadocsSource } from "fumadocs-mdx/runtime/server";
+import { docs, meta } from "collections/server";
 import { resolveIcon } from "./icon";
 
 export const source = loader({
     baseUrl: "/",
-    source: docs.toFumadocsSource(),
+    source: toFumadocsSource(docs, meta),
     icon: (name) => resolveIcon(name),
 });
 

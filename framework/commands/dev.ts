@@ -15,7 +15,11 @@ export async function runDev(projectRoot: string, port = 3000): Promise<void> {
     const trickfireDir = path.join(projectRoot, ".trickfire-docs");
     copySiteTemplate(trickfireDir);
 
-    await generateMetaFiles(config, path.join(projectRoot, "docs"));
+    await generateMetaFiles(
+        config,
+        path.join(projectRoot, "docs"),
+        path.join(trickfireDir, "meta")
+    );
     await ensureSiteNodeModules(path.join(trickfireDir, "node_modules"));
     await ensureSitePublicDir(path.join(trickfireDir, "public"), projectRoot);
 

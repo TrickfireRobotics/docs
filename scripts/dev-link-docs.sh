@@ -26,7 +26,13 @@ if [ ! -f "$PROJECT_DIR/docs.config.json" ]; then
 fi
 
 mkdir -p $LINK_PATH
-ln -s $PROJECT_DIR/docs.config.json $LINK_PATH/docs.config.json
+echo "==> Linking docs/"
 ln -s $PROJECT_DIR/docs $LINK_PATH/docs
+echo "==> Linking docs.config.json..."
+ln -s $PROJECT_DIR/docs.config.json $LINK_PATH/docs.config.json
+
+echo "==> Creating .gitignore..."
+touch $PROJECT_DIR/.gitignore
+echo "*" > $PROJECT_DIR/.gitignore
 
 echo "Symlink to docs created for project $(basename $PROJECT_DIR)"

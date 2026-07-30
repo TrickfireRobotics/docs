@@ -5,3 +5,5 @@ allowBuilds:
     sharp: true
     unrs-resolver: true
     "@tailwindcss/oxide": true
+patchedDependencies:
+    "@fumadocs/base-ui@16.13.0": patches/@fumadocs__base-ui@16.13.0.patch

@@ -57,7 +57,7 @@ export function transformerShellPrompt(): ShikiTransformer {
             node.children.unshift({
                 type: "element",
                 tagName: "span",
-                properties: { className: ["tf-prompt"] },
+                properties: { className: ["tf-prompt", "nd-copy-ignore"] },
                 children: [{ type: "text", value: "$ " }],
             });
         },

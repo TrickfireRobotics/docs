@@ -36,5 +36,6 @@
         ".next/": true,
         "docs/**/meta.json": true,
         "general/**/meta.json": true
-    }
+    },
+    "js/ts.experimental.useTsgo": false
 }

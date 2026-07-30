@@ -1,0 +1,25 @@
+diff --git a/dist/components/codeblock.js b/dist/components/codeblock.js
+index ecb68cc893eef624fcdd643c38c6437f3268b6f3..69d1c7b7444a7e015f7c9e5620e3814afa681aca 100644
+--- a/dist/components/codeblock.js
++++ b/dist/components/codeblock.js
+@@ -72,7 +72,7 @@ function CopyButton({ className, containerRef, ...props }) {
+ 		if (!pre) return;
+ 		const clone = pre.cloneNode(true);
+ 		clone.querySelectorAll(".nd-copy-ignore").forEach((node) => {
+-			node.replaceWith("\n");
++			node.remove();
+ 		});
+ 		navigator.clipboard.writeText(clone.textContent ?? "");
+ 	});
+diff --git a/dist/components/sidebar/base.js b/dist/components/sidebar/base.js
+index 6977939e859113279dac6ca2bbf7cbea899958b7..e23e31f9042d07bfd56726d721492dc138dd71b0 100644
+--- a/dist/components/sidebar/base.js
++++ b/dist/components/sidebar/base.js
+@@ -205,6 +205,7 @@ function SidebarFolderTrigger({ children, ...props }) {
+ 	});
+ 	return /* @__PURE__ */ jsx("div", {
+ 		...props,
++		className: typeof props.className === "function" ? props.className({ open, disabled: !collapsible }) : props.className,
+ 		children
+ 	});
+ }

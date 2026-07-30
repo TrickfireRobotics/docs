@@ -1,0 +1,22 @@
+{
+    "$schema": "https://docs.trickfirerobotics.com/docs.config.schema.json",
+    "name": "Docs Framework",
+    "description": "Documentation for the TrickFire Docs framework itself",
+    "icon": "Blocks",
+    "sidebar": [
+        { "label": "TrickFire Docs", "slug": "index" },
+        { "label": "Architecture", "slug": "architecture" },
+        { "label": "Member Guide", "slug": "member-guide" },
+        { "label": "Writing Content", "slug": "writing-content" },
+        { "label": "Sidebar Configuration", "slug": "sidebar-config" },
+        { "label": "Configuration Reference", "slug": "configuration" },
+        {
+            "label": "Deployment",
+            "items": [
+                { "label": "Deployment Overview", "slug": "deployment/index" },
+                { "label": "Server Setup", "slug": "deployment/server-setup" },
+                { "label": "Cloudflare Tunnel", "slug": "deployment/cloudflare-tunnel" }
+            ]
+        }
+    ]
+}
