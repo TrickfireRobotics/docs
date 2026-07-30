@@ -36,5 +36,11 @@ jobs:
             - name: Run TypeScript check
               run: pnpm typecheck
 
+            - name: Run site TypeScript check
+              run: pnpm site:typecheck
+
             - name: Build framework
               run: pnpm framework:build
+
+            - name: Build site
+              run: pnpm site:build
