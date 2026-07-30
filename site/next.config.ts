@@ -8,6 +8,7 @@ const config: NextConfig = {
     reactStrictMode: true,
     images: { unoptimized: true },
     experimental: { externalDir: true },
+    devIndicators: { position: "bottom-right" },
 };
 
 export default withMDX(config);
