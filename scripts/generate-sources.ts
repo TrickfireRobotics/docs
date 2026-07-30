@@ -105,7 +105,7 @@ const collectionLines = [
         const metaDir = path.relative(ROOT, metaDirFor(repo)).split(path.sep).join("/");
         const v = varName(repo.id);
         return [
-            `export const ${v}_docs = defineCollections({ type: "doc", dir: ${JSON.stringify(docsDir)}, schema: pageSchema });`,
+            `export const ${v}_docs = defineCollections({ type: "doc", dir: ${JSON.stringify(docsDir)}, files: ["**/*.{md,mdx}", "!assets/**"], schema: pageSchema });`,
             `export const ${v}_meta = defineCollections({ type: "meta", dir: ${JSON.stringify(metaDir)}, schema: metaSchema });`,
         ];
     }),

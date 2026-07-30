@@ -17,6 +17,7 @@ import { transformerDefaultTitle, transformerShellPrompt } from "./src/lib/shiki
 export const docs = defineCollections({
     type: "doc",
     dir: "../docs",
+    files: ["**/*.{md,mdx}", "!assets/**"],
     schema: pageSchema,
 });
 
