@@ -10,7 +10,7 @@ This guide is for TrickFire members who want to add documentation to an existing
 - A TrickFire project repo with write access
 - Access to `TrickfireRobotics/trickfire-docs` (for the reusable CI workflow)
 
-No package installation required — `trickfire-docs` is run via `npx` and never needs to be added to your project's dependencies.
+No package installation required - `trickfire-docs` is run via `npx` and never needs to be added to your project's dependencies.
 
 ## Setup
 
@@ -55,7 +55,7 @@ Edit `docs.config.json`:
 
 `name` becomes the project title in the docs navbar dropdown. `description` shows on the docs homepage.
 
-VS Code will autocomplete and validate the config automatically thanks to the `$schema` field — no extensions needed.
+VS Code will autocomplete and validate the config automatically thanks to the `$schema` field - no extensions needed.
 
 ### 3. Write your docs
 
@@ -63,8 +63,8 @@ Replace the scaffold markdown files with real content. See [Writing Content](./w
 
 Minimum viable docs:
 
-- `docs/getting-started.md` — what the project is and how to get it running
-- `docs/reference/` — API or configuration reference
+- `docs/getting-started.md` - what the project is and how to get it running
+- `docs/reference/` - API or configuration reference
 
 ### 4. Preview locally
 
@@ -72,7 +72,7 @@ Minimum viable docs:
 npx trickfire-docs dev
 ```
 
-This starts a local dev server for your project's docs only. Hot-reload is enabled — edits to `docs/` appear instantly. The generated site files are kept in `.trickfire-docs/` (gitignored) and are managed entirely by the CLI.
+This starts a local dev server for your project's docs only. Hot-reload is enabled - edits to `docs/` appear instantly. The generated site files are kept in `.trickfire-docs/` (gitignored) and are managed entirely by the CLI.
 
 ### 5. Push to publish
 

@@ -38,7 +38,7 @@ This opens a browser URL. Log in and select the `trickfirerobotics.com` zone. A 
 cloudflared tunnel create trickfire-docs
 ```
 
-This creates a tunnel and saves a credentials file at `~/.cloudflared/<tunnel-id>.json`. Note the tunnel ID in the output — you'll need it in the next step.
+This creates a tunnel and saves a credentials file at `~/.cloudflared/<tunnel-id>.json`. Note the tunnel ID in the output - you'll need it in the next step.
 
 ### 4. Write the tunnel config
 
@@ -115,7 +115,7 @@ When using a Cloudflare tunnel, nginx only needs to handle plain HTTP on localho
 
 Key points in the nginx config:
 
-- Listens only on `127.0.0.1:80` — not reachable from outside
+- Listens only on `127.0.0.1:80` - not reachable from outside
 - No SSL directives
 - `try_files` for Next.js static export routing (falls back to `<uri>.html`, then `index.html`)
 - Immutable cache headers for hashed JS/CSS assets

@@ -47,18 +47,18 @@ title: Architecture
 
 This repository (`TrickfireRobotics/trickfire-docs`) serves two roles:
 
-1. **npm package** — the `trickfire-docs` CLI consumed via `npx`. It provides `trickfire-docs init`, `trickfire-docs dev`, and `trickfire-docs build`. Member repos never install it as a dependency.
-2. **Fumadocs site** — the actual docs website. A Next.js app at the repo root, whose `scripts/generate-sources.mjs` scans `content/` at build time and wires up one Fumadocs content source per repo before `next build` runs.
+1. **npm package** - the `trickfire-docs` CLI consumed via `npx`. It provides `trickfire-docs init`, `trickfire-docs dev`, and `trickfire-docs build`. Member repos never install it as a dependency.
+2. **Fumadocs site** - the actual docs website. A Next.js app at the repo root, whose `scripts/generate-sources.mjs` scans `content/` at build time and wires up one Fumadocs content source per repo before `next build` runs.
 
 ### Member repos
 
 Any TrickFire project repo. After running `npx trickfire-docs init`, the repo contains:
 
-- `docs/` — markdown files
-- `docs.config.json` — project name, description, and optional sidebar
-- `.github/workflows/docs.yml` — fires on push to `main`, calls the reusable sync workflow
+- `docs/` - markdown files
+- `docs.config.json` - project name, description, and optional sidebar
+- `.github/workflows/docs.yml` - fires on push to `main`, calls the reusable sync workflow
 
-Member repos need no npm dependencies for the docs tooling. `npx trickfire-docs` downloads and runs the CLI on demand. Member repos never need to update their CI workflow — all changes to the sync logic happen in `sync-docs.yml` inside this repo.
+Member repos need no npm dependencies for the docs tooling. `npx trickfire-docs` downloads and runs the CLI on demand. Member repos never need to update their CI workflow - all changes to the sync logic happen in `sync-docs.yml` inside this repo.
 
 ### Debian server
 
@@ -114,4 +114,4 @@ A `cloudflared` daemon on the server opens an outbound tunnel to Cloudflare's ne
 1. A change to the site itself (design system, layout, `src/`) is merged to `main`.
 2. `deploy.yml` runs on the self-hosted runner.
 3. `build.sh` pulls the latest framework code and rebuilds.
-4. `content/` is untouched — it's gitignored and survives the pull.
+4. `content/` is untouched - it's gitignored and survives the pull.

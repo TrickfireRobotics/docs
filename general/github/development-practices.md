@@ -7,7 +7,7 @@ Conventions we prefer to standardize on: branch naming, commit naming, and when 
 
 ## Branch naming
 
-Try to follow these standards — most are adapted from the `dashboard` repo.
+Try to follow these standards - most are adapted from the `dashboard` repo.
 
 | Type    | Pattern                     | Example              |
 | ------- | --------------------------- | -------------------- |
@@ -29,9 +29,9 @@ Follow these commit naming standards. They make it clearer what a commit actuall
 | ---------- | ----------------------------------------------- |
 | `feat`     | New feature or behaviour                        |
 | `fix`      | Bug fix                                         |
-| `chore`    | Maintenance, deps, config — no behaviour change |
+| `chore`    | Maintenance, deps, config - no behaviour change |
 | `docs`     | Documentation only                              |
-| `style`    | Formatting, whitespace — no logic change        |
+| `style`    | Formatting, whitespace - no logic change        |
 | `refactor` | Code restructure with no feature or fix         |
 | `perf`     | Performance improvement                         |
 | `ci`       | CI/CD changes                                   |

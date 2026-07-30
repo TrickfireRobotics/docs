@@ -115,7 +115,7 @@ Something that can break things if ignored.
 :::
 
 :::danger
-Do not do this — data loss or hardware damage possible.
+Do not do this - data loss or hardware damage possible.
 :::
 ```
 
@@ -162,4 +162,4 @@ docs/
     └── faq.md
 ```
 
-For custom ordering, labels, icons, or grouped categories, define `sidebar` explicitly — see [Sidebar Configuration](./sidebar-config).
+For custom ordering, labels, icons, or grouped categories, define `sidebar` explicitly - see [Sidebar Configuration](./sidebar-config).

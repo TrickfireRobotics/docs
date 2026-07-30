@@ -9,7 +9,7 @@ Practices for the different aspects of a repo itself, separate from how you work
 
 Repo names should be short and concise, and as close as possible to what the code inside actually contains. Try to keep names to 3 words or fewer. `ak_series` and `simulations` are good examples.
 
-Repo names should also use lowercase letters — prefer `ak_series` over `AK_Series`.
+Repo names should also use lowercase letters - prefer `ak_series` over `AK_Series`.
 
 ## Repo UX
 
@@ -19,11 +19,11 @@ The `dashboard` repo is a great example of good developer UX. While the codebase
 
 ### Contributing
 
-The dashboard repo has an extensive guide covering contributing and writing code, including branch naming, commit naming, testing, and migrations. When writing code, follow the repo's `CONTRIBUTING.md` file, since different repos may have different practices — information about how to test and write code for that repo will usually be found there.
+The dashboard repo has an extensive guide covering contributing and writing code, including branch naming, commit naming, testing, and migrations. When writing code, follow the repo's `CONTRIBUTING.md` file, since different repos may have different practices - information about how to test and write code for that repo will usually be found there.
 
 ### Workflows
 
-The repo has a number of workflows: obvious ones like linting and formatting, but also testing, deployment to our production server, and dependency updates. These make developing and deploying code easy and consistent — automate as much as you reasonably can.
+The repo has a number of workflows: obvious ones like linting and formatting, but also testing, deployment to our production server, and dependency updates. These make developing and deploying code easy and consistent - automate as much as you reasonably can.
 
 ```
 ├── dependabot.yml

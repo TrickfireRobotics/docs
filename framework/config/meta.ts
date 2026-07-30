@@ -26,12 +26,12 @@ async function writeMeta(dir: string, meta: Record<string, unknown>): Promise<vo
 
 /**
  * Writes Fumadocs `meta.json` files into the project's docs/ directory (and
- * its subfolders) from the config's `sidebar` array — category groups map to
+ * its subfolders) from the config's `sidebar` array - category groups map to
  * subfolders sharing their items' slug prefix, matching how the aggregator
  * site does this in scripts/generate-sources.mjs. Categories render flat and
  * expanded (no accordion), matching the main site's sidebar.
  *
- * A no-op if the project has no explicit `sidebar` — Fumadocs then falls
+ * A no-op if the project has no explicit `sidebar` - Fumadocs then falls
  * back to auto-ordering from the docs/ file tree, same as before.
  */
 export async function generateMetaFiles(config: DocsConfig, docsDir: string): Promise<void> {

@@ -4,7 +4,7 @@ title: Configuration Reference
 
 `docs.config.json` lives in the root of your member repo and is the only configuration file you need.
 
-VS Code (and most editors) autocomplete and validate it automatically using the `$schema` field — no extensions or package installation required.
+VS Code (and most editors) autocomplete and validate it automatically using the `$schema` field - no extensions or package installation required.
 
 ## Full example
 

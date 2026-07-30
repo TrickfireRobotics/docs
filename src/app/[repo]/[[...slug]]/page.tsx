@@ -21,7 +21,7 @@ export default async function Page(props: { params: Promise<{ repo: string; slug
     if (!source) notFound();
     const page = source.getPage(slug) as { data: PageData; url: string } | undefined;
     if (!page) {
-        // Most repos don't have a root "index" doc — bounce bare `/[repo]` to
+        // Most repos don't have a root "index" doc - bounce bare `/[repo]` to
         // the first item in the sidebar instead of 404ing.
         if (!slug || slug.length === 0) {
             const target = firstPageUrl(source.getPageTree().children as never);
@@ -56,7 +56,7 @@ export async function generateStaticParams() {
             .generateParams()
             .map((p: { slug?: string[] }) => ({ repo, slug: p.slug }));
         // Most repos have no root "index" doc, so `generateParams()` never
-        // produces the bare `/[repo]` path — add it explicitly so the redirect
+        // produces the bare `/[repo]` path - add it explicitly so the redirect
         // in the page component actually gets prerendered as a static file
         // instead of 404ing once this is a static export.
         const hasRoot = params.some((p: { slug?: string[] }) => !p.slug || p.slug.length === 0);

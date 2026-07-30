@@ -14,7 +14,7 @@
 }
 
 .dark {
-    /* TrickFire green as the sole interactive accent — not pink, which is
+    /* TrickFire green as the sole interactive accent - not pink, which is
        reserved for sparse highlights (hero gradient, danger states). */
     --color-fd-primary: var(--tf-green);
     --color-fd-primary-foreground: #06210a;
@@ -35,7 +35,7 @@ body {
     font-family: var(--font-sans);
 }
 
-/* Shrink Fumadocs' typography scale — the default reads oversized. */
+/* Shrink Fumadocs' typography scale - the default reads oversized. */
 .prose {
     --tw-prose-size: 0.9;
 }
@@ -47,7 +47,7 @@ body {
 }
 
 /* Give the (always-visible) sidebar the same floating-card look Fumadocs
-   only applies to the collapsed+hover state by default — inset from the
+   only applies to the collapsed+hover state by default - inset from the
    edges, rounded, fully bordered, instead of flush against the viewport
    and content. */
 #nd-sidebar {
@@ -62,7 +62,7 @@ body {
 
 /* Fumadocs' docs-layout grid flanks the sidebar column with a centering
    gutter on wide viewports (> ~1552px, see --fd-layout-width), so the "sidebar"
-   grid area is wider than the actual --fd-sidebar-width panel — leaving a gap
+   grid area is wider than the actual --fd-sidebar-width panel - leaving a gap
    either to its left (default, panel right-aligned via `items-end`) or, once
    pinned left, to its right instead. Drop that flanking column entirely so
    the sidebar area is exactly --fd-sidebar-width wide and butts against main. */

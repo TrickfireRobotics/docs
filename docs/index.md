@@ -2,7 +2,7 @@
 title: TrickFire Docs
 ---
 
-TrickFire Docs is the unified documentation system for TrickFire Robotics. Every project repo publishes its docs here automatically — no manual uploads, no separate doc sites to maintain.
+TrickFire Docs is the unified documentation system for TrickFire Robotics. Every project repo publishes its docs here automatically - no manual uploads, no separate doc sites to maintain.
 
 The live site is at **[docs.trickfirerobotics.com](https://docs.trickfirerobotics.com)**.
 

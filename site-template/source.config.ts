@@ -4,7 +4,7 @@ import { rehypeCodeDefaultOptions, remarkAdmonition } from "fumadocs-core/mdx-pl
 import { transformerDefaultTitle, transformerShellPrompt } from "./src/lib/shiki-transformers";
 
 // `.trickfire-docs/` is always a direct child of the member repo root, so the
-// project's `docs/` folder is always this same relative path — no need to
+// project's `docs/` folder is always this same relative path - no need to
 // generate this file per-project.
 export const docs = defineDocs({
     dir: "../docs",
@@ -15,7 +15,7 @@ export const docs = defineDocs({
 export default defineConfig({
     mdxOptions: {
         // Docusaurus-style `:::tip ... :::` admonitions, used throughout the
-        // scaffold content — renders as Fumadocs' <Callout> automatically.
+        // scaffold content - renders as Fumadocs' <Callout> automatically.
         // Must append (not replace) fumadocs-mdx's own default remark plugins.
         remarkPlugins: (v) => [...v, remarkAdmonition],
         rehypeCodeOptions: {

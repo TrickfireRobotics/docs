@@ -27,7 +27,7 @@ const SITE_TEMPLATE_DIR = path.join(PACKAGE_ROOT, "site-template");
 const FRAMEWORK_PUBLIC_DIR = path.join(PACKAGE_ROOT, "public");
 
 /** Copies the bundled single-project Fumadocs app template into
- * `<projectRoot>/.trickfire-docs/` — always overwritten so it stays in sync
+ * `<projectRoot>/.trickfire-docs/` - always overwritten so it stays in sync
  * with whatever trickfire-docs version generated it. */
 export function copySiteTemplate(trickfireDir: string): void {
     cpSync(SITE_TEMPLATE_DIR, trickfireDir, { recursive: true });
@@ -53,7 +53,7 @@ const _require = createRequire(import.meta.url);
 
 /**
  * Symlinks the generated site's node_modules to trickfire-docs's own
- * node_modules as a single directory — not a per-package symlink farm, which
+ * node_modules as a single directory - not a per-package symlink farm, which
  * confused both Turbopack's workspace-root detection and webpack's tsconfig
  * path-alias resolution. A single directory symlink behaves identically to a
  * real install (pnpm's own .pnpm/ symlinking is unaffected by the extra hop),

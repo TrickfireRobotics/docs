@@ -17,7 +17,7 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
     const { slug } = await props.params;
     const page = source.getPage(slug) as { data: PageData; url: string } | undefined;
     if (!page) {
-        // Most projects have no root "index" doc — bounce `/` to the first
+        // Most projects have no root "index" doc - bounce `/` to the first
         // item in the sidebar instead of 404ing.
         if (!slug || slug.length === 0) {
             const target = firstPageUrl(source.getPageTree().children as never);
@@ -47,7 +47,7 @@ export default async function Page(props: { params: Promise<{ slug?: string[] }>
 export async function generateStaticParams() {
     const params = source.generateParams() as { slug?: string[] }[];
     // No root "index" doc means generateParams() never produces the bare `/`
-    // path — add it explicitly so the redirect above actually gets
+    // path - add it explicitly so the redirect above actually gets
     // prerendered as a static file instead of 404ing in the static export.
     const hasRoot = params.some((p) => !p.slug || p.slug.length === 0);
     if (!hasRoot) params.push({ slug: undefined });

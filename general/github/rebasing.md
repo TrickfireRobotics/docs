@@ -59,7 +59,7 @@ Let's say we only want to change the last `N` commits. Run this:
 git rebase -i HEAD~N
 ```
 
-The terminal will open into your preferred text editor of choice. If it opens something you don't recognize, git is falling back to a default — set yours with `git config --global core.editor "nvim"`.
+The terminal will open into your preferred text editor of choice. If it opens something you don't recognize, git is falling back to a default - set yours with `git config --global core.editor "nvim"`.
 
 ```log
 pick a46c438 # feat: added a constant needed for motors
@@ -99,7 +99,7 @@ pick b592d03 # feat: finalized constant
 # However, if you remove everything, the rebase will be aborted.
 ```
 
-You only edit the command word at the start of each line. Everything after the commit hash is just the subject line for your reference — git ignores it, so don't worry about keeping it tidy. Let's say we want to take all of these commits and squash them into one, and also throw away `1e8fa47` completely.
+You only edit the command word at the start of each line. Everything after the commit hash is just the subject line for your reference - git ignores it, so don't worry about keeping it tidy. Let's say we want to take all of these commits and squash them into one, and also throw away `1e8fa47` completely.
 
 ```log
 pick a46c438 # feat: added a constant needed for motors
@@ -126,16 +126,16 @@ This gives you exactly two commits:
 - the first holds `a46c438` + `7f2b91c`
 - the second holds `c03d5ea` + `b592d03`
 
-`1e8fa47` is discarded outright — it doesn't get squashed into anything. Note that a `drop` sitting between a `pick` and a `squash` doesn't break the group; `b592d03` still melds into `c03d5ea`.
+`1e8fa47` is discarded outright - it doesn't get squashed into anything. Note that a `drop` sitting between a `pick` and a `squash` doesn't break the group; `b592d03` still melds into `c03d5ea`.
 
 :::note
-The first line can never be a `squash` or `fixup` — there has to be a `pick` above it to meld into. If you get this wrong, git stops with `error: cannot 'squash' without a previous commit`, and you can fix it with `git rebase --edit-todo`.
+The first line can never be a `squash` or `fixup` - there has to be a `pick` above it to meld into. If you get this wrong, git stops with `error: cannot 'squash' without a previous commit`, and you can fix it with `git rebase --edit-todo`.
 
 :::
 
 ### `squash` vs `fixup`
 
-Both combine commits — they only differ in what happens to the commit message.
+Both combine commits - they only differ in what happens to the commit message.
 
 | Command  | What it does to the message                                              |
 | -------- | ------------------------------------------------------------------------ |
@@ -179,7 +179,7 @@ git branch -d feat/motor-interface-rebase
 ```
 
 :::tip
-Alternatively, just open the pull request from `feat/motor-interface-rebase` and leave the original branch alone entirely — this is the safest option if other people are branched off it.
+Alternatively, just open the pull request from `feat/motor-interface-rebase` and leave the original branch alone entirely - this is the safest option if other people are branched off it.
 
 :::
 
@@ -206,7 +206,7 @@ git rebase --skip
 git rebase --abort
 ```
 
-`git rebase --abort` is always safe — it returns your branch to the state it was in before you started. If you're unsure what's going on, abort and start over rather than pushing something half finished.
+`git rebase --abort` is always safe - it returns your branch to the state it was in before you started. If you're unsure what's going on, abort and start over rather than pushing something half finished.
 
 ## Pushing after a rebase
 

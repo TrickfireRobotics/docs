@@ -39,7 +39,7 @@ interface TreeNode {
     children?: TreeNode[];
 }
 
-/** First leaf page in page-tree order — used to redirect bare `/[repo]` URLs
+/** First leaf page in page-tree order - used to redirect bare `/[repo]` URLs
  * (most repos don't have a root "index" doc, only a first sidebar item). */
 export function firstPageUrl(nodes: TreeNode[]): string | undefined {
     for (const node of nodes) {

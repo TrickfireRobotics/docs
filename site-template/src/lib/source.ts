@@ -15,7 +15,7 @@ interface TreeNode {
     children?: TreeNode[];
 }
 
-/** First leaf page in page-tree order — used to redirect `/` to the first
+/** First leaf page in page-tree order - used to redirect `/` to the first
  * sidebar entry when the project has no root "index" doc (the common case). */
 export function firstPageUrl(nodes: TreeNode[]): string | undefined {
     for (const node of nodes) {

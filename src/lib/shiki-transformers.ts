@@ -43,7 +43,7 @@ export function transformerDefaultTitle(): ShikiTransformer {
 
 const SHELL_LANGS = new Set(["bash", "sh", "shell", "shellscript", "zsh", "env"]);
 
-/** Prefix shell command lines with a dimmed `$ ` — comments and blank lines
+/** Prefix shell command lines with a dimmed `$ ` - comments and blank lines
  * (and anything already indented, e.g. wrapped continuations) are left alone. */
 export function transformerShellPrompt(): ShikiTransformer {
     return {

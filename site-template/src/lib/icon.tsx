@@ -13,7 +13,7 @@ export function resolveIcon(name?: string | null, className = "size-4"): ReactNo
 
 const DEFAULT_PROJECT_ICON = "FolderGit2";
 
-/** Same as resolveIcon, but project cards/tabs always show *something* — a
+/** Same as resolveIcon, but project cards/tabs always show *something* - a
  * project with no icon set (e.g. a member repo that hasn't added one yet)
  * falls back to a generic icon instead of leaving a blank slot. */
 export function resolveProjectIcon(name?: string | null, className = "size-4"): ReactNode {

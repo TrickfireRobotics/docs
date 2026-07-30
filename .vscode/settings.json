@@ -30,6 +30,9 @@
     },
     "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
     "files.exclude": {
-        "**/node_modules": true
+        "**/node_modules": true,
+        ".husky/_/": true,
+        ".source": true,
+        ".next/": true
     }
 }
