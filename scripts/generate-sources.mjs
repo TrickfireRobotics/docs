@@ -10,7 +10,6 @@ import fs from "node:fs";
 import path from "node:path";
 
 const ROOT = process.cwd();
-const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
 const FRAMEWORK_REPO = {
     id: "trickfire-docs",
@@ -71,7 +70,6 @@ const repos = [
     FRAMEWORK_REPO,
     ...(generalRepo ? [generalRepo] : []),
     ...reposFromDir(path.join(ROOT, "content")),
-    ...(IS_PRODUCTION ? [] : reposFromDir(path.join(ROOT, "dev-fixtures"))),
 ];
 
 // --- content-sources.generated.ts + .map.json -------------------------------

@@ -18,10 +18,8 @@ npm-debug.log*
 .test-repo/
 .framework-test/
 
-#content
+# build
 .trickfire-docs/
-content/*
-!content/.gitkeep
 
 # Fumadocs site (generated)
 .source/
@@ -30,9 +28,8 @@ out/
 content-sources.generated.ts
 content-sources.map.json
 repos.generated.json
+content/**/meta.json
 docs/**/meta.json
-general/**/meta.json
-dev-fixtures/test-subdoc/**/meta.json
 
 # Editor
 .vscode/*
@@ -43,5 +40,6 @@ dev-fixtures/test-subdoc/**/meta.json
 *.env
 
 # dev doc links
-dev-fixtures/*
-!dev-fixtures/test-subdoc/
+content/*
+!content/general/
+!content/test-subdoc/

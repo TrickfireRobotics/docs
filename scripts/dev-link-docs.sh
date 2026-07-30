@@ -4,7 +4,7 @@ set -e
 
 PROJECT_ROOT=$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")
 PROJECT_DIR=$1
-LINK_PATH=$PROJECT_ROOT/dev-fixtures/$(basename $PROJECT_DIR)
+LINK_PATH=$PROJECT_ROOT/content/$(basename $PROJECT_DIR)
 
 if [ -z $PROJECT_DIR ]; then
     echo "Usage: dev-link-docs <project_path>"
