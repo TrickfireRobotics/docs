@@ -34,11 +34,11 @@ const SCAFFOLD_FILES: Array<[string, string]> = [
 ];
 
 const SCAFFOLD_DOCS: Array<[string, string]> = [
-    ["docs/getting-started.md", "docs/getting-started.md"],
-    ["docs/guides/writing-content.md", "docs/guides/writing-content.md"],
-    ["docs/guides/organizing-sidebar.md", "docs/guides/organizing-sidebar.md"],
-    ["docs/reference/configuration.md", "docs/reference/configuration.md"],
-    ["docs/reference/faq.md", "docs/reference/faq.md"],
+    ["docs/getting-started.mdx", "docs/getting-started.mdx"],
+    ["docs/guides/writing-content.mdx", "docs/guides/writing-content.mdx"],
+    ["docs/guides/organizing-sidebar.mdx", "docs/guides/organizing-sidebar.mdx"],
+    ["docs/reference/configuration.mdx", "docs/reference/configuration.mdx"],
+    ["docs/reference/faq.mdx", "docs/reference/faq.mdx"],
 ];
 
 export async function runInit(projectRoot: string, options: InitOptions = {}): Promise<void> {
