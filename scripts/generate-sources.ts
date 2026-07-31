@@ -80,6 +80,22 @@ const repos: Repo[] = [
     ...reposFromDir(path.join(ROOT, "content")),
 ];
 
+// --- repo-order.json - curated homepage / switcher ordering -----------------
+//
+// Framework-side only (not part of a member repo's docs.config.json), so
+// individual repos can't reorder themselves relative to each other. Maps
+// repo id -> sort position, lowest first. Repos not listed here keep their
+// default discovery order (framework repo, then alphabetical) and are placed
+// after any repo that is listed. Array.prototype.sort is stable, so ties
+// preserve that order.
+
+const orderPath = path.join(ROOT, "repo-order.json");
+const repoOrder: Record<string, number> = fs.existsSync(orderPath)
+    ? (JSON.parse(fs.readFileSync(orderPath, "utf-8")) as Record<string, number>)
+    : {};
+
+repos.sort((a, b) => (repoOrder[a.id] ?? Infinity) - (repoOrder[b.id] ?? Infinity));
+
 // --- content-sources.generated.ts + .map.json -------------------------------
 //
 // Docs and meta.json live in separate directory trees - meta.json is
