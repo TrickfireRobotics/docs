@@ -1,3 +1,9 @@
+## [2.1.4](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.1.3...trickfire-docs-v2.1.4) (2026-07-31)
+
+### Bug Fixes
+
+- refactored scaffold to be simplier ([196f21f](https://github.com/TrickfireRobotics/docs/commit/196f21f0debde102ea9cbec75ed9791f187a5eb5))
+
 ## [2.1.3](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.1.2...trickfire-docs-v2.1.3) (2026-07-31)
 
 ### Bug Fixes
