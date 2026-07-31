@@ -12,9 +12,7 @@
     "types": "./dist-cli/index.d.ts",
     "files": [
         "dist-cli",
-        "scaffold",
-        "site",
-        "public"
+        "scaffold"
     ],
     "scripts": {
         "site:dev": "tsx scripts/generate-sources.ts && next dev --webpack -p 3100",

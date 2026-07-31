@@ -4,7 +4,7 @@ description: Write your first page and preview it locally.
 slug: /
 ---
 
-This site is built with [`trickfire-docs`](https://github.com/TrickfireRobotics/trickfire-docs). Pages live in the `docs/` folder as Markdown (or MDX) files - add, edit, or delete files there and the sidebar/site rebuild automatically.
+This site is built with [`trickfire-docs`](https://github.com/TrickfireRobotics/docs). Pages live in the `docs/` folder as Markdown (or MDX) files - add, edit, or delete files there and the sidebar/site rebuild automatically.
 
 ## Preview locally
 

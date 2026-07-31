@@ -7,8 +7,11 @@ This guide is for TrickFire members who want to add documentation to an existing
 ## Prerequisites
 
 - Node.js 20+
+- [pnpm](https://pnpm.io/installation) - `trickfire-docs dev`/`build` use it to install the docs
+  site's dependencies locally (with the exact patches production builds with)
 - A TrickFire project repo with write access
-- Access to `TrickfireRobotics/trickfire-docs` (for the reusable CI workflow)
+- Access to `TrickfireRobotics/docs` (for the reusable CI workflow, and for `dev`/`build` to clone
+  a local preview cache - it's a public repo, no auth needed)
 
 No package installation required - `trickfire-docs` is run via `npx` and never needs to be added to your project's dependencies.
 
@@ -72,7 +75,10 @@ Minimum viable docs:
 npx trickfire-docs dev
 ```
 
-This starts a local dev server for your project's docs only. Hot-reload is enabled - edits to `docs/` appear instantly. The generated site files are kept in `.trickfire-docs/` (gitignored) and are managed entirely by the CLI.
+This starts a local dev server previewing your project's docs alongside General (org-wide docs)
+and the TrickFire Docs framework docs - the same view docs.trickfirerobotics.com renders in
+production. Hot-reload is enabled - edits to `docs/` appear instantly. Nothing is generated in
+your project; the CLI manages a shared cache at `~/.cache/trickfire-docs/` instead.
 
 ### 5. Push to publish
 
@@ -103,7 +109,7 @@ By default, your docs are published at `/<repo-name>`. If you want a different p
 # .github/workflows/docs.yml
 jobs:
     sync:
-        uses: TrickfireRobotics/trickfire-docs/.github/workflows/sync-docs.yml@main
+        uses: TrickfireRobotics/docs/.github/workflows/sync-docs.yml@main
         with:
             repo-name: my-custom-slug
         secrets: inherit
