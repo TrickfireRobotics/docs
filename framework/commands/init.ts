@@ -35,10 +35,6 @@ const SCAFFOLD_FILES: Array<[string, string]> = [
 
 const SCAFFOLD_DOCS: Array<[string, string]> = [
     ["docs/getting-started.mdx", "docs/getting-started.mdx"],
-    ["docs/guides/writing-content.mdx", "docs/guides/writing-content.mdx"],
-    ["docs/guides/organizing-sidebar.mdx", "docs/guides/organizing-sidebar.mdx"],
-    ["docs/reference/configuration.mdx", "docs/reference/configuration.mdx"],
-    ["docs/reference/faq.mdx", "docs/reference/faq.mdx"],
 ];
 
 export async function runInit(projectRoot: string, options: InitOptions = {}): Promise<void> {
