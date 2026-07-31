@@ -37,7 +37,3 @@ repos.generated.json
 
 # Env
 *.env
-
-# dev doc links
-content/*
-!content/general/
