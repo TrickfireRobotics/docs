@@ -8,14 +8,11 @@
 }
 
 :root {
-    /* Club colors */
     --tf-green: #00fe00;
     --tf-pink: #e93cac;
 }
 
 .dark {
-    /* TrickFire green as the sole interactive accent - not pink, which is
-       reserved for sparse highlights (hero gradient, danger states). */
     --color-fd-primary: var(--tf-green);
     --color-fd-primary-foreground: #06210a;
     --color-fd-ring: var(--tf-green);
@@ -35,21 +32,15 @@ body {
     font-family: var(--font-sans);
 }
 
-/* Shrink Fumadocs' typography scale - the default reads oversized. */
 .prose {
     --tw-prose-size: 0.9;
 }
 
-/* `$ ` prompt prefix injected by transformerShellPrompt (src/lib/shiki-transformers.ts) */
 .tf-prompt {
     color: var(--color-fd-muted-foreground);
     user-select: none;
 }
 
-/* Give the (always-visible) sidebar the same floating-card look Fumadocs
-   only applies to the collapsed+hover state by default - inset from the
-   edges, rounded, fully bordered, instead of flush against the viewport
-   and content. */
 #nd-sidebar {
     inset-inline-start: 0.625rem;
     inset-block: 0.625rem;
@@ -60,23 +51,18 @@ body {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
-/* Fumadocs' docs-layout grid flanks the sidebar column with a centering
-   gutter on wide viewports (> ~1552px, see --fd-layout-width), so the "sidebar"
-   grid area is wider than the actual --fd-sidebar-width panel - leaving a gap
-   either to its left (default, panel right-aligned via `items-end`) or, once
-   pinned left, to its right instead. Drop that flanking column entirely so
-   the sidebar area is exactly --fd-sidebar-width wide and butts against main. */
 #nd-docs-layout {
     grid-template-columns:
         var(--fd-sidebar-col)
+        minmax(0, 1fr)
         minmax(
             0,
             calc(var(--fd-layout-width, 97rem) - var(--fd-sidebar-width) - var(--fd-toc-width))
         )
         var(--fd-toc-width)
-        minmax(min-content, 1fr) !important;
+        minmax(0, 1fr) !important;
     grid-template-areas:
-        "sidebar header toc toc"
-        "sidebar toc-popover toc toc"
-        "sidebar main toc toc" !important;
+        "sidebar . header toc ."
+        "sidebar . toc-popover toc ."
+        "sidebar . main toc ." !important;
 }
