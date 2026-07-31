@@ -1,3 +1,9 @@
+## [2.1.2](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.1.1...trickfire-docs-v2.1.2) (2026-07-31)
+
+### Bug Fixes
+
+- stop gitignoring docs/**/meta.json in scaffolded repos ([93fce40](https://github.com/TrickfireRobotics/docs/commit/93fce4006153c8700de57ef6845bf932bc3c4a70))
+
 ## [2.1.1](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.1.0...trickfire-docs-v2.1.1) (2026-07-31)
 
 ### Bug Fixes
