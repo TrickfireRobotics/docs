@@ -1,5 +1,5 @@
 {
     "$schema": "https://docs.trickfirerobotics.com/docs.config.schema.json",
     "name": "My Project",
-    "description": "One-line description of what this project does."
+    "description": "One-line description of what this project does"
 }
