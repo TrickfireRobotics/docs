@@ -5,4 +5,3 @@ dist-cli/
 out/
 coverage/
 pnpm-lock.yaml
-content/
