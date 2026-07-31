@@ -1,3 +1,9 @@
+## [2.1.5](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.1.4...trickfire-docs-v2.1.5) (2026-07-31)
+
+### Bug Fixes
+
+- framework init buf=g ([1f6329f](https://github.com/TrickfireRobotics/docs/commit/1f6329f3e6a84ed85182aa5d9abf224f7b579e69))
+
 ## [2.1.4](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.1.3...trickfire-docs-v2.1.4) (2026-07-31)
 
 ### Bug Fixes
