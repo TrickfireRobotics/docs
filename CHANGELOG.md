@@ -1,3 +1,9 @@
+## [2.1.1](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.1.0...trickfire-docs-v2.1.1) (2026-07-31)
+
+### Bug Fixes
+
+- wipe and re-clone the cache dir if .git is missing instead of erroring ([da067ca](https://github.com/TrickfireRobotics/docs/commit/da067cabfa4257d29f1520f257482a04867b417e))
+
 # [2.1.0](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.0.0...trickfire-docs-v2.1.0) (2026-07-31)
 
 ### Bug Fixes
