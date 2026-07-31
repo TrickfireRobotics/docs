@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.0.0...trickfire-docs-v2.1.0) (2026-07-31)
+
+### Bug Fixes
+
+- skip postinstall's site-generation step for consumer installs ([4849c02](https://github.com/TrickfireRobotics/docs/commit/4849c0214975663a4fab7eacaf0fae163949992c))
+- standardize dev docs ([7aeb3bb](https://github.com/TrickfireRobotics/docs/commit/7aeb3bbb4e2dbe2ca6dd0e96fd85549edfaba0c1))
+
 # [2.0.0](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v1.9.0...trickfire-docs-v2.0.0) (2026-07-31)
 
 - feat!: run trickfire-docs dev/build from a shared cache clone instead of a bundled site template ([3ae6c3b](https://github.com/TrickfireRobotics/docs/commit/3ae6c3b03d06ef0e3093df6679d1e409926e8539))
