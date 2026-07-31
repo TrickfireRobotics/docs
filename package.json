@@ -30,7 +30,7 @@
         "typecheck": "tsc --noEmit -p tsconfig.cli.json",
         "check": "pnpm lint && pnpm format:check && pnpm typecheck && pnpm site:typecheck",
         "prepare": "husky",
-        "postinstall": "tsx scripts/generate-sources.ts && fumadocs-mdx"
+        "postinstall": "node -e \"require('node:fs').existsSync('scripts/generate-sources.ts')&&require('node:child_process').execSync('tsx scripts/generate-sources.ts && fumadocs-mdx',{stdio:'inherit'})\""
     },
     "lint-staged": {
         "*.{ts,tsx,js,jsx,mjs,cjs}": [
