@@ -8,7 +8,7 @@ Docs are written in Markdown (MDX). A few extras beyond standard Markdown are co
 
 Every file can have a YAML frontmatter block at the top:
 
-```md
+```mdx
 ---
 title: My Page Title
 description: A short summary shown in search results.
@@ -26,7 +26,7 @@ Page order comes from `docs.config.json`'s `sidebar` (see [Sidebar Configuration
 
 Use `#` for the page title (H1) and `##`/`###` for sections. Only one H1 per page.
 
-```md
+```mdx
 # Page Title
 
 ## Section
@@ -38,16 +38,16 @@ Use `#` for the page title (H1) and `##`/`###` for sections. Only one H1 per pag
 
 **To another doc in your project:**
 
-```md
-[Getting Started](./getting-started.md)
-[See the FAQ](./reference/faq.md)
+```mdx
+[Getting Started](./getting-started.mdx)
+[See the FAQ](./reference/faq.mdx)
 ```
 
-Use relative paths including the `.md` extension - the link resolver matches on file path, not URL slug.
+Use relative paths including the `.mdx` extension - the link resolver matches on file path, not URL slug.
 
 **To an external URL:**
 
-```md
+```mdx
 [GitHub](https://github.com/TrickfireRobotics)
 ```
 
@@ -55,7 +55,7 @@ Use relative paths including the `.md` extension - the link resolver matches on 
 
 Place images in `docs/assets/` and reference them relatively:
 
-```md
+```mdx
 ![Wiring diagram](./assets/wiring.png)
 ```
 
@@ -65,7 +65,7 @@ SVG files work the same way.
 
 Fenced code blocks with a language tag get syntax highlighting:
 
-````md
+````mdx
 ```python
 import can
 
@@ -79,7 +79,7 @@ Supported language tags include `python`, `typescript`, `bash`, `yaml`, `json`, 
 
 **Show a filename:**
 
-````md
+````mdx
 ```python title="examples/send_message.py"
 # ...
 ```
@@ -87,7 +87,7 @@ Supported language tags include `python`, `typescript`, `bash`, `yaml`, `json`, 
 
 **Highlight specific lines**, using a `[!code highlight]` comment on the line:
 
-````md
+````mdx
 ```python
 import can
 
@@ -99,31 +99,31 @@ bus.send(msg) # [!code highlight]
 
 ## Admonitions
 
-Callout boxes for notes, warnings, and tips:
+Callout boxes for notes, warnings, and tips. `Callout` is available globally - no import needed:
 
-```md
-:::note
-Extra context that's useful but not critical.
-:::
+```mdx
+<Callout type="info" title="Note">
+    Extra context that's useful but not critical.
+</Callout>
 
-:::tip
-A recommended shortcut or best practice.
-:::
+<Callout type="idea" title="Tip">
+    A recommended shortcut or best practice.
+</Callout>
 
-:::warning
-Something that can break things if ignored.
-:::
+<Callout type="warning" title="Warning">
+    Something that can break things if ignored.
+</Callout>
 
-:::danger
-Do not do this - data loss or hardware damage possible.
-:::
+<Callout type="error" title="Danger">
+    Do not do this - data loss or hardware damage possible.
+</Callout>
 ```
 
-Leave a blank line before and after the `:::` fences, or the block won't render as a callout.
+`type` is one of `info`, `idea`, `warning`, `error`, or `success`. `title` is optional.
 
 ## Tables
 
-```md
+```mdx
 | Column A | Column B | Column C |
 | -------- | -------- | -------- |
 | Row 1    | Value    | Value    |
@@ -153,13 +153,13 @@ If `docs.config.json` doesn't define a `sidebar`, pages are listed alphabeticall
 
 ```
 docs/
-├── getting-started.md
+├── getting-started.mdx
 ├── guides/
-│   ├── installation.md
-│   └── configuration.md
+│   ├── installation.mdx
+│   └── configuration.mdx
 └── reference/
-    ├── api.md
-    └── faq.md
+    ├── api.mdx
+    └── faq.mdx
 ```
 
 For custom ordering, labels, icons, or grouped categories, define `sidebar` explicitly - see [Sidebar Configuration](./sidebar-config.mdx).
