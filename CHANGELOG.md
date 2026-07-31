@@ -1,3 +1,9 @@
+## [2.1.3](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.1.2...trickfire-docs-v2.1.3) (2026-07-31)
+
+### Bug Fixes
+
+- point trickfire-docs init at the renamed scaffold .mdx files ([9a43de4](https://github.com/TrickfireRobotics/docs/commit/9a43de4d8bd4852f5687b026d27c6e01a9b3e9b3))
+
 ## [2.1.2](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.1.1...trickfire-docs-v2.1.2) (2026-07-31)
 
 ### Bug Fixes
