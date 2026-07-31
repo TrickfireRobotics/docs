@@ -50,9 +50,15 @@ export async function ensurePnpm(): Promise<void> {
 /** Clones TrickfireRobotics/docs on first use, otherwise resets to
  * origin/main - always latest, matching production, which pulls the same way
  * (scripts/build.sh). `reset --hard` only touches tracked files, so it never
- * disturbs the content/ symlinks managed by linkMemberProject. */
+ * disturbs the content/ symlinks managed by linkMemberProject.
+ *
+ * `dir` is a cache: nothing outside this module ever writes there, so if it
+ * exists without a `.git` (an interrupted clone, a killed process, anything
+ * left it half-built) it's wiped and re-cloned rather than treated as an
+ * error - there's nothing in it worth preserving. */
 export async function ensureRepoCache(dir: string): Promise<void> {
     if (!existsSync(path.join(dir, ".git"))) {
+        await fs.rm(dir, { recursive: true, force: true });
         await fs.mkdir(path.dirname(dir), { recursive: true });
         await run("git", ["clone", "--depth", "1", REPO_URL, dir], { cwd: path.dirname(dir) });
         return;
