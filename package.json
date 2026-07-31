@@ -33,7 +33,7 @@
         "postinstall": "node -e \"require('node:fs').existsSync('scripts/generate-sources.ts')&&require('node:child_process').execSync('tsx scripts/generate-sources.ts && fumadocs-mdx',{stdio:'inherit'})\""
     },
     "lint-staged": {
-        "*.{ts,tsx,js,jsx,mjs,cjs}": [
+        "*.{ts,tsx,js,jsx,mjs,cjs,md,mdx}": [
             "eslint --fix",
             "prettier --write"
         ],

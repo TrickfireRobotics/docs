@@ -30,6 +30,7 @@ These are pretty useless commit messages and can confuse anyone looking at the h
     If someone branched off your branch, their work is now based on commits that aren't in your history anymore. Nothing of theirs is destroyed, but they'll get duplicated commits and messy conflicts the next time they merge.
 
     Reach out to anyone working off your branch and make sure they aren't mid-change before proceeding.
+
 </Callout>
 
 ## Rebasing a few commits
@@ -127,7 +128,9 @@ This gives you exactly two commits:
 `1e8fa47` is discarded outright - it doesn't get squashed into anything. Note that a `drop` sitting between a `pick` and a `squash` doesn't break the group; `b592d03` still melds into `c03d5ea`.
 
 <Callout type="info" title="Note">
-    The first line can never be a `squash` or `fixup` - there has to be a `pick` above it to meld into. If you get this wrong, git stops with `error: cannot 'squash' without a previous commit`, and you can fix it with `git rebase --edit-todo`.
+    The first line can never be a `squash` or `fixup` - there has to be a `pick` above it to meld
+    into. If you get this wrong, git stops with `error: cannot 'squash' without a previous commit`,
+    and you can fix it with `git rebase --edit-todo`.
 </Callout>
 
 ### `squash` vs `fixup`
@@ -140,7 +143,9 @@ Both combine commits - they only differ in what happens to the commit message.
 | `fixup`  | Silently keeps only the message of the `pick` it melds into              |
 
 <Callout type="idea" title="Tip">
-    Since the whole point here is usually to get rid of messages like "changed constant again", `fixup` is often what you actually want. Use `squash` when you want to write a proper combined message by hand.
+    Since the whole point here is usually to get rid of messages like "changed constant again",
+    `fixup` is often what you actually want. Use `squash` when you want to write a proper combined
+    message by hand.
 </Callout>
 
 You can also use `reword` to fix a single commit message without combining anything.
@@ -175,7 +180,8 @@ git branch -d feat/motor-interface-rebase
 ```
 
 <Callout type="idea" title="Tip">
-    Alternatively, just open the pull request from `feat/motor-interface-rebase` and leave the original branch alone entirely - this is the safest option if other people are branched off it.
+    Alternatively, just open the pull request from `feat/motor-interface-rebase` and leave the
+    original branch alone entirely - this is the safest option if other people are branched off it.
 </Callout>
 
 ## When the rebase stops partway
@@ -215,6 +221,7 @@ git push --force-with-lease
     Use `--force-with-lease`, not `--force`. `--force-with-lease` refuses to push if someone else has pushed to that branch since you last fetched, so you can't silently wipe out a teammate's work. Plain `--force` will happily destroy it.
 
     Never rebase or force push `main`, or any branch that other people have open pull requests against.
+
 </Callout>
 
 ## If you make a mistake
