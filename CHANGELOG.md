@@ -1,3 +1,19 @@
+# [2.0.0](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v1.9.0...trickfire-docs-v2.0.0) (2026-07-31)
+
+- feat!: run trickfire-docs dev/build from a shared cache clone instead of a bundled site template ([3ae6c3b](https://github.com/TrickfireRobotics/docs/commit/3ae6c3b03d06ef0e3093df6679d1e409926e8539))
+
+### Bug Fixes
+
+- site not centered ([035ed1a](https://github.com/TrickfireRobotics/docs/commit/035ed1a1e410f379fcf6681eaab9fca1945328a4))
+
+### BREAKING CHANGES
+
+- trickfire-docs dev/build now require pnpm on PATH (used
+  to install the cache clone's dependencies, including the fumadocs-ui
+  patch plain npm can't apply) and no longer preview only the member's own
+  project - local preview now also shows General and the framework's own
+  docs, matching what docs.trickfirerobotics.com actually renders.
+
 # [1.9.0](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v1.8.0...trickfire-docs-v1.9.0) (2026-07-30)
 
 ### Bug Fixes
