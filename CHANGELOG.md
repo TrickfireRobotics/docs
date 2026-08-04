@@ -1,3 +1,14 @@
+# [2.2.0](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.1.5...trickfire-docs-v2.2.0) (2026-08-04)
+
+### Bug Fixes
+
+- added meta ([9694ce3](https://github.com/TrickfireRobotics/docs/commit/9694ce35f27b979ba470f2139f75bc2e732118f1))
+- redirect trailing-slash repo URLs instead of falling through to home page ([266d3ee](https://github.com/TrickfireRobotics/docs/commit/266d3ee5ef2a5648fec13c6a8c74ba2f54df8300))
+
+### Features
+
+- repo order ([afd4e4e](https://github.com/TrickfireRobotics/docs/commit/afd4e4eda52d2ca6b543d34ee34a6c3e538bb0fb))
+
 ## [2.1.5](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.1.4...trickfire-docs-v2.1.5) (2026-07-31)
 
 ### Bug Fixes
