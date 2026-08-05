@@ -2,13 +2,13 @@
 .DS_Store
 ._*
 
-# Node
+# node
 node_modules/
 
-# Test coverage
+# tests coverage
 coverage/
 
-# CLI framework
+# cli
 dist-cli/
 *.tsbuildinfo
 **/*.tgz
@@ -16,12 +16,12 @@ npm-debug.log*
 .pnpm-debug.log*
 .pnpm-store/
 .test-repo/
-.framework-test/
+.cli-test/
 
 # build
 .trickfire-docs/
 
-# Fumadocs site (generated)
+# fumadocs site
 .source/
 .next/
 out/
@@ -30,10 +30,10 @@ content-sources.map.json
 repos.generated.json
 .meta/
 
-# Editor
+# editor
 .vscode/*
 !.vscode/settings.json
 !.vscode/extensions.json
 
-# Env
+# env
 *.env

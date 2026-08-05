@@ -133,7 +133,7 @@ async function ensureSymlink(linkPath: string, target: string): Promise<void> {
  * Only ever one linked project lives in the cache at a time - any symlinked
  * project from a previous `dev`/`build` run for a *different* repo on this
  * machine is removed first, so content/ never accumulates stale projects.
- * `general` (tracked, always shown alongside the framework's own docs) is
+ * `general` (tracked, always shown alongside the cli's own docs) is
  * never touched.
  */
 export async function linkMemberProject(cacheDir: string, projectRoot: string): Promise<void> {

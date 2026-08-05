@@ -16,7 +16,7 @@ export async function runDev(projectRoot: string, port = 3000): Promise<void> {
     await log.step("checking pnpm", () => ensurePnpm());
 
     const cache = cacheDir();
-    await log.step("syncing docs framework repo", () => ensureRepoCache(cache));
+    await log.step("syncing docs cli repo", () => ensureRepoCache(cache));
     await log.step("linking project", () => linkMemberProject(cache, projectRoot));
     await log.step("installing dependencies", () => installCacheDeps(cache));
     await log.step("generating content sources", () =>

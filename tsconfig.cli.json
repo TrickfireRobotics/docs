@@ -8,5 +8,5 @@
         "outDir": "dist-cli",
         "types": ["node"]
     },
-    "include": ["framework"]
+    "include": ["cli"]
 }

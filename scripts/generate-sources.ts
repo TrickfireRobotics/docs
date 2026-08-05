@@ -8,8 +8,8 @@
 // script writes those literal exports to content-sources.generated.ts first.
 import fs from "node:fs";
 import path from "node:path";
-import type { DocsConfig, SidebarItem } from "../framework/config/schema.js";
-import { log } from "../framework/logger.js";
+import type { DocsConfig, SidebarItem } from "../cli/config/schema.js";
+import { log } from "../cli/logger.js";
 
 const ROOT = process.cwd();
 
@@ -67,8 +67,8 @@ function reposFromDir(baseDir: string): Repo[] {
 
 // This repo's own docs follow the exact same docs.config.json + docs/
 // convention as every member repo - see docs.config.json at the repo root.
-const frameworkRepo = buildRepo(ROOT, "trickfire-docs");
-if (!frameworkRepo) {
+const cliRepo = buildRepo(ROOT, "trickfire-docs");
+if (!cliRepo) {
     throw new Error("[generate-sources] missing or invalid docs.config.json at repo root");
 }
 
@@ -76,17 +76,17 @@ const generalDir = path.join(ROOT, "general");
 const generalRepo = isDir(generalDir) ? buildRepo(generalDir, "general") : null;
 
 const repos: Repo[] = [
-    frameworkRepo,
+    cliRepo,
     ...(generalRepo ? [generalRepo] : []),
     ...reposFromDir(path.join(ROOT, "content")),
 ];
 
 // --- repo-order.json - curated homepage / switcher ordering -----------------
 //
-// Framework-side only (not part of a member repo's docs.config.json), so
+// cli-side only (not part of a member repo's docs.config.json), so
 // individual repos can't reorder themselves relative to each other. Maps
 // repo id -> sort position, lowest first. Repos not listed here keep their
-// default discovery order (framework repo, then alphabetical) and are placed
+// default discovery order (cli repo, then alphabetical) and are placed
 // after any repo that is listed. Array.prototype.sort is stable, so ties
 // preserve that order.
 

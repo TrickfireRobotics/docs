@@ -1,8 +1,5 @@
-// `pnpm site:dev` - branded wrapper so the framework's own maintainer dev
-// loop looks like `trickfire-docs dev` (framework/commands/dev.ts) rather
-// than a raw `tsx ... && next dev` shell chain.
-import { log, wasInterrupted } from "../framework/logger.js";
-import { run } from "../framework/utils/repo-cache.js";
+import { log, wasInterrupted } from "../cli/logger.js";
+import { run } from "../cli/utils/repo-cache.js";
 
 const port = process.argv[2] ?? "3100";
 

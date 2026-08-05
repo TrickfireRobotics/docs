@@ -7,7 +7,7 @@ title: Architecture
 `trickfire-docs` (`TrickfireRobotics/docs`) has two jobs that share one
 codebase:
 
-1. **A CLI framework** (`trickfire-docs init|dev|build`), published to npm and
+1. **CLI** (`trickfire-docs init|dev|build`), published to npm and
    run via `npx` from any member repo. It scaffolds a `docs/` folder, then
    previews that repo's docs locally.
 2. **The aggregator site** - the actual `docs.trickfirerobotics.com` website.
@@ -28,7 +28,7 @@ docs) and this repo's own framework docs, matching what's actually deployed.
 
 ```
 trickfire-docs/
-├── framework/              CLI source (dev|build|init) - published as the npm package
+├── cli/              CLI source (dev|build|init) - published as the npm package
 │   ├── cli.ts              entry point, dispatches to commands/
 │   ├── commands/           dev.ts, build.ts, init.ts
 │   ├── config/             docs.config.json schema, loading
@@ -57,20 +57,20 @@ member's local `trickfire-docs dev`/`build` preview, which now runs the exact
 same app) looks or behaves, edit `src/`/`app/` at the repo root - there's only
 one Fumadocs app to keep in sync with. If you're changing CLI behavior
 (`init`/`dev`/`build`, `docs.config.json` schema, how the cache clone is
-managed), edit `framework/`.
+managed), edit `cli/`.
 
 ## Components
 
-### `framework/` - the CLI
+### `cli/` - the CLI
 
 Published as the `trickfire-docs` npm package (`bin: trickfire-docs`). Member
 repos consume it via `npx trickfire-docs <command>` and never install it as a
 dependency.
 
-- **`init`** (`framework/commands/init.ts`) - copies `scaffold/docs.config.json`,
+- **`init`** (`cli/commands/init.ts`) - copies `scaffold/docs.config.json`,
   `scaffold/docs/`, and a GitHub Actions workflow into the target repo, and
   appends `dist/`, `docs/**/meta.json` to its `.gitignore`.
-- **`dev`** / **`build`** (`framework/commands/dev.ts` / `build.ts`) - both:
+- **`dev`** / **`build`** (`cli/commands/dev.ts` / `build.ts`) - both:
     1. Verify `pnpm` is on `PATH` (`ensurePnpm`) - required because the cache
        clone's `pnpm install` applies the `patchedDependencies` fumadocs-ui
        fix (see "Patching dependencies" below); plain `npm` can't.
@@ -92,8 +92,8 @@ dependency.
        Next's dev server insist on `typescript` being present, so it doesn't
        actually save anything.
     5. Run `pnpm exec tsx scripts/generate-sources.ts` then `pnpm exec next dev` / `next build` with `cwd` set to the clone. `build` then copies the clone's `out/` to `<projectRoot>/dist/`.
-- **`docs.config.json` schema**: `framework/config/schema.ts` (`DocsConfig`,
-  `SidebarConfig`). Parsing/defaults: `framework/config/load.ts`.
+- **`docs.config.json` schema**: `cli/config/schema.ts` (`DocsConfig`,
+  `SidebarConfig`). Parsing/defaults: `cli/config/load.ts`.
 
 ### Root `src/`, `app/` - the aggregator site
 
@@ -102,13 +102,13 @@ This repo's own (and only) Fumadocs app, serving every project at once under
 `scripts/generate-sources.ts` writes at the start of `site:dev`/`site:build`
 (`postinstall` also runs it, so a fresh clone has it before the first build).
 This is exactly what runs both in production and inside a member's local cache
-clone - see `framework/utils/repo-cache.ts` above.
+clone - see `cli/utils/repo-cache.ts` above.
 
 `generate-sources.ts`:
 
 1. Scans `content/*` (synced member repos, or - locally - the one repo the CLI
    symlinked in) and this repo's own `docs/` for a `docs.config.json` (or, for
-   this repo, a hardcoded `FRAMEWORK_REPO` entry).
+   this repo, a hardcoded `cliRepo` entry).
 2. Writes one `export const repo_x = defineDocs({ dir: "..." })` per project
    into `content-sources.generated.ts` - a literal file rather than a runtime
    loop, because `fumadocs-mdx` needs static `defineDocs()` calls it can
@@ -136,10 +136,10 @@ runner (label `docs`) runs directly on this machine.
 
 Two workflow types, both ending in `scripts/build.sh`:
 
-| Workflow         | File                       | Trigger                         |
-| ---------------- | -------------------------- | ------------------------------- |
-| Member sync      | `sync-docs.yml` (reusable) | Called by each member repo's CI |
-| Framework deploy | `deploy.yml`               | Push to `main` in this repo     |
+| Workflow    | File                       | Trigger                         |
+| ----------- | -------------------------- | ------------------------------- |
+| Member sync | `sync-docs.yml` (reusable) | Called by each member repo's CI |
+| CLI deploy  | `deploy.yml`               | Push to `main` in this repo     |
 
 A `cloudflared` tunnel proxies `docs.trickfirerobotics.com` to nginx on
 `localhost:80` - no inbound ports opened on the server.
@@ -160,7 +160,7 @@ A `cloudflared` tunnel proxies `docs.trickfirerobotics.com` to nginx on
 ## Data flow: a member repo running `trickfire-docs dev` locally
 
 1. Developer runs `npx trickfire-docs dev` in their repo.
-2. `framework/commands/dev.ts` checks for `pnpm`, clones/updates
+2. `cli/commands/dev.ts` checks for `pnpm`, clones/updates
    `~/.cache/trickfire-docs/repo` to `origin/main`, symlinks the project's
    `docs/` + `docs.config.json` into that clone's `content/<repo-name>/`
    (pruning any other repo's symlink left there from a previous run), runs
@@ -168,23 +168,23 @@ A `cloudflared` tunnel proxies `docs.trickfirerobotics.com` to nginx on
    clone.
 3. The aggregator (`src/lib/source.ts`, reading `content-sources.generated.ts`)
    picks up every project under `content/` - the member's own repo, `general`,
-   and this repo's own framework docs - and serves a live preview at
+   and this repo's own cli docs - and serves a live preview at
    `localhost:3000`. It's the same app, same data, that production runs; the
    only difference is which repos are symlinked into `content/`.
 
 ## What to edit for common changes
 
-| I want to...                                                          | Edit                                                                    |
-| --------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| Change `docs.config.json` fields/validation                           | `framework/config/schema.ts`, `framework/config/load.ts`                |
-| Change how `meta.json` (sidebar structure) is generated               | `scripts/generate-sources.ts`                                           |
-| Change what `trickfire-docs init` scaffolds                           | `scaffold/`, `framework/commands/init.ts`                               |
-| Change how the local cache clone is managed                           | `framework/utils/repo-cache.ts`, `framework/commands/dev.ts`/`build.ts` |
-| Change styling/layout/MDX components (affects prod AND local preview) | root `src/`, `app/`                                                     |
-| Change codeblock behavior (titles, shell prompt, copy button)         | `src/lib/shiki-transformers.ts`                                         |
-| Fix a bug in Fumadocs UI itself (sidebar, codeblock, etc.)            | `patches/` via `pnpm patch` - see below                                 |
-| Change the production server / nginx / systemd setup                  | `scripts/build.sh`, `scripts/nginx.conf`, this doc's server section     |
-| Change what gets synced from member repos                             | `sync-docs.yml` (in `.github/`), `scripts/generate-sources.ts`          |
+| I want to...                                                          | Edit                                                                |
+| --------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| Change `docs.config.json` fields/validation                           | `cli/config/schema.ts`, `cli/config/load.ts`                        |
+| Change how `meta.json` (sidebar structure) is generated               | `scripts/generate-sources.ts`                                       |
+| Change what `trickfire-docs init` scaffolds                           | `scaffold/`, `cli/commands/init.ts`                                 |
+| Change how the local cache clone is managed                           | `cli/utils/repo-cache.ts`, `cli/commands/dev.ts`/`build.ts`         |
+| Change styling/layout/MDX components (affects prod AND local preview) | root `src/`, `app/`                                                 |
+| Change codeblock behavior (titles, shell prompt, copy button)         | `src/lib/shiki-transformers.ts`                                     |
+| Fix a bug in Fumadocs UI itself (sidebar, codeblock, etc.)            | `patches/` via `pnpm patch` - see below                             |
+| Change the production server / nginx / systemd setup                  | `scripts/build.sh`, `scripts/nginx.conf`, this doc's server section |
+| Change what gets synced from member repos                             | `sync-docs.yml` (in `.github/`), `scripts/generate-sources.ts`      |
 
 ## Patching dependencies
 
@@ -195,7 +195,7 @@ package. The patch lives at `patches/@fumadocs__base-ui@16.13.0.patch` and is
 applied automatically on `pnpm install` (see `patchedDependencies` in
 `pnpm-workspace.yaml`). Because `trickfire-docs dev`/`build` run a real `pnpm
 install` inside the cache clone (not npm - see `ensurePnpm` in
-`framework/utils/repo-cache.ts`), the patch also fixes every member repo's
+`cli/utils/repo-cache.ts`), the patch also fixes every member repo's
 local preview - there's nothing to do on their end.
 
 If you hit another upstream Fumadocs bug, prefer extending this patch (or
