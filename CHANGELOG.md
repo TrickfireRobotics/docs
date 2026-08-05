@@ -1,3 +1,9 @@
+# [2.3.0](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.2.0...trickfire-docs-v2.3.0) (2026-08-05)
+
+### Features
+
+- added logging ([4540a93](https://github.com/TrickfireRobotics/docs/commit/4540a9354859a1ceddab48fbcea14bd339f5efd0))
+
 # [2.2.0](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.1.5...trickfire-docs-v2.2.0) (2026-08-04)
 
 ### Bug Fixes
