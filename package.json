@@ -15,7 +15,7 @@
         "scaffold"
     ],
     "scripts": {
-        "site:dev": "tsx scripts/generate-sources.ts && next dev --webpack -p 3100",
+        "site:dev": "tsx scripts/site-dev.ts 3100",
         "site:build": "NODE_ENV=production tsx scripts/generate-sources.ts && next build",
         "site:start": "serve out -p 3100",
         "site:typecheck": "tsx scripts/generate-sources.ts && next typegen && tsc --noEmit -p tsconfig.site.json",

@@ -1,9 +1,10 @@
 import { runBuild } from "./commands/build.js";
 import { runDev } from "./commands/dev.js";
 import { runInit } from "./commands/init.js";
+import { log, wasInterrupted } from "./logger.js";
 
 const [, , command, ...args] = process.argv;
-const projectRoot = process.cwd();
+const projectRoot = process.env.INIT_CWD ?? process.cwd();
 
 async function main(): Promise<void> {
     switch (command) {
@@ -17,12 +18,19 @@ async function main(): Promise<void> {
             await runInit(projectRoot, { force: args.includes("--force") });
             break;
         default:
-            console.error("Usage: trickfire-docs <dev|build|init> [--force]");
+            log.error("Usage: trickfire-docs <dev|build|init> [--force]");
             process.exit(1);
     }
 }
 
 main().catch((error: unknown) => {
-    console.error(error instanceof Error ? error.message : error);
+    if (wasInterrupted()) {
+        log.blank();
+        log.info("Stopped succesfully");
+        return;
+    }
+    if (!(error instanceof Error && (error as Error & { reported?: boolean }).reported)) {
+        log.error(error instanceof Error ? error.message : String(error));
+    }
     process.exit(1);
 });

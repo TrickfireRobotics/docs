@@ -9,6 +9,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import type { DocsConfig, SidebarItem } from "../framework/config/schema.js";
+import { log } from "../framework/logger.js";
 
 const ROOT = process.cwd();
 
@@ -27,7 +28,7 @@ function readDocsConfig(repoDir: string): DocsConfig | null {
     try {
         return JSON.parse(fs.readFileSync(configPath, "utf-8")) as DocsConfig;
     } catch (err) {
-        console.warn(`[generate-sources] failed to parse ${configPath}: ${(err as Error).message}`);
+        log.warn(`generate-sources: failed to parse ${configPath}: ${(err as Error).message}`);
         return null;
     }
 }
@@ -218,6 +219,6 @@ for (const repo of repos) {
     generateMetaFiles(repo);
 }
 
-console.log(
-    `[generate-sources] wired ${repos.length} project(s): ${repos.map((r) => r.id).join(", ")}`
+log.success(
+    `generate-sources: wired ${repos.length} project(s): ${repos.map((r) => r.id).join(", ")}`
 );

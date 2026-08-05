@@ -30,6 +30,7 @@
         "src/**/*.ts",
         "src/**/*.tsx",
         "scripts/generate-sources.ts",
+        "scripts/site-dev.ts",
         ".next/types/**/*.ts",
         ".next/dev/types/**/*.ts"
     ],

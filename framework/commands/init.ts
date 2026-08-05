@@ -2,6 +2,11 @@ import fs from "node:fs/promises";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+import { log } from "../logger.js";
+
+const execFileAsync = promisify(execFile);
 
 function findPackageRoot(startDir: string): string {
     let dir = startDir;
@@ -29,7 +34,6 @@ export interface InitOptions {
 }
 
 const SCAFFOLD_FILES: Array<[string, string]> = [
-    ["docs.config.json", "docs.config.json"],
     [".github/workflows/docs.yml", ".github/workflows/docs.yml"],
 ];
 
@@ -37,21 +41,54 @@ const SCAFFOLD_DOCS: Array<[string, string]> = [
     ["docs/getting-started.mdx", "docs/getting-started.mdx"],
 ];
 
+export async function detectRepoName(projectRoot: string): Promise<string | undefined> {
+    try {
+        const { stdout } = await execFileAsync("git", ["remote", "get-url", "origin"], {
+            cwd: projectRoot,
+        });
+        const url = stdout
+            .trim()
+            .replace(/\/+$/, "")
+            .replace(/\.git$/, "");
+        return url.split(/[/:]/).pop() || undefined;
+    } catch {
+        return undefined;
+    }
+}
+
 export async function runInit(projectRoot: string, options: InitOptions = {}): Promise<void> {
     const configDest = path.join(projectRoot, "docs.config.json");
     const docsDest = path.join(projectRoot, "docs");
 
     if (existsSync(configDest) && !options.force) {
-        console.log("Already initialized. Use --force to re-scaffold.");
+        log.warn("already initialized! use --force to re-scaffold");
         return;
     }
+
+    log.heading("trickfire-docs init");
+
+    const template = JSON.parse(
+        await fs.readFile(path.join(SCAFFOLD_DIR, "docs.config.json"), "utf-8")
+    ) as { name: string; description: string };
+
+    const detectedName = await detectRepoName(projectRoot);
+    const name = await log.prompt("Project name", detectedName ?? template.name);
+    const description = await log.prompt("Description", template.description);
+
+    await fs.mkdir(path.dirname(configDest), { recursive: true });
+    await fs.writeFile(
+        configDest,
+        JSON.stringify({ ...template, name, description }, null, 4) + "\n",
+        "utf-8"
+    );
+    log.success("created docs.config.json");
 
     for (const [src, dest] of SCAFFOLD_FILES) {
         const srcPath = path.join(SCAFFOLD_DIR, src);
         const destPath = path.join(projectRoot, dest);
         await fs.mkdir(path.dirname(destPath), { recursive: true });
         await fs.copyFile(srcPath, destPath);
-        console.log(`  created  ${dest}`);
+        log.success(`created ${dest}`);
     }
 
     let docsEmpty = true;
@@ -66,13 +103,12 @@ export async function runInit(projectRoot: string, options: InitOptions = {}): P
             const destPath = path.join(projectRoot, dest);
             await fs.mkdir(path.dirname(destPath), { recursive: true });
             await fs.copyFile(srcPath, destPath);
-            console.log(`  created  ${dest}`);
+            log.success(`created ${dest}`);
         }
     } else {
-        console.log("docs directory is not empty. Use --force to re-scaffold.");
+        log.warn("docs directory is not empty! use --force to re-scaffold");
     }
 
-    // Append trickfire-docs entries to .gitignore
     const gitignorePath = path.join(projectRoot, ".gitignore");
     const gitignoreAddition = "\n# trickfire-docs\ndist/\n";
     if (existsSync(gitignorePath)) {
@@ -84,5 +120,6 @@ export async function runInit(projectRoot: string, options: InitOptions = {}): P
         await fs.writeFile(gitignorePath, gitignoreAddition.trimStart(), "utf-8");
     }
 
-    console.log("\nDone. Edit docs.config.json, then run: npx trickfire-docs dev");
+    log.blank();
+    log.info("done! run with: npx trickfire-docs dev");
 }

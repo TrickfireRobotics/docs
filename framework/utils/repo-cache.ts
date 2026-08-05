@@ -3,6 +3,7 @@ import { existsSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { spawn } from "node:child_process";
+import { ProcessError } from "../logger.js";
 
 const REPO_URL = "https://github.com/TrickfireRobotics/docs.git";
 
@@ -12,20 +13,36 @@ export function cacheDir(): string {
     return path.join(os.homedir(), ".cache", "trickfire-docs", "repo");
 }
 
+/** Defaults to piping stdio and only surfacing it (via ProcessError) on
+ * failure, so setup commands (git/pnpm/tsx) don't spam raw output over
+ * log.step()'s spinner - pass `stdio: "inherit"` for the long-lived/
+ * user-facing commands (namely `next dev`/`next build`) that should stream
+ * live instead. */
 export function run(
     cmd: string,
     args: string[],
     options: { cwd: string; env?: NodeJS.ProcessEnv; stdio?: "inherit" | "pipe" } = { cwd: "." }
 ): Promise<void> {
     return new Promise((resolve, reject) => {
+        const stdio = options.stdio ?? "pipe";
         const child = spawn(cmd, args, {
             cwd: options.cwd,
             env: options.env ?? process.env,
-            stdio: options.stdio ?? "inherit",
+            stdio,
         });
+
+        let output = "";
+        if (stdio === "pipe") {
+            child.stdout?.on("data", (chunk: Buffer) => (output += chunk));
+            child.stderr?.on("data", (chunk: Buffer) => (output += chunk));
+        }
+
         child.on("close", (code) => {
             if (code === 0) resolve();
-            else reject(new Error(`${cmd} ${args.join(" ")} exited with code ${code}`));
+            else
+                reject(
+                    new ProcessError(`${cmd} ${args.join(" ")} exited with code ${code}`, output)
+                );
         });
         child.on("error", reject);
     });
