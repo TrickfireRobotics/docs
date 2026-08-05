@@ -8,7 +8,6 @@
         { "label": "Architecture", "slug": "architecture" },
         { "label": "Member Guide", "slug": "member-guide" },
         { "label": "Writing Content", "slug": "writing-content" },
-        { "label": "Sidebar Configuration", "slug": "sidebar-config" },
         { "label": "Configuration Reference", "slug": "configuration" },
         {
             "label": "Deployment",

@@ -2,6 +2,14 @@
 title: TrickFire Docs
 ---
 
+import {
+    HomeIcon,
+    PencilSparklesIcon,
+    CogIcon,
+    HardDriveUploadIcon,
+    LandmarkIcon,
+} from "lucide-react";
+
 TrickFire Docs is the unified documentation system for TrickFire Robotics. Every project repo publishes its docs here automatically without the need to set up a documentation framework in the repo. This unifies the system, making it so all of the logic for docs is controlled by one repo, and only the raw content like the markdown or assets live in the separate repos.
 
 The site is located at **[docs.trickfirerobotics.com](https://docs.trickfirerobotics.com)**.
@@ -12,11 +20,20 @@ Each TrickFire project repo contains a `docs/` folder and a `docs.config.json` f
 
 ## Quick navigation
 
-| I want to…                          | Go to                                          |
-| ----------------------------------- | ---------------------------------------------- |
-| Add docs to my project              | [Member Guide](./member-guide.mdx)             |
-| Write markdown content              | [Writing Content](./writing-content.mdx)       |
-| Configure the sidebar               | [Sidebar Configuration](./sidebar-config.mdx)  |
-| See all config options              | [Configuration Reference](./configuration.mdx) |
-| Set up the server                   | [Deployment](./deployment/index.mdx)           |
-| Understand how it all fits together | [Architecture](./architecture.mdx)             |
+<Cards>
+    <Card href="./member-guide.mdx" title="Member Guide" icon={<HomeIcon />}>
+        Add TrickFire docs to your repo
+    </Card>
+    <Card href="./writing-content.mdx" title="Writing Content" icon={<PencilSparklesIcon />}>
+        How to write Markdown & MDX content
+    </Card>
+    <Card href="./configuration.mdx" title="Configuration Reference" icon={<CogIcon />}>
+        How to configure your project, including the sidebar
+    </Card>
+    <Card href="./architecture.mdx" title="Architecture" icon={<LandmarkIcon />}>
+        The structure of the `docs` codebase
+    </Card>
+    <Card href="./deployment/index.mdx" title="Deployment" icon={<HardDriveUploadIcon />}>
+        How to deploy the framework onto a server and configure it
+    </Card>
+</Cards>

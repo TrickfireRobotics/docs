@@ -2,7 +2,7 @@
 title: Writing Content
 ---
 
-Docs are written in Markdown (MDX). A few extras beyond standard Markdown are covered below.
+Docs are written in the [MDX format](https://en.wikipedia.org/wiki/MultiDimensional_eXpressions), which is just markdown with components. Markdown files can also be used, but using MDX is strongly encouraged.
 
 ## Frontmatter
 
@@ -20,7 +20,7 @@ description: A short summary shown in search results.
 | `title`       | Page title shown in the browser tab and sidebar. Defaults to the first H1. |
 | `description` | Meta description for search engines, also shown under the page title.      |
 
-Page order comes from `docs.config.json`'s `sidebar` (see [Sidebar Configuration](./sidebar-config.mdx)), or alphabetically by filename if you don't define one.
+Page order comes from `docs.config.json`'s `sidebar` (see [Configuration Reference](./configuration.mdx)), or alphabetically by filename if you don't define one.
 
 ## Headings
 
@@ -162,4 +162,4 @@ docs/
     └── faq.mdx
 ```
 
-For custom ordering, labels, icons, or grouped categories, define `sidebar` explicitly - see [Sidebar Configuration](./sidebar-config.mdx).
+For custom ordering, labels, icons, or grouped categories, define `sidebar` explicitly - see [Configuration Reference](./configuration.mdx).
