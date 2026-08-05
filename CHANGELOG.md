@@ -1,3 +1,5 @@
+# [2.4.0](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.3.0...trickfire-docs-v2.4.0) (2026-08-05)
+
 # [2.3.0](https://github.com/TrickfireRobotics/docs/compare/trickfire-docs-v2.2.0...trickfire-docs-v2.3.0) (2026-08-05)
 
 ### Features
