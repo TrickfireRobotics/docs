@@ -46,7 +46,7 @@
         "@tailwindcss/postcss": "^4.3.3",
         "class-variance-authority": "0.7.1",
         "cnfast": "^0.1.0",
-        "fumadocs-core": "16.14.0",
+        "fumadocs-core": "16.13.0",
         "fumadocs-mdx": "15.2.1",
         "fumadocs-ui": "npm:@fumadocs/base-ui@16.13.0",
         "lucide-react": "^1.25.0",
@@ -78,7 +78,7 @@
         "serve": "^14.2.6",
         "tsup": "^8.0.0",
         "tsx": "^4.0.0",
-        "typescript": "^7.0.2",
+        "typescript": "^5.0.0",
         "typescript-eslint": "^8.0.0",
         "vitest": "^4.1.9"
     }
