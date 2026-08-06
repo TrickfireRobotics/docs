@@ -9,11 +9,6 @@ This guide is for TrickFire members who want to add documentation to an existing
 - Node.js 20+
 - [pnpm](https://pnpm.io/installation) - `trickfire-docs dev`/`build` use it to install the docs
   site's dependencies locally (with the exact patches production builds with)
-- A TrickFire project repo with write access
-- Access to `TrickfireRobotics/docs` (for the reusable CI workflow, and for `dev`/`build` to clone
-  a local preview cache - it's a public repo, no auth needed)
-
-No package installation required - `trickfire-docs` is run via `npx` and never needs to be added to your project's dependencies.
 
 ## Setup
 
@@ -28,21 +23,15 @@ npx trickfire-docs init
 This creates:
 
 ```
-your-repo/
+project/
 ├── docs/
-│   ├── getting-started.md
-│   ├── guides/
-│   │   ├── writing-content.md
-│   │   └── organizing-sidebar.md
-│   └── reference/
-│       ├── configuration.md
-│       └── faq.md
+│   └── getting-started.mdx
 ├── docs.config.json
 └── .github/workflows/
     └── docs.yml
 ```
 
-It also appends `.trickfire-docs/` and `dist/` to your `.gitignore`.
+It also appends and `dist/` to your `.gitignore`, as this is where build files will get exported if you run `npx trickfire-docs build`.
 
 ### 2. Configure your project
 
@@ -56,18 +45,11 @@ Edit `docs.config.json`:
 }
 ```
 
-`name` becomes the project title in the docs navbar dropdown. `description` shows on the docs homepage.
-
-VS Code will autocomplete and validate the config automatically thanks to the `$schema` field - no extensions needed.
+Leave the `schema` field as it is. It is a reference to the key of the json file for correct syntax highliting. `name` becomes the project title in the docs navbar dropdown. `description` shows on the docs homepage.
 
 ### 3. Write your docs
 
-Replace the scaffold markdown files with real content. See [Writing Content](./writing-content.md) for the full guide.
-
-Minimum viable docs:
-
-- `docs/getting-started.md` - what the project is and how to get it running
-- `docs/reference/` - API or configuration reference
+Replace the scaffold MDX files with real content. See [Writing Content](./writing-content.md) for the full guide.
 
 ### 4. Preview locally
 
@@ -82,46 +64,23 @@ your project; the CLI manages a shared cache at `~/.cache/trickfire-docs/` inste
 
 ### 5. Push to publish
 
-Commit your `docs/` folder and `docs.config.json`, then push to `main`.
-
-The `.github/workflows/docs.yml` file runs automatically on push:
-
-```yaml
-on:
-    push:
-        branches: [main]
-        paths:
-            - "docs/**"
-            - "docs.config.json"
-```
-
-Within about a minute, your docs appear at `docs.trickfirerobotics.com/<your-repo-name>`.
+Commit your `docs/` folder and `docs.config.json`, then push to `main`. The `.github/workflows/docs.yml` file runs automatically on push and deploys/updates your documentation to the server. Within about a minute, your docs appear at `docs.trickfirerobotics.com/<your-repo-name>`.
 
 ## Updating your docs
 
 Just edit files in `docs/` and push. The CI workflow handles everything.
 
-## Custom URL slug
+## Renaming a repo that has docs
 
-By default, your docs are published at `/<repo-name>`. If you want a different path segment, pass `repo-name` to the workflow:
-
-```yaml
-# .github/workflows/docs.yml
-jobs:
-    sync:
-        uses: TrickfireRobotics/docs/.github/workflows/sync-docs.yml@main
-        with:
-            repo-name: my-custom-slug
-        secrets: inherit
-```
+When you rename a repo a new subdoc appears with your new repo name automatically on a new CI run. But the old one will not get automatically deleted. Contact the server maintainer to remove it.
 
 ## Removing a project's docs
 
-Delete the content directory on the server:
+To delete a project from the documentation, the content directory needs to be removed from the server, and then the app needs to get rebuilt. To do that SSH into the server and run:
 
 ```bash
 rm -rf /home/trickfire/docs/content/<repo-name>
 bash /home/trickfire/docs/scripts/build.sh
 ```
 
-The project will disappear from the site after the next build.
+The project will disappear from the site.

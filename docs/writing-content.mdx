@@ -158,6 +158,24 @@ Numbered setup instructions. Also global, no import needed:
 </Steps>
 ```
 
+## Toggle sections
+
+Collapsible sections - good for troubleshooting entries, FAQs, or anything else that shouldn't
+all be expanded at once. Also global, no import needed:
+
+```mdx
+<Accordions>
+    <Accordion title="candump shows no traffic">
+        Check the interface is up (`ip link show can0`) and the bitrate matches the bus.
+    </Accordion>
+    <Accordion title="Bus errors under load">
+        Usually a termination resistor problem - verify both ends of the bus are terminated at 120Ω.
+    </Accordion>
+</Accordions>
+```
+
+By default only one item can be open at a time. Add `multiple` to `Accordions` to allow several open at once.
+
 ## File organization
 
 If `docs.config.json` doesn't define a `sidebar`, pages are listed alphabetically by filename with no grouping:
