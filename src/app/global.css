@@ -10,6 +10,8 @@
 :root {
     --tf-green: #00fe00;
     --tf-pink: #e93cac;
+    --tf-purple: #a742f5;
+    --color-fd-idea: var(--tf-purple);
 }
 
 .dark {
