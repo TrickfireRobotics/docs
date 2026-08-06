@@ -134,17 +134,28 @@ Column alignment with `:---`, `:---:`, and `---:` for left, center, and right.
 
 ## Tabs
 
-Show alternative instructions for different environments. Import the components at the top of the file, then use JSX:
+Show alternative instructions for different environments. `Tab`/`Tabs` are available globally,
+like `Callout` - no import needed (content repos don't have `fumadocs-ui` installed, so a local
+`import ... from "fumadocs-ui/components/tabs"` would fail to resolve for anything outside this
+repo's own `docs/`):
 
-```jsx
-import { Tab, Tabs } from "fumadocs-ui/components/tabs";
-```
-
-```jsx
+```mdx
 <Tabs items={["Linux", "macOS"]}>
     <Tab value="Linux">Install with apt: `sudo apt install can-utils`</Tab>
     <Tab value="macOS">Install with brew: `brew install can-utils`</Tab>
 </Tabs>
+```
+
+## Steps
+
+Numbered setup instructions. Also global, no import needed:
+
+```mdx
+<Steps>
+    <Step>Install the CAN utilities: `sudo apt install can-utils`.</Step>
+    <Step>Bring the interface up: `sudo ip link set can0 up type can bitrate 500000`.</Step>
+    <Step>Verify it's listening: `candump can0`.</Step>
+</Steps>
 ```
 
 ## File organization
