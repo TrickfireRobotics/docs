@@ -40,22 +40,22 @@
         "*.{json,md,yml,yaml,css}": "prettier --write"
     },
     "dependencies": {
-        "@base-ui/react": "1.6.0",
+        "@base-ui/react": "1.7.0",
         "@fuma-translate/react": "1.0.2",
         "@orama/orama": "^3.1.18",
         "@tailwindcss/postcss": "^4.3.3",
         "class-variance-authority": "0.7.1",
         "cnfast": "^0.1.0",
-        "fumadocs-core": "16.13.0",
-        "fumadocs-mdx": "15.2.1",
+        "fumadocs-core": "16.14.1",
+        "fumadocs-mdx": "15.2.2",
         "fumadocs-ui": "npm:@fumadocs/base-ui@16.13.0",
         "lucide-react": "^1.25.0",
-        "next": "16.2.12",
+        "next": "16.3.0",
         "postcss": "^8.5.21",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
         "scroll-into-view-if-needed": "3.1.0",
-        "shiki": "4.3.1",
+        "shiki": "4.4.2",
         "tailwindcss": "^4.3.3"
     },
     "devDependencies": {
@@ -78,7 +78,7 @@
         "serve": "^14.2.6",
         "tsup": "^8.0.0",
         "tsx": "^4.0.0",
-        "typescript": "^5.0.0",
+        "typescript": "^7.0.2",
         "typescript-eslint": "^8.0.0",
         "vitest": "^4.1.9"
     }
