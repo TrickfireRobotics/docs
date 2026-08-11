@@ -15,6 +15,38 @@ function Tab({ className, ...props }: ComponentProps<typeof TabBase>) {
     return <TabBase className={cn("bg-fd-card", className)} {...props} />;
 }
 
+function toCssWidth(width?: string | number): string | undefined {
+    if (width === undefined) return undefined;
+    return typeof width === "number" ? `${width}px` : width;
+}
+
+interface ImageProps extends Omit<ComponentProps<"div">, "children"> {
+    /** CSS width of the image, e.g. `"50%"`, `"300px"`, or a number of pixels. */
+    width?: string | number;
+    /** Center the image horizontally. Defaults to `true`. */
+    center?: boolean;
+    children?: ReactNode;
+}
+
+/**
+ * Wraps a markdown image so its rendered size can be constrained without
+ * fighting the `remark-image` pipeline - pass markdown image syntax as
+ * children rather than an `src` prop so it still gets resolved/optimized
+ * normally, e.g. `<Image width="50%">![alt](./assets/foo.png)</Image>`.
+ */
+function Image({ width, center = true, className, children, ...props }: ImageProps) {
+    return (
+        <div
+            className={cn("flex", center ? "justify-center" : "justify-start", className)}
+            {...props}
+        >
+            <div className="max-w-full" style={{ width: toCssWidth(width) }}>
+                {children}
+            </div>
+        </div>
+    );
+}
+
 type CalloutType = "info" | "warning" | "error" | "success" | "idea";
 
 const calloutIcons: Record<CalloutType, ReactNode> = {
@@ -95,6 +127,7 @@ export function getMDXComponents(components?: MDXComponents) {
         Accordion,
         Accordions,
         Callout,
+        Image,
         ...components,
     } satisfies MDXComponents;
 }

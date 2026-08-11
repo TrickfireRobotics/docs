@@ -61,6 +61,19 @@ Place images in `docs/assets/` and reference them relatively:
 
 SVG files work the same way.
 
+To constrain an image's size, wrap it in the global `Image` component rather than sizing it
+yourself - it centers by default and accepts a `width`:
+
+```mdx
+<Image width="50%">![Wiring diagram](./assets/wiring.png)</Image>
+```
+
+- `width` - any CSS width (`"50%"`, `"300px"`) or a bare number, treated as pixels.
+- `center` - defaults to `true`; pass `center={false}` to left-align instead.
+
+Always pass the image as markdown syntax inside `<Image>`, not as an `src` prop - only the
+markdown form goes through the pipeline that resolves and optimizes the file.
+
 ## Code blocks
 
 Fenced code blocks with a language tag get syntax highlighting:
