@@ -48,7 +48,7 @@ export default function HomePage() {
                         <Link
                             key={repo.id}
                             href={`/${repo.id}`}
-                            className="group relative flex h-26 flex-col gap-1 rounded-lg border border-fd-border border-l-4 border-l-fd-primary/40 bg-fd-card px-6 py-5 transition-colors hover:border-l-fd-primary hover:bg-fd-accent/40"
+                            className="group relative flex min-h-26 flex-col gap-1 rounded-lg border border-fd-border border-l-4 border-l-fd-primary/40 bg-fd-card px-6 py-5 transition-colors hover:border-l-fd-primary hover:bg-fd-accent/40"
                         >
                             <span className="flex shrink-0 items-center gap-2 truncate text-[0.975rem] font-semibold text-fd-card-foreground">
                                 {resolveProjectIcon(repo.icon, "size-4 shrink-0 text-fd-primary")}
