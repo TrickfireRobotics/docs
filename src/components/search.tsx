@@ -32,7 +32,7 @@ export default function DefaultSearchDialog(props: SharedProps) {
         client: oramaStaticClient({
             initOrama,
             locale,
-            from: repo ? `/api/search/${repo}` : "/api/search",
+            from: repo ? `/api/search/${repo}` : "/api/search-all",
         }),
         delayMs: 100,
     });
