@@ -68,3 +68,14 @@ body {
         "sidebar . toc-popover toc ."
         "sidebar . main toc ." !important;
 }
+
+#nd-home-layout #nd-nav [class*="max-w-(--fd-layout-width)"] {
+    max-width: none;
+    margin-inline-start: 0;
+    padding-inline-start: 1.5625rem;
+}
+
+#nd-sidebar a[href="/"] {
+    align-self: flex-start;
+    margin-top: -0.625rem;
+}
