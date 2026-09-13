@@ -16,9 +16,25 @@ description: installing docker, git, and visual studio code on a linux machine.
     <Tab value="Bash">
 
     ```bash
-    # Update your package manager and install docker
+    # Add Docker's official apt repository
     sudo apt-get update
-    sudo apt-get install -y docker.io docker-compose-v2 docker-buildx containerd
+    sudo apt-get install -y ca-certificates curl
+    sudo install -m 0755 -d /etc/apt/keyrings
+    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+    sudo tee /etc/apt/sources.list.d/docker.sources > /dev/null <<EOF
+    Types: deb
+    URIs: https://download.docker.com/linux/ubuntu
+    Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+    Components: stable
+    Architectures: $(dpkg --print-architecture)
+    Signed-By: /etc/apt/keyrings/docker.asc
+    EOF
+
+    # Install docker
+    sudo apt-get update
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     ```
 
     </Tab>
@@ -121,7 +137,7 @@ You should see a few messages about docker running and how it pulled that messag
     <Tab value="Bash">
 
     ```bash
-    sudo apt-get purge -y docker.io docker-compose-v2 docker-buildx containerd
+    sudo apt-get purge -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     ```
 
     </Tab>
@@ -239,3 +255,82 @@ If this is the case, follow these steps to set up SSH keys for authentication
 7. When you clone a new repo make sure to hit the `code` button and hit `SSH` then copy that link and git clone
 
 ## Visual Studio Code
+
+VSCode is the code editor we use for development. Follow the steps to install, set up, and configure VSCode
+
+1. Open your terminal and run the following commands to install VSCode
+
+<Tabs items={["Bash", "Fish"]} groupId="shell" persist>
+    <Tab value="Bash">
+
+    ```bash
+    sudo apt-get update
+    sudo apt-get install -y wget gpg
+    wget -qO- https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
+
+    sudo tee /etc/apt/sources.list.d/vscode.sources > /dev/null <<EOF
+    Types: deb
+    URIs: https://packages.microsoft.com/repos/code
+    Suites: stable
+    Components: main
+    Architectures: amd64,arm64,armhf
+    Signed-By: /usr/share/keyrings/microsoft.gpg
+    EOF
+
+    sudo apt-get update
+    sudo apt-get install -y code
+    ```
+
+    </Tab>
+    <Tab value="Fish">
+
+    ```fish
+    # Install yay, an AUR helper, so future AUR packages (including updates) are easy to manage
+    sudo pacman -S --needed base-devel git
+    git clone https://aur.archlinux.org/yay.git
+    cd yay
+    makepkg -si
+
+    # Install VSCode using yay
+    yay -S visual-studio-code-bin
+    ```
+
+    </Tab>
+
+</Tabs>
+
+2. Open VSCode from your applications menu, or run `code .` from a terminal to open the current folder
+3. Test it by running
+
+<Tabs items={["Bash", "Fish"]} groupId="shell" persist>
+    <Tab value="Bash">
+
+    ```bash
+    code --version
+    ```
+
+    </Tab>
+    <Tab value="Fish">
+
+    ```fish
+    code --version
+    ```
+
+    </Tab>
+
+</Tabs>
+
+6. We use Dev Containers on our repos so everyone gets an identical, pre-configured environment instead of installing tools by hand. Install the following extensions from the Extensions view (`Ctrl + Shift + X`):
+    - [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) (`ms-vscode-remote.remote-containers`), by Microsoft
+    - [Container Tools](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-containers) (`ms-azuretools.vscode-containers`), by Microsoft
+
+<Callout type="info" title="Naming">
+    The marketplace has several similarly named container/Docker extensions. Search by the extension
+    ID above (or paste it into the Extensions view search bar) to make sure you install the right
+    one.
+</Callout>
+
+7. Take the [URC-2023 Repo](https://github.com/TrickfireRobotics/urc-2023) and git clone it into an appropriate folder (I recommend making a trickfire folder), then run `code urc-2023` and vscode should open with this new repository opened
+8. A notification should pop up asking if you want to reopen the folder in a container, click `Reopen in Container` and wait for the container to build. This may take a while the first time, but future builds will be much faster.
+
+In the future you may need to install more extensions for specific languages, (EX: Python requires specific python extensions) but VSCode will prompt you for those usually when you open up a new repository.
