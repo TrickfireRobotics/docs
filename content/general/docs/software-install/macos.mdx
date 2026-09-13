@@ -1,5 +1,5 @@
 ---
-title: MacOS 
+title: MacOS
 description: installing docker, git, and visual studio code on a macos machine.
 ---
 
@@ -9,52 +9,67 @@ To install most of the software we use on a regular basis you will need to insta
 
 1. Open your MacOS terminal you can do this by hitting `Command + Space` and typing in `Terminal`.
 2. Copy and paste this command into your Terminal
-<Callout type="note" title="Permissions Note">
-    This will require your Mac's password since it requires some privileged permissions to install the package manager.
-</Callout>
-```bash title="Terminal" 
+    <Callout type="info" title="Permissions Note">
+        This will require your Mac's password since it requires some privileged permissions to
+        install the package manager.
+    </Callout>
+
+```bash title="Terminal"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
+
 3. Next you need to add `brew` into your path. The installer will print a "Next steps" section in your terminal with the exact commands to run for your Mac. Copy and paste those commands into your terminal. On Apple Silicon Macs they will look like this:
+
 ```bash title="Terminal"
 echo >> /Users/"${USER}"/.zprofile
 echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/"$USER"/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
 ```
-<Callout type="note" title="Intel Macs">
-    If you're on an Intel Mac, Homebrew installs to `/usr/local` instead of `/opt/homebrew`, so the commands the installer prints for you will be different. Always use the commands shown in your own terminal output rather than copying the block above.
-</Callout>
-If you are running into issues send a mesasge in the discord in `general-software` and someone will reply to you when they can or visit the [Homebrew Issues Page](https://github.com/orgs/Homebrew/discussions)
 
-## Docker 
+<Callout type="info" title="Intel Macs">
+    If you're on an Intel Mac, Homebrew installs to `/usr/local` instead of `/opt/homebrew`, so the
+    commands the installer prints for you will be different. Always use the commands shown in your
+    own terminal output rather than copying the block above.
+</Callout>
+If you are running into issues send a mesasge in the discord in `general-software` and someone will
+reply to you when they can or visit the [Homebrew Issues
+Page](https://github.com/orgs/Homebrew/discussions)
+
+## Docker
 
 1. Now that we've installed brew you can easily install docker by running
+
 ```bash title="Terminal"
 brew install --cask docker
 ```
+
 This will install the Docker VM, Docker engine, and Docker desktop app. Make sure you don't forget to add `--cask` or you may not install all required software.
 
 2. Open Docker by hitting `Command + space` and typing in Docker you will see some permission prompts type in your password and docker will install
 
-3. Next to check if docker is working run 
+3. Next to check if docker is working run
+
 ```bash title="Terminal"
 docker run hello-world
 ```
+
 You should see a few messages about docker running and how it pulled that message down.
 
 ### Docker debugging
 
 If it didn't work try these debug commands.
+
 - run `docker ps` if it gives you a message about not being able to connect to the docker daemon, open the docker desktop application and it should run again
 - try `brew reinstall --cask docker` for a fresh install and repeat the steps above. If this doesn't work send a message in `general-software` and someone will respond back to you
 
-
 ## Git
+
 1. Go to the [Github website](https://github.com/) and make an account skip if you have one. Remember the username and email you used to make the account.
 2. Open your terminal and run `brew install git` and check if it exists by running `git`
 3. Next to configure your username run `git config --global user.name "Your username here"` and `git config --global user.email "Your email here"`
 
 ### Optional Git configuration
+
 If your Github account is shared across multiple machines, you may run into issues with not being able to push since github wasn't able to properly authenticate, if this is the case follow these steps.
 
 1. Run `ssh-keygen -t ed25519 -C "Your email here"` and follow the prompts on the terminal, You can set up a password but this makes authentication much harder.
@@ -63,24 +78,27 @@ If your Github account is shared across multiple machines, you may run into issu
 4. In the settings menu click `SSH and GPG keys` then click `New SSH key` on that page.
 5. Make sure the new key's type is an Authentication key, give the key an appropriate name and then paste the contents that we copied earlier into the box.
 6. run this command in your terminal
+
 ```bash title="Terminal"
 touch ~/.ssh/config
-echo "Host * 
+echo "Host *
     IPQoS cs0 cs0
     AddKeysToAgent yes
-    UseKeychain yes 
+    UseKeychain yes
     IdentityFile ~/.ssh/id_ed25519
 " >> ~/.ssh/config
 ```
+
 7. Test that this works by running `ssh -T git@github.com` this should show a message about succesful authentication to github.
 
-<Callout type="warning" title="Warning"> 
-This includes an extra hoop to jump through with repos you are going to be contributing to. When you clone a new repo make sure to hit the `code` button and then hit `SSH` then copy that link and then git clone using that SSH link
+<Callout type="warning" title="Warning">
+    This includes an extra hoop to jump through with repos you are going to be contributing to. When
+    you clone a new repo make sure to hit the `code` button and then hit `SSH` then copy that link
+    and then git clone using that SSH link
 </Callout>
 
-
-
 ## Visual Studio Code
+
 Next we will lead you through the setup for VSCode and all of the extensions we need.
 
 1. Run `brew install --cask visual-studio-code`
@@ -88,20 +106,28 @@ Next we will lead you through the setup for VSCode and all of the extensions we 
 3. Follow the installation steps that VSCode prompts you for.
 4. Open the Command Palette (`Command + Shift + P`), search for `Shell Command: Install 'code' command in PATH`, and run it. This lets you run `code .` from the terminal to open the current folder in VSCode, which is handy once you start cloning repos.
 5. Test it by opening a new terminal window and running
+
 ```bash title="Terminal"
 code --version
 ```
+
 You should see a version number and commit hash printed out.
 
 6. We use Dev Containers on our repos so everyone gets an identical, pre-configured environment instead of installing tools by hand. Install the following extensions from the Extensions view (`Command + Shift + X`):
     - [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) (`ms-vscode-remote.remote-containers`), by Microsoft
     - [Container Tools](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-containers) (`ms-azuretools.vscode-containers`), by Microsoft
 
-<Callout type="note" title="Naming">
-    The marketplace has several similarly named container/Docker extensions. Search by the extension ID above (or paste it into the Extensions view search bar) to make sure you install the right one.
+<Callout type="info" title="Naming">
+    The marketplace has several similarly named container/Docker extensions. Search by the extension
+    ID above (or paste it into the Extensions view search bar) to make sure you install the right
+    one.
 </Callout>
-7. Nearly finished, now take the [URC-2023 Repo](https://github.com/TrickfireRobotics/urc-2023.git) copy the link and `git clone https://github.com/TrickfireRobotics/urc-2023.git` the repo into an appropriate folder, then run `code urc-2023` and vscode should open with this new repository opened
-8. A notification should popup that has an option that says "Reopen in Container" click that and VSCode will start building and creating the devcontainer, make sure that docker is running in the background before you do this otherwise this will fail.
+7. Nearly finished, now take the [URC-2023 Repo](https://github.com/TrickfireRobotics/urc-2023.git)
+copy the link and `git clone https://github.com/TrickfireRobotics/urc-2023.git` the repo into an
+appropriate folder, then run `code urc-2023` and vscode should open with this new repository opened
+8. A notification should popup that has an option that says "Reopen in Container" click that and
+VSCode will start building and creating the devcontainer, make sure that docker is running in the
+background before you do this otherwise this will fail.
 
 A majority of our development is done inside of devcontainers, this is something that you will repeat in the future as you take on more projects.
 

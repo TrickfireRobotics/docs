@@ -1,5 +1,5 @@
 ---
-title: Windows 
+title: Windows
 description: installing docker, git, and visual studio code on a Windows machine.
 ---
 
@@ -9,11 +9,14 @@ Windows comes with its own package manager called `winget` (the "Windows Package
 
 1. Open PowerShell by hitting the `Windows` key and typing in `PowerShell`.
 2. Check that winget is installed by running
+
 ```bash title="PowerShell"
 winget --version
 ```
-<Callout type="note" title="Winget missing?">
-    If that command isn't found, open the Microsoft Store, search for `App Installer`, and hit Update (or Install if you don't have it). Winget ships as part of that app.
+
+<Callout type="info" title="Winget missing?">
+    If that command isn't found, open the Microsoft Store, search for `App Installer`, and hit
+    Update (or Install if you don't have it). Winget ships as part of that app.
 </Callout>
 
 ## WSL2
@@ -22,67 +25,80 @@ Docker Desktop needs a Linux backend to actually run containers, and the one we'
 
 1. Open PowerShell as an Administrator, hit the `Windows` key, type in `PowerShell`, then hit `Ctrl + Shift + Enter` (or right click the result and hit "Run as administrator").
 2. Run
+
 ```bash title="PowerShell (Administrator)"
 wsl --install
 ```
-This enables the required Windows features, installs the WSL2 kernel, and installs Ubuntu as the default Linux distribution.
-3. Restart your computer when prompted.
-4. After restarting, Ubuntu will open automatically and ask you to create a Linux username and password, these are separate from your Windows account so pick whatever you'd like.
 
-<Callout type="note" title="Requirements">
-    `wsl --install` requires Windows 10 version 2004 (Build 19041) or later, or Windows 11. If you're on an older build, run Windows Update first.
+This enables the required Windows features, installs the WSL2 kernel, and installs Ubuntu as the default Linux distribution. 3. Restart your computer when prompted. 4. After restarting, Ubuntu will open automatically and ask you to create a Linux username and password, these are separate from your Windows account so pick whatever you'd like.
+
+<Callout type="info" title="Requirements">
+    `wsl --install` requires Windows 10 version 2004 (Build 19041) or later, or Windows 11. If
+    you're on an older build, run Windows Update first.
 </Callout>
 
 ## Docker
 
 1. Now that WSL2 is set up you can install Docker Desktop by running
+
 ```bash title="PowerShell"
 winget install --id Docker.DockerDesktop -e
 ```
+
 2. Open Docker Desktop by hitting `Windows + S` and typing in Docker you will see a service agreement, accept it and let it finish starting up.
 3. In Docker Desktop go to `Settings > General` and make sure `Use the WSL 2 based engine` is checked, it should already be on by default.
 4. Next to check if docker is working, open a **new** PowerShell window and run
+
 ```bash title="PowerShell"
 docker run hello-world
 ```
+
 You should see a few messages about docker running and how it pulled that message down.
 
 ### Docker debugging
 
 If it didn't work try these debug commands.
+
 - run `docker ps` if it gives you a message about not being able to connect to the docker daemon, open the Docker Desktop application and it should run again
 - run `wsl --status` and confirm the default version is 2, if it's not run `wsl --set-default-version 2`
 - if Docker Desktop complains about virtualization not being enabled, you'll need to enable Intel VT-x/AMD-V in your PC's BIOS/UEFI settings, this varies by manufacturer so search for your specific model
 - try `winget uninstall Docker.DockerDesktop` then reinstall with the command above for a fresh install. If this doesn't work send a message in `general-software` and someone will respond back to you
 
 ## Git
+
 1. Go to the [Github website](https://github.com/) and make an account skip if you have one. Remember the username and email you used to make the account.
 2. Open PowerShell and run
+
 ```bash title="PowerShell"
 winget install --id Git.Git -e --source winget
 ```
+
 3. Close and reopen PowerShell (this refreshes your PATH) and check it exists by running `git --version`
 4. Next to configure your username run `git config --global user.name "Your username here"` and `git config --global user.email "Your email here"`
 
 ### Optional Git configuration
+
 If your Github account is shared across multiple machines, you may run into issues with not being able to push since github wasn't able to properly authenticate, if this is the case follow these steps.
 
-<Callout type="note" title="OpenSSH Client">
+<Callout type="info" title="OpenSSH Client">
     These steps use the OpenSSH client that ships with Windows itself rather than the one bundled with Git for Windows. To check it's available run `ssh -V` in PowerShell. If that command isn't found, go to `Settings > Apps > Optional Features > Add a feature`, search for `OpenSSH Client`, and install it.
 </Callout>
 
 1. Run `ssh-keygen -t ed25519 -C "Your email here"` and follow the prompts on the terminal, You can set up a password but this makes authentication much harder.
 2. Set the ssh-agent service to start automatically and add your key to it, open PowerShell as an Administrator and run
+
 ```bash title="PowerShell (Administrator)"
 Get-Service ssh-agent | Set-Service -StartupType Automatic
 Start-Service ssh-agent
 ssh-add ~/.ssh/id_ed25519
 ```
+
 3. Now run `Get-Content ~/.ssh/id_ed25519.pub | clip`, this copies the key directly into your clipboard.
 4. Next go to github.com, click your profile in the top right and hit settings
 5. In the settings menu click `SSH and GPG keys` then click `New SSH key` on that page.
 6. Make sure the new key's type is an Authentication key, give the key an appropriate name and then paste the contents that we copied earlier into the box.
 7. run this command in your terminal
+
 ```bash title="PowerShell"
 New-Item -Path ~\.ssh\config -ItemType File -Force
 @"
@@ -91,41 +107,56 @@ Host *
     IdentityFile ~/.ssh/id_ed25519
 "@ | Add-Content ~\.ssh\config
 ```
+
 8. Test that this works by running `ssh -T git@github.com` this should show a message about succesful authentication to github.
 
-<Callout type="warning" title="Warning"> 
-This includes an extra hoop to jump through with repos you are going to be contributing to. When you clone a new repo make sure to hit the `code` button and then hit `SSH` then copy that link and then git clone using that SSH link
+<Callout type="warning" title="Warning">
+    This includes an extra hoop to jump through with repos you are going to be contributing to. When
+    you clone a new repo make sure to hit the `code` button and then hit `SSH` then copy that link
+    and then git clone using that SSH link
 </Callout>
 
 ## Visual Studio Code
+
 Next we will lead you through the setup for VSCode and all of the extensions we need.
 
 1. Run
+
 ```bash title="PowerShell"
 winget install -e --id Microsoft.VisualStudioCode
 ```
+
 2. Once the install finishes press the `Windows` key and type in `Visual Studio Code` to open it
 3. Follow the installation steps that VSCode prompts you for.
 4. Open the Command Palette (`Ctrl + Shift + P`), search for `Shell Command: Install 'code' command in PATH`, and run it. This lets you run `code .` from the terminal to open the current folder in VSCode, which is handy once you start cloning repos.
 5. Close and reopen PowerShell then test it by running
+
 ```bash title="PowerShell"
 code --version
 ```
+
 You should see a version number and commit hash printed out.
 
 6. We use Dev Containers on our repos so everyone gets an identical, pre-configured environment instead of installing tools by hand. Install the following extensions from the Extensions view (`Ctrl + Shift + X`):
     - [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) (`ms-vscode-remote.remote-containers`), by Microsoft
     - [Container Tools](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-containers) (`ms-azuretools.vscode-containers`), by Microsoft
 
-<Callout type="note" title="Naming">
-    The marketplace has several similarly named container/Docker extensions. Search by the extension ID above (or paste it into the Extensions view search bar) to make sure you install the right one.
+<Callout type="info" title="Naming">
+    The marketplace has several similarly named container/Docker extensions. Search by the extension
+    ID above (or paste it into the Extensions view search bar) to make sure you install the right
+    one.
 </Callout>
 
 7. Nearly finished, now take the [URC-2023 Repo](https://github.com/TrickfireRobotics/urc-2023.git) copy the link and `git clone https://github.com/TrickfireRobotics/urc-2023.git` the repo into an appropriate folder, then run `code urc-2023` and vscode should open with this new repository opened
 8. A notification should popup that has an option that says "Reopen in Container" click that and VSCode will start building and creating the devcontainer, make sure that Docker Desktop is running in the background before you do this otherwise this will fail.
 
-<Callout type="note" title="Performance tip">
-    Docker Desktop on Windows is noticeably slower building and watching files that live on your `C:\` drive compared to files inside WSL2. If your dev container feels sluggish, an optional next step is installing the [WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl) extension (`ms-vscode-remote.remote-wsl`), cloning the repo from inside your Ubuntu terminal instead (into `~/repos` for example), and running `code .` from there. This isn't required to get started.
+<Callout type="info" title="Performance tip">
+    Docker Desktop on Windows is noticeably slower building and watching files that live on your
+    `C:\` drive compared to files inside WSL2. If your dev container feels sluggish, an optional
+    next step is installing the
+    [WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl) extension
+    (`ms-vscode-remote.remote-wsl`), cloning the repo from inside your Ubuntu terminal instead (into
+    `~/repos` for example), and running `code .` from there. This isn't required to get started.
 </Callout>
 
 A majority of our development is done inside of devcontainers, this is something that you will repeat in the future as you take on more projects.
