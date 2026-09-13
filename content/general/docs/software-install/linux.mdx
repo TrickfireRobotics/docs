@@ -1,0 +1,142 @@
+---
+title: Linux
+description: installing docker, git, and visual studio code on a linux machine.
+---
+
+<Callout type="info" title="Shell">
+    Different Linux distributions ship with different shells by default. If the bash commands don't
+    work for you, try the fish commands instead.
+</Callout>
+
+## Docker
+
+1. Open a terminal and run the following commands to install docker
+
+<Tabs items={["Bash", "Fish"]} groupId="shell" persist>
+    <Tab value="Bash">
+
+    ```bash
+    # Update your package manager and install docker
+    sudo apt-get update
+    sudo apt-get install -y docker.io docker-compose-v2 docker-buildx containerd
+    ```
+
+    </Tab>
+    <Tab value="Fish">
+
+    ```fish
+    # Update your package manager and install docker
+    sudo pacman -Syu
+    sudo pacman -S docker docker-compose docker-buildx containerd
+    ```
+
+    </Tab>
+
+</Tabs>
+
+2. Add your user to the docker group
+
+<Callout type="info" title="OPTIONAL: Docker group">
+    If you don't do this, you'll have to run every docker command with `sudo`
+</Callout>
+
+<Tabs items={["Bash", "Fish"]} groupId="shell" persist>
+    <Tab value="Bash">
+
+    ```bash
+    sudo usermod -aG docker $USER
+    ```
+
+    </Tab>
+    <Tab value="Fish">
+
+    ```fish
+    sudo gpasswd -a $USER docker
+    ```
+
+    </Tab>
+
+</Tabs>
+
+3. Start the docker service and enable it to start on boot
+
+<Tabs items={["Bash", "Fish"]} groupId="shell" persist>
+    <Tab value="Bash">
+
+    ```bash
+    sudo systemctl enable --now docker
+    ```
+
+    </Tab>
+    <Tab value="Fish">
+
+    ```fish
+    sudo systemctl enable --now docker
+    ```
+
+    </Tab>
+
+</Tabs>
+
+Log out and back in for the changes to take effect
+
+4. Check docker is installed and working
+
+<Callout type="info" title="Docker group">
+    If you didn't add your user to the docker group, you'll need to run this command with `sudo`
+</Callout>
+
+<Tabs items={["Bash", "Fish"]} groupId="shell" persist>
+    <Tab value="Bash">
+
+    ```bash
+    sudo docker --version
+    docker --version
+    docker run hello-world
+    ```
+
+    </Tab>
+    <Tab value="Fish">
+
+    ```fish
+    sudo docker --version
+    docker --version
+    docker run hello-world
+    ```
+
+    </Tab>
+
+</Tabs>
+
+You should see a few messages about docker running and how it pulled that message down.
+
+### Docker debugging
+
+- The command `docker ps` will show you all the running containers
+- `docker ps -a` will show you all containers, including stopped ones
+- If you get a message about not being able to connect to the docker daemon, run `sudo systemctl status docker` to check if the service is running. If it's not, run `sudo systemctl start docker` to start it.
+- Try uninstalling using the commands below and reinstalling with the commands above for a fresh install. If this doesn't work send a message in `general-software` and someone will respond back to you
+
+<Tabs items={["Bash", "Fish"]} groupId="shell" persist>
+    <Tab value="Bash">
+
+    ```bash
+    sudo apt-get purge -y docker.io docker-compose-v2 docker-buildx containerd
+    ```
+
+    </Tab>
+    <Tab value="Fish">
+
+    ```fish
+    sudo pacman -Rns docker docker-compose docker-buildx containerd
+    ```
+
+    </Tab>
+
+</Tabs>
+
+## Git
+
+### Optional Git configuration
+
+## Visual Studio Code

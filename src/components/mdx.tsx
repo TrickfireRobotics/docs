@@ -8,11 +8,11 @@ import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import type { MDXComponents } from "mdx/types";
 
 function Tabs({ className, ...props }: ComponentProps<typeof TabsBase>) {
-    return <TabsBase className={cn("bg-fd-card shadow-md", className)} {...props} />;
+    return <TabsBase className={cn("shadow-md", className)} {...props} />;
 }
 
 function Tab({ className, ...props }: ComponentProps<typeof TabBase>) {
-    return <TabBase className={cn("bg-fd-card", className)} {...props} />;
+    return <TabBase className={className} {...props} />;
 }
 
 function toCssWidth(width?: string | number): string | undefined {
