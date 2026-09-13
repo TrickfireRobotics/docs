@@ -137,6 +137,105 @@ You should see a few messages about docker running and how it pulled that messag
 
 ## Git
 
+1. Go to the [Github website](https://github.com) and create an account if you don't already have one. (Make sure to remember the username and email you used to create the account.)
+2. Open your terminal and run the following commands to install git
+
+<Tabs items={["Bash", "Fish"]} groupId="shell" persist>
+    <Tab value="Bash">
+
+    ```bash
+    sudo apt-get update
+    sudo apt-get install -y git
+    ```
+
+    </Tab>
+    <Tab value="Fish">
+
+    ```fish
+    sudo pacman -Syu
+    sudo pacman -S git
+    ```
+
+    </Tab>
+
+</Tabs>
+
+3. Close and reopen your terminal (this refreshes your PATH) and check it exists by running `git --version`
+4. Next to configure your username run
+
+<Tabs items={["Bash", "Fish"]} groupId="shell" persist>
+    <Tab value="Bash">
+
+    ```bash
+    git config --global user.name "Your username here"
+    git config --global user.email "Your email here"
+    ```
+
+    </Tab>
+    <Tab value="Fish">
+
+    ```fish
+    git config --global user.name "Your username here"
+    git config --global user.email "Your email here"
+    ```
+
+    </Tab>
+
+</Tabs>
+
 ### Optional Git configuration
+
+If your GitHub account is used on multiple machines you could run into issues with GitHub not properly authenticating.
+If this is the case, follow these steps to set up SSH keys for authentication
+
+1. Generate an ssh key pair and add it to the ssh-agent
+
+<Tabs items={["Bash", "Fish"]} groupId="shell" persist>
+    <Tab value="Bash">
+
+    ```bash
+    ssh-keygen -t ed25519 -C "Your email here"
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/id_ed25519
+    ```
+
+    </Tab>
+    <Tab value="Fish">
+
+    ```fish
+    ssh-keygen -t ed25519 -C "Your email here"
+    eval (ssh-agent -c)
+    ssh-add ~/.ssh/id_ed25519
+    ```
+
+    </Tab>
+
+</Tabs>
+
+2. Copy the public key to your clipboard (copy the output of the command below)
+
+<Tabs items={["Bash", "Fish"]} groupId="shell" persist>
+    <Tab value="Bash">
+
+    ```bash
+    cat ~/.ssh/id_ed25519.pub
+    ```
+
+    </Tab>
+    <Tab value="Fish">
+
+    ```fish
+    cat ~/.ssh/id_ed25519.pub
+    ```
+
+    </Tab>
+
+</Tabs>
+
+3. Go to github.com, click your profile in the top right and hit settings
+4. In the settings menu click `SSH and GPG keys` then click `New SSH key` on that page
+5. Make sure the new key's type is an Authentication key, give the key an appropriate name and then paste the contents that we copied earlier into the box.
+6. Test that this works by running `ssh -T git@github.com`
+7. When you clone a new repo make sure to hit the `code` button and hit `SSH` then copy that link and git clone
 
 ## Visual Studio Code
