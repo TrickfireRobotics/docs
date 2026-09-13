@@ -15,6 +15,15 @@
                 { "label": "Repository Practices", "slug": "github/repo-practices" },
                 { "label": "Commit Rebasing", "slug": "github/rebasing" }
             ]
+        },
+        {
+            "label": "Software Install",
+            "icon": "Download",
+            "items": [
+                { "label": "macOS", "slug": "software-install/macos" },
+                { "label": "Windows", "slug": "software-install/windows" },
+                { "label": "Linux", "slug": "software-install/linux" }
+            ]
         }
     ]
 }
