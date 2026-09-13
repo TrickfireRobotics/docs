@@ -6,6 +6,7 @@ const DEFAULT_TITLES: Record<string, string> = {
     shell: "Terminal",
     shellscript: "Terminal",
     zsh: "Terminal",
+    fish: "Terminal",
     env: "Terminal",
     json: "JSON",
     json5: "JSON",

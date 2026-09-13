@@ -12,6 +12,11 @@ export default defineConfig({
             langAlias: {
                 env: "bash",
             },
+            icon: {
+                shortcuts: {
+                    fish: "shellscript",
+                },
+            },
             transformers: [
                 ...(rehypeCodeDefaultOptions.transformers ?? []),
                 transformerDefaultTitle(),
