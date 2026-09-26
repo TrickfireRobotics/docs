@@ -8,6 +8,7 @@ ROS stands for Robot Operating System. Despite the name it is not an operating s
 [Example repo lives here](https://github.com/CPrutean/ros-example.git)
 
 ##Example Python Node
+
 ```python title="ExampleNode.py"
 import rclpy
 from rclpy.node import Node
@@ -49,6 +50,7 @@ if __name__ == "__main__":
 ```
 
 This node creates a publisher and a subscriber. `rclpy.spin()` keeps the node running so its callbacks are processed until you stop it.
+
 ## Example C++ node
 
 ```cpp title="ExampleNode.hpp"
@@ -66,7 +68,9 @@ public:
   explicit ExampleCppNode();
 };
 ```
+
 Source code here
+
 ```cpp title="ExamleNode.cpp
 
 ExampleExampleCppNode() : Node("ExampleCppNode") {
@@ -125,7 +129,7 @@ void ExampletimerCallback() {
         RCLCPP_INFO(this->get_logger(), "Received value was %ld",
                     f.get()->response);
       });
-  
+
 }
 
 void ExamplemessageCallback(
@@ -134,7 +138,6 @@ void ExamplemessageCallback(
               ptr.b);
 }
 ```
-
 
 ## Nodes
 
