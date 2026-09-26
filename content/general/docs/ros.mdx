@@ -7,14 +7,7 @@ ROS stands for Robot Operating System. Despite the name it is not an operating s
 
 [Example repo lives here](https://github.com/CPrutean/ros-example.git)
 
-## Basic code integration setup
-
-Installing the ROS packages for Python is the simpler part, so we start there. C++ needs some extra build setup.
-
-### Python integration
-
-The Python packages are installed when you install `ros-<distribution>-desktop`, which installs the ROS packages and links them together. To use ROS from Python, import the modules you need after sourcing your ROS installation's `setup.bash` (or `setup.zsh`) file. Below is a very basic node.
-
+##Example Python Node
 ```python title="ExampleNode.py"
 import rclpy
 from rclpy.node import Node
@@ -56,38 +49,9 @@ if __name__ == "__main__":
 ```
 
 This node creates a publisher and a subscriber. `rclpy.spin()` keeps the node running so its callbacks are processed until you stop it.
+## Example C++ node
 
-### C++ integration
-
-#### CMake setup
-
-C++ packages are built with `ament_cmake`. Add the following to your `CMakeLists.txt`, along with a `find_package` call for every package you depend on.
-
-```cmake
-find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
-find_package(messages REQUIRED)
-```
-
-Then define the executable, link its dependencies, and install it so `ros2 run` can find it.
-
-```cmake
-add_executable(ros-node src/example_cpp_node.cpp)
-# Add the dependencies for our project and link them to the executable we define
-ament_target_dependencies(ros-node rclcpp std_msgs messages)
-
-install(TARGETS ros-node DESTINATION lib/${PROJECT_NAME})
-```
-
-<Callout type="info" title="Newer ROS distributions">
-    `ament_target_dependencies` still works but is deprecated in newer distributions in favor of
-    `target_link_libraries`. Check which one your distribution expects.
-</Callout>
-
-#### Example node
-
-```cpp title="ExampleNode.cpp"
+```cpp title="ExampleNode.hpp"
 class ExampleCppNode : public rclcpp::Node {
   rclcpp::Publisher<messages::msg::ExampleMsg>::SharedPtr m_publisher;
   rclcpp::Subscription<messages::msg::ExampleMsg>::SharedPtr m_subscriber;
@@ -101,8 +65,77 @@ public:
   void timerCallback();
   explicit ExampleCppNode();
 };
-This is just the class definition of that Exmaple C++ node, you can find the function definitions in the `src` folder in the example repo linked above.
 ```
+Source code here
+```cpp title="ExamleNode.cpp
+
+ExampleExampleCppNode() : Node("ExampleCppNode") {
+  using namespace messages::msg;
+  using namespace std::chrono_literals;
+  m_publisher = this->create_publisher<ExampleMsg>("CppPublisher", 10);
+  /* This is the same as the way below, we create a `placeholder` value that is
+  some dynamic argument, same as a lambda m_subscriber =
+  this->create_subscription<ExampleMsg>( "PythonPublisher", 10,
+      std::bind(&ExamplemessageCallback, this, _1));
+
+  */
+  // A subscription needs some callable object, so we create this lambda to pass
+  // to it
+  auto functionLambda = [this](const ExampleMsg &msg) {
+    this->messageCallback(msg);
+  };
+  m_subscriber = this->create_subscription<ExampleMsg>("PythonPublisher", 10,
+                                                       functionLambda);
+
+  std::chrono::milliseconds duration{500};
+  using namespace messages::srv;
+  auto serviceLambda = [this](ExampleService::Request::SharedPtr req,
+                              ExampleService::Response::SharedPtr resp) {
+    resp->response = req->a + req->b;
+    return resp;
+  };
+  m_service =
+      this->create_service<ExampleService>("cpp_service", serviceLambda);
+
+  m_client = this->create_client<ExampleService>("python_service");
+  auto wait_res = m_client->wait_for_service(std::chrono::seconds(10));
+  if (!wait_res) {
+    RCLCPP_ERROR(this->get_logger(), "Failed to initialize service");
+  }
+
+  m_timer = this->create_timer(duration,
+                               std::bind(&ExampletimerCallback, this));
+}
+
+void ExampletimerCallback() {
+  using namespace messages::msg;
+  ExampleMsg msg{};
+  msg.a = rand();
+  msg.b = rand();
+  this->m_publisher->publish(msg);
+  auto request =
+      std::make_shared<messages::srv::ExampleService::Request>();
+  request->a = rand();
+  request->b = rand();
+  // Don't spin from inside a callback, the executor is already spinning this
+  // node. Handle the response asynchronously instead.
+  m_client->async_send_request(
+      request,
+      [this](rclcpp::Client<messages::srv::ExampleService>::SharedFuture f) {
+        RCLCPP_INFO(this->get_logger(), "Received value was %ld",
+                    f.get()->response);
+      });
+  
+}
+
+void ExamplemessageCallback(
+    const messages::msg::ExampleMsg &ptr) {
+  RCLCPP_INFO(this->get_logger(), "New data found A: %ld, B: %ld", ptr.a,
+              ptr.b);
+}
+```
+
+This is just the class definition of that Exmaple C++ node, you can find the function definitions in the `src` folder in the example repo linked above.
 
 ## Nodes
 
