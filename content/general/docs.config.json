@@ -24,6 +24,7 @@
                 { "label": "Writing Classes", "slug": "cpp/classes" }
             ]
         },
+        { "label": "ROS 2", "slug": "ros" },
         {
             "label": "Software Install",
             "icon": "Download",

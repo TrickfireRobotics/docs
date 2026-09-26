@@ -1,0 +1,414 @@
+---
+title: ROS 2
+description: Nodes, topics, publishers, subscribers, and services in ROS 2 with Python and C++ examples
+---
+
+ROS stands for Robot Operating System. Despite the name it is not an operating system but a framework of libraries and tools for building robot software. It splits a robot's software into small programs called **nodes** that communicate with each other. These docs cover ROS 2, which is what the `ros2` command line tool belongs to.
+
+[Example repo lives here](https://github.com/CPrutean/ros-example.git)
+
+## Basic code integration setup
+
+Installing the ROS packages for Python is the simpler part, so we start there. C++ needs some extra build setup.
+
+### Python integration
+
+The Python packages are installed when you install `ros-<distribution>-desktop`, which installs the ROS packages and links them together. To use ROS from Python, import the modules you need after sourcing your ROS installation's `setup.bash` (or `setup.zsh`) file. Below is a very basic node.
+
+```python title="ExampleNode.py"
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String
+
+
+class BasicNode(Node):
+    def __init__(self):
+        super().__init__("BasicNodePractice")
+        # Create a publisher we can publish data to
+        self._publisher = self.create_publisher(String, "our_publisher", 10)
+        self._subscriber = self.create_subscription(
+            String, "some_other_topic", self._subscriber_callback, 10
+        )
+
+    def publish_some_data(self, data: str):
+        pub_data = String()
+        pub_data.data = data
+        self._publisher.publish(pub_data)
+
+    def _subscriber_callback(self, msg: String):
+        print("Received data: " + msg.data)
+
+
+def main():
+    rclpy.init()
+    basic_node = BasicNode()
+    try:
+        rclpy.spin(basic_node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        basic_node.destroy_node()
+        rclpy.shutdown()
+
+
+if __name__ == "__main__":
+    main()
+```
+
+This node creates a publisher and a subscriber. `rclpy.spin()` keeps the node running so its callbacks are processed until you stop it.
+
+### C++ integration
+
+#### CMake setup
+
+C++ packages are built with `ament_cmake`. Add the following to your `CMakeLists.txt`, along with a `find_package` call for every package you depend on.
+
+```cmake
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(messages REQUIRED)
+```
+
+Then define the executable, link its dependencies, and install it so `ros2 run` can find it.
+
+```cmake
+add_executable(ros-node src/example_cpp_node.cpp)
+# Add the dependencies for our project and link them to the executable we define
+ament_target_dependencies(ros-node rclcpp std_msgs messages)
+
+install(TARGETS ros-node DESTINATION lib/${PROJECT_NAME})
+```
+
+<Callout type="info" title="Newer ROS distributions">
+    `ament_target_dependencies` still works but is deprecated in newer distributions in favor of
+    `target_link_libraries`. Check which one your distribution expects.
+</Callout>
+
+#### Example node
+
+```cpp title="ExampleNode.cpp"
+#include <ExampleCppNode/example_cpp_node.hpp>
+#include <chrono>
+#include <cstdlib>
+/*
+ Normally you wouldn't define the functions in the same file as main. This is
+ just to show the include and src pattern of many C++ projects.
+*/
+
+CppNode::ExampleCppNode::ExampleCppNode() : Node("ExampleCppNode") {
+  using namespace messages::msg;
+  using namespace std::chrono_literals;
+  m_publisher = this->create_publisher<ExampleMsg>("CppPublisher", 10);
+
+  // A subscription needs some callable object, so we create this lambda to pass
+  // to it. std::bind (shown later) is an alternative.
+  auto functionLambda = [this](const ExampleMsg &msg) {
+    this->messageCallback(msg);
+  };
+  m_subscriber = this->create_subscription<ExampleMsg>("PythonPublisher", 10,
+                                                       functionLambda);
+
+  std::chrono::milliseconds duration{500};
+  m_timer = this->create_timer(duration,
+                               std::bind(&ExampleCppNode::timerCallback, this));
+}
+
+void CppNode::ExampleCppNode::timerCallback() {
+  using namespace messages::msg;
+  ExampleMsg msg{};
+  msg.a = rand();
+  msg.b = rand();
+  this->m_publisher->publish(msg);
+}
+
+void CppNode::ExampleCppNode::messageCallback(
+    const messages::msg::ExampleMsg &msg) {
+  RCLCPP_INFO(this->get_logger(), "New data found A: %ld, B: %ld", msg.a,
+              msg.b);
+}
+
+int main(int argc, char **argv) {
+  rclcpp::init(argc, argv);
+  rclcpp::spin(std::make_shared<CppNode::ExampleCppNode>());
+  rclcpp::shutdown();
+  return 0;
+}
+```
+
+## Nodes
+
+A node is a single program in a ROS system that does one job, such as reading a sensor or driving a motor. You can run a node with
+
+```sh
+ros2 run <package name> <executable name>
+```
+
+List all running nodes with
+
+```sh
+ros2 node list
+```
+
+### Remapping a node name
+
+Remapping lets us reassign default ROS names such as the node name, topic names, and service names when a node is launched.
+
+Remapping does not rename a node that is already running. It starts a new instance of the executable under a different name. For example, if `turtlesim` and `teleop_turtle` are already running, this starts a second turtlesim node named `my_turtle`:
+
+```sh
+ros2 run turtlesim turtlesim_node --ros-args --remap __node:=my_turtle
+```
+
+`ros2 node list` will then return
+
+```
+/my_turtle
+/turtlesim
+/teleop_turtle
+```
+
+### Examining a node
+
+Run `ros2 node info <node name>` to see the topics, services, and actions a node uses. For example, `ros2 node info /my_turtle` prints output like this.
+
+```
+/my_turtle
+  Subscribers:
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    /turtle1/cmd_vel: geometry_msgs/msg/Twist
+  Publishers:
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    /rosout: rcl_interfaces/msg/Log
+    /turtle1/color_sensor: turtlesim_msgs/msg/Color
+    /turtle1/pose: turtlesim_msgs/msg/Pose
+  Service Servers:
+    /clear: std_srvs/srv/Empty
+    /kill: turtlesim_msgs/srv/Kill
+    /my_turtle/describe_parameters: rcl_interfaces/srv/DescribeParameters
+    /my_turtle/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+    /my_turtle/get_parameters: rcl_interfaces/srv/GetParameters
+    /my_turtle/list_parameters: rcl_interfaces/srv/ListParameters
+    /my_turtle/set_parameters: rcl_interfaces/srv/SetParameters
+    /my_turtle/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+    /reset: std_srvs/srv/Empty
+    /spawn: turtlesim_msgs/srv/Spawn
+    /turtle1/set_pen: turtlesim_msgs/srv/SetPen
+    /turtle1/teleport_absolute: turtlesim_msgs/srv/TeleportAbsolute
+    /turtle1/teleport_relative: turtlesim_msgs/srv/TeleportRelative
+  Service Clients:
+
+  Action Servers:
+    /turtle1/rotate_absolute: turtlesim_msgs/action/RotateAbsolute
+  Action Clients:
+```
+
+This shows which topics the node publishes and subscribes to. Here, `/my_turtle` subscribes to `/parameter_events` and `/turtle1/cmd_vel`.
+
+## Topics
+
+Topics are meant for continuous streams of data, such as sensor readings. They provide an asynchronous, one-way way to send data from publishers to subscribers.
+
+You can define your own message type in a `.msg` file, which looks something like this.
+
+```
+int32 x
+int32 y
+```
+
+Write the field type first and then the field name. See the [ROS 2 interface documentation](https://docs.ros.org/en/rolling/Concepts/Basic/About-Interfaces.html) for more information.
+
+### Topic statistics
+
+Topic statistics are built-in measurements for a topic, such as how old a message is when it arrives at a subscriber and the average time between messages. They are disabled by default and are enabled per subscription. Statistics are only available for message types that have a header with a timestamp. In C++ you enable them through the subscription options:
+
+```cpp title="ExampleCppNode"
+rclcpp::SubscriptionOptions options;
+options.topic_stats_options.state = rclcpp::TopicStatisticsState::Enable;
+```
+
+Pass `options` as the last argument to `create_subscription`. The statistics are published on the `/statistics` topic by default.
+
+## Publishers and subscribers
+
+One of the main concepts in ROS is publishers and subscribers. The node examples above each define a publisher and a subscriber. A publisher sends data into a topic.
+
+Think of the publisher as a talker and the subscriber as a listener: the publisher broadcasts data on a radio channel (a topic) and the subscriber listens on that channel and does something with the data. In the examples above we only print the data we receive.
+
+For any given topic there can be multiple publishers and multiple subscribers.
+
+### Code definition of publishers and subscribers
+
+We define a publisher with a message type (usually a class name), a topic name as a string, and an integer queue depth. The queue depth is the shorthand for a quality of service (QoS) profile that keeps the last N messages if the subscriber can't keep up.
+
+In Python:
+
+```python title="ExamplePythonNode"
+self._publisher = self.create_publisher(ExampleMsg, "PythonPublisher", 10)
+```
+
+In C++:
+
+```cpp title="ExampleCppNode"
+m_publisher = this->create_publisher<ExampleMsg>("CppPublisher", 10);
+```
+
+The angle brackets are a C++ template, a feature we will cover in other documents. We provide the message type inside the brackets. Note that C++ takes the topic name and queue depth as arguments, and Python takes the message type as its first argument.
+
+A subscriber takes the same arguments plus a callback function, so it has something to do with each message it receives. Python handles this easily because any callable works, while C++ has a few different options.
+
+In Python:
+
+```python title="ExamplePythonNode"
+self._subscriber = self.create_subscription(
+    ExampleMsg, "CppPublisher", self._subscriber_callback, 10
+)
+```
+
+In C++:
+
+```cpp title="ExampleCppNode"
+auto functionLambda = [this](const ExampleMsg &msg) {
+  this->messageCallback(msg);
+};
+m_subscriber = this->create_subscription<ExampleMsg>("PythonPublisher", 10,
+                                                     functionLambda);
+```
+
+Above we create a lambda that captures a pointer to our own instance and takes a reference to an `ExampleMsg`. The lambda is a callable object that is copied into the subscription.
+
+```cpp title="ExampleCppNode"
+this->create_subscription<ExampleMsg>(
+    "PythonPublisher", 10,
+    std::bind(&ExampleCppNode::messageCallback, this, std::placeholders::_1));
+```
+
+Here we create a callable object with `std::bind`, a C++ standard library function that wraps a function together with some of its arguments. This callable calls the member function `messageCallback` on `this`, and `std::placeholders::_1` forwards the first argument of the call, the message, to it.
+
+## Services
+
+A service in ROS is similar to a function call in most programming languages. You pass it some arguments and it returns a value. Like messages, you define a service in a file. The part above `---` is the request and the part below it is the response.
+
+```
+int64 a
+int64 b
+---
+int64 sum
+```
+
+You can also use predefined service types that ROS provides.
+
+A service has a server and a client. The server provides the response and the client makes the request. The server needs a callback function that receives the request and fills in the response.
+
+Here is how we define a service server.
+
+In Python:
+
+```python title="ExamplePythonNode"
+self.create_service(ExampleService, "python_service", self._service_callback)
+
+def _service_callback(self, request, response):
+    response.sum = request.a + request.b
+    return response
+```
+
+In C++:
+
+```cpp title="ExampleCppNode"
+auto serviceLambda = [](const ExampleService::Request::SharedPtr req,
+                        ExampleService::Response::SharedPtr resp) {
+  resp->sum = req->a + req->b;
+};
+m_service =
+    this->create_service<ExampleService>("cpp_service", serviceLambda);
+```
+
+A C++ service callback fills in the response it is given and returns nothing. In both languages we provide the service type, a service name, and a callback.
+
+Here is how we define a client.
+
+In Python:
+
+```python title="ExamplePythonNode"
+self._client = self.create_client(ExampleService, "cpp_service")
+```
+
+In C++:
+
+```cpp title="ExampleCppNode"
+m_client = this->create_client<ExampleService>("python_service");
+```
+
+## Making requests
+
+<Callout type="warning" title="Blocking calls">
+    A synchronous call blocks its thread until a response arrives. If you make one from inside a
+    callback on a single-threaded executor, the node can never process the response and will
+    deadlock. Keep this in mind when writing synchronous code.
+</Callout>
+
+We show both synchronous and asynchronous requests so you can decide which to use.
+
+### Synchronous approach
+
+In Python:
+
+```python title="ExamplePythonNode"
+request = ExampleService.Request()
+request.a = 123
+request.b = 456
+response = self._client.call(request)
+```
+
+In C++, a client only has an asynchronous send function, so we send the request and then block until the future is ready:
+
+```cpp title="ExampleCppNode"
+auto request = std::make_shared<ExampleService::Request>();
+request->a = 123;
+request->b = 456;
+
+auto future = client->async_send_request(request);
+
+// Block this thread until the response arrives
+if (rclcpp::spin_until_future_complete(node, future) ==
+    rclcpp::FutureReturnCode::SUCCESS) {
+  auto response = future.get();
+  RCLCPP_INFO(node->get_logger(), "Sum: %ld", response->sum);
+} else {
+  RCLCPP_ERROR(node->get_logger(), "Service call failed.");
+}
+```
+
+We send a request and block until we receive a response.
+
+### Asynchronous approach
+
+In Python:
+
+```python title="ExamplePythonNode"
+future = self._client.call_async(request)
+future.add_done_callback(self._client_done)
+
+def _client_done(self, future):
+    self.get_logger().info(f"Service response: {future.result().sum}")
+```
+
+In C++:
+
+```cpp title="ExampleCppNode"
+auto request = std::make_shared<ExampleService::Request>();
+request->a = 123;
+request->b = 456;
+m_client->async_send_request(
+    request,
+    [this](rclcpp::Client<messages::srv::ExampleService>::SharedFuture f) {
+      RCLCPP_INFO(this->get_logger(), "Received value was %ld",
+                  f.get()->sum);
+    });
+```
+
+For an asynchronous request we get a future object back, which represents a response that hasn't arrived yet. We attach a callback that runs when the response is ready and does something with the data.
+
+The main difference is that an asynchronous request does not block the thread, so the node can keep running while it waits for the response.
+
+The example repository uses the asynchronous approach for one main reason. The C++ node and the Python node call each other's services. If one node blocked inside a callback while waiting for the other, and the other did the same, both nodes would freeze waiting on each other.
