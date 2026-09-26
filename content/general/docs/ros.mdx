@@ -88,52 +88,20 @@ install(TARGETS ros-node DESTINATION lib/${PROJECT_NAME})
 #### Example node
 
 ```cpp title="ExampleNode.cpp"
-#include <ExampleCppNode/example_cpp_node.hpp>
-#include <chrono>
-#include <cstdlib>
-/*
- Normally you wouldn't define the functions in the same file as main. This is
- just to show the include and src pattern of many C++ projects.
-*/
+class ExampleCppNode : public rclcpp::Node {
+  rclcpp::Publisher<messages::msg::ExampleMsg>::SharedPtr m_publisher;
+  rclcpp::Subscription<messages::msg::ExampleMsg>::SharedPtr m_subscriber;
+  rclcpp::TimerBase::SharedPtr m_timer;
+  rclcpp::ServiceBase::SharedPtr m_service;
+  rclcpp::Client<messages::srv::ExampleService>::SharedPtr m_client;
 
-CppNode::ExampleCppNode::ExampleCppNode() : Node("ExampleCppNode") {
-  using namespace messages::msg;
-  using namespace std::chrono_literals;
-  m_publisher = this->create_publisher<ExampleMsg>("CppPublisher", 10);
-
-  // A subscription needs some callable object, so we create this lambda to pass
-  // to it. std::bind (shown later) is an alternative.
-  auto functionLambda = [this](const ExampleMsg &msg) {
-    this->messageCallback(msg);
-  };
-  m_subscriber = this->create_subscription<ExampleMsg>("PythonPublisher", 10,
-                                                       functionLambda);
-
-  std::chrono::milliseconds duration{500};
-  m_timer = this->create_timer(duration,
-                               std::bind(&ExampleCppNode::timerCallback, this));
-}
-
-void CppNode::ExampleCppNode::timerCallback() {
-  using namespace messages::msg;
-  ExampleMsg msg{};
-  msg.a = rand();
-  msg.b = rand();
-  this->m_publisher->publish(msg);
-}
-
-void CppNode::ExampleCppNode::messageCallback(
-    const messages::msg::ExampleMsg &msg) {
-  RCLCPP_INFO(this->get_logger(), "New data found A: %ld, B: %ld", msg.a,
-              msg.b);
-}
-
-int main(int argc, char **argv) {
-  rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<CppNode::ExampleCppNode>());
-  rclcpp::shutdown();
-  return 0;
-}
+public:
+  void messageCallback(const messages::msg::ExampleMsg &ptr);
+  // Small function that publishes data a few times a second
+  void timerCallback();
+  explicit ExampleCppNode();
+};
+This is just the class definition of that Exmaple C++ node, you can find the function definitions in the `src` folder in the example repo linked above.
 ```
 
 ## Nodes
