@@ -1,0 +1,114 @@
+---
+title: Writing Classes
+description: Defining a C++ class with a header, source file, and usage example
+---
+
+A class groups related data and functions into a type you can use in your program. An **object** is one instance of that type: a `Motor` class describes what a motor stores and does, while `leftMotor` and `rightMotor` are separate objects with their own values.
+
+Here is a small `Motor` class that stores a name and a requested speed. It does not communicate with hardware.
+
+## Writing the header file
+
+The header describes the class so other source files can use it. The source file implements the functions declared in the header.
+
+```cpp title="motor.h"
+#ifndef TRICKFIRE_EXAMPLE_MOTOR_H
+#define TRICKFIRE_EXAMPLE_MOTOR_H
+
+#include <string>
+
+class Motor {
+public:
+    explicit Motor(const std::string& name);
+
+    void setSpeed(double speed);
+    void stop();
+    double getSpeed() const;
+
+private:
+    std::string name;
+    double speed;
+};
+
+#endif
+```
+
+### Header guards and includes
+
+The `#ifndef`, `#define`, and `#endif` lines form a **header guard**. They are required at the start of each header file.
+
+Include the headers needed by the types your header uses. Since `Motor` contains a `std::string`, `motor.h` includes `<string>` itself.
+
+### Public and private members
+
+Public and private members are the same concept as you may have learned about in Java.
+
+- **`public`** members form the interface other code can use, such as `setSpeed()`.
+- **`private`** members are internal data or helpers. Code outside the class cannot access them directly.
+
+### Constructors and member functions
+
+A **constructor** initializes an object. It has the same name as the class and no return type. `explicit` prevents this single-argument constructor from being used for an implicit conversion to `Motor`.
+
+The parameter `const std::string& name` accepts a string by reference without allowing this function to modify it through that reference. Our constructor copies it into `name`, so the object owns its stored name.
+
+Member functions declare a return type, name, and parameters. `void` means that `setSpeed()` and `stop()` return no value, while `getSpeed()` returns a `double`. The `const` after `getSpeed()` means it can be called on a const object and cannot modify ordinary member variables through that call.
+
+## Writing the source file
+
+```cpp title="motor.cpp"
+#include "motor.h"
+
+Motor::Motor(const std::string& name)
+    : name{name} {
+}
+
+// alternate constructor syntax
+// Motor::motor(const std::string& name) {
+//     this->name = name;
+// }
+
+void Motor::setSpeed(double speed) {
+    speed = speed;
+}
+
+void Motor::stop() {
+    speed = 0.0;
+}
+
+double Motor::getSpeed() const {
+    return speed;
+}
+```
+
+Include your own header so the compiler can check that these implementations match its declarations. Use quotes for project headers, such as `"motor.h"`, and angle brackets for standard library headers, such as `<string>`.
+
+`Motor::` identifies each function as a member of `Motor`. The constructor's **member initializer list**, `: name{name}`, initializes `name` before the constructor body runs. `speed` uses the default member initializer of `0.0` from the header.
+
+Keep signatures consistent between the two files, including parameter types and the trailing `const`. For example, defining `double Motor::getSpeed()` without `const` would not match the declaration in this header.
+
+## Using the class
+
+```cpp title="main.cpp"
+#include "motor.h"
+
+#include <iostream>
+
+int main() {
+    Motor leftMotor{"left"};
+    Motor rightMotor{"right"};
+
+    leftMotor.setSpeed(0.5);
+    rightMotor.setSpeed(0.25);
+
+    std::cout << "Left speed: " << leftMotor.getSpeed() << '\n';
+    std::cout << "Right speed: " << rightMotor.getSpeed() << '\n';
+
+    leftMotor.stop();
+    std::cout << "Left after stopping: " << leftMotor.getSpeed() << '\n';
+
+    return 0;
+}
+```
+
+Use the dot operator to call a public function on an object. Each object stores its own `name` and `speed`, so changing `leftMotor` does not change `rightMotor`.

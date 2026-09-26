@@ -17,6 +17,14 @@
             ]
         },
         {
+            "label": "C++",
+            "items": [
+                { "label": "Overview", "slug": "cpp/general" },
+                { "label": "Common Data Types", "slug": "cpp/data-types" },
+                { "label": "Writing Classes", "slug": "cpp/classes" }
+            ]
+        },
+        {
             "label": "Software Install",
             "icon": "Download",
             "items": [
