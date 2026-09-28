@@ -7,7 +7,7 @@ ROS stands for Robot Operating System. Despite the name it is not an operating s
 
 [Example repo lives here](https://github.com/CPrutean/ros-example.git)
 
-##Example Python Node
+## Example Python Node
 
 ```python title="ExampleNode.py"
 import rclpy
@@ -53,6 +53,8 @@ This node creates a publisher and a subscriber. `rclpy.spin()` keeps the node ru
 
 ## Example C++ node
 
+Header file for the node here
+
 ```cpp title="ExampleNode.hpp"
 class ExampleCppNode : public rclcpp::Node {
   rclcpp::Publisher<messages::msg::ExampleMsg>::SharedPtr m_publisher;
@@ -69,7 +71,7 @@ public:
 };
 ```
 
-Source code here
+Source code for the node here
 
 ```cpp title="ExamleNode.cpp
 
