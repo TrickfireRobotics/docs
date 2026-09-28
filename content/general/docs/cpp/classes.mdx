@@ -112,3 +112,35 @@ int main() {
 ```
 
 Use the dot operator to call a public function on an object. Each object stores its own `name` and `speed`, so changing `leftMotor` does not change `rightMotor`.
+
+
+## Templates
+
+Templates are useful feature when programming. They allow you to create a container class or a function with a generic type.
+
+Here is a small example of a template function
+
+```cpp title="Template function in C++"
+template <typename T>
+T larger(T a, T b) {
+    // this can be read as if a is greater than b, then return a, else return b
+    return (a > b) ? a : b;
+}
+```
+
+If the call ```larger(3 ,5)``` was made, the function would not strictly need to be a template function as the parameters, 3 and 5, are both int types. If you wanted to compare the 
+size of an int and a double, for example, then you would have to make the call ```larger<double>(3, 5.5)```. This does not quite mean that any object can be passed in as an argument to 
+a template function, however. The above calls work because ints can be implicitly type converted to doubles.
+
+### Relating templates to ROS
+
+When writing a ROS node in C++ (rclcpp), you will encounter templates, specifically when writing subscribers and publishsers. For reference, here is an example. More can be found in the **[ROS docs](./../ros)**.
+
+```cpp title="ROS Example"
+m_subscriber = this->create_subscription<ExampleMsg>("PythonPublisher", 10,
+                                                       functionLambda);
+```
+
+In this example, the template class is located within the angle brackets ("< >"). 
+This means that the message type subcribers and publishsers can be specified to whatever is required, assuming you have declared it.
+For example, the type "ExampleMsg" can be replaced with std_msgs::msg::String or geometry_msgs::msg::PoseStamped.
