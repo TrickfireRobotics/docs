@@ -7,24 +7,33 @@ description: installing docker, git, and visual studio code on a macos machine.
 
 To install most of the software we use on a regular basis you will need to install [Homebrew](https://brew.sh/). Homebrew is a MacOS package manager that hosts a large number of packages and software that we use on a frequent basis. To do so follow these steps.
 
-1. Open your MacOS terminal you can do this by hitting `Command + Space` and typing in `Terminal`.
-2. Copy and paste this command into your Terminal
-    <Callout type="info" title="Permissions Note">
-        This will require your Mac's password since it requires some privileged permissions to
-        install the package manager.
-    </Callout>
+<Steps>
+    <Step>
+        Open your MacOS terminal, you can do this by hitting `Command + Space` and typing in `Terminal`.
+    </Step>
+    <Step>
+        Copy and paste this command into your Terminal.
 
-```bash title="Terminal"
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
+        <Callout type="info" title="Permissions Note">
+            This will require your Mac's password since it requires some privileged permissions to
+            install the package manager.
+        </Callout>
 
-3. Next you need to add `brew` into your path. The installer will print a "Next steps" section in your terminal with the exact commands to run for your Mac. Copy and paste those commands into your terminal. On Apple Silicon Macs they will look like this:
+        ```bash title="Terminal"
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        ```
+    </Step>
+    <Step>
+        Next you need to add `brew` into your path. The installer will print a "Next steps" section in your terminal with the exact commands to run for your Mac. Copy and paste those commands into your terminal. On Apple Silicon Macs they will look like this:
 
-```bash title="Terminal"
-echo >> /Users/"${USER}"/.zprofile
-echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/"$USER"/.zprofile
-eval "$(/opt/homebrew/bin/brew shellenv)"
-```
+        ```bash title="Terminal"
+        echo >> /Users/"${USER}"/.zprofile
+        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/"$USER"/.zprofile
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+        ```
+    </Step>
+
+</Steps>
 
 <Callout type="info" title="Intel Macs">
     If you're on an Intel Mac, Homebrew installs to `/usr/local` instead of `/opt/homebrew`, so the
@@ -37,23 +46,30 @@ Page](https://github.com/orgs/Homebrew/discussions)
 
 ## Docker
 
-1. Now that we've installed brew you can easily install docker by running
+<Steps>
+    <Step>
+        Now that we've installed brew you can easily install docker by running
 
-```bash title="Terminal"
-brew install --cask docker
-```
+        ```bash title="Terminal"
+        brew install --cask docker
+        ```
 
-This will install the Docker VM, Docker engine, and Docker desktop app. Make sure you don't forget to add `--cask` or you may not install all required software.
+        This will install the Docker VM, Docker engine, and Docker desktop app. Make sure you don't forget to add `--cask` or you may not install all required software.
+    </Step>
+    <Step>
+        Open Docker by hitting `Command + space` and typing in Docker you will see some permission prompts type in your password and docker will install
+    </Step>
+    <Step>
+        Next to check if docker is working run
 
-2. Open Docker by hitting `Command + space` and typing in Docker you will see some permission prompts type in your password and docker will install
+        ```bash title="Terminal"
+        docker run hello-world
+        ```
 
-3. Next to check if docker is working run
+        You should see a few messages about docker running and how it pulled that message down.
+    </Step>
 
-```bash title="Terminal"
-docker run hello-world
-```
-
-You should see a few messages about docker running and how it pulled that message down.
+</Steps>
 
 ### Docker debugging
 
@@ -64,32 +80,58 @@ If it didn't work try these debug commands.
 
 ## Git
 
-1. Go to the [Github website](https://github.com/) and make an account skip if you have one. Remember the username and email you used to make the account.
-2. Open your terminal and run `brew install git` and check if it exists by running `git`
-3. Next to configure your username run `git config --global user.name "Your username here"` and `git config --global user.email "Your email here"`
+<Steps>
+    <Step>
+        Go to the [Github website](https://github.com/) and make an account skip if you have one.
+        Remember the username and email you used to make the account.
+    </Step>
+    <Step>
+        Open your terminal and run `brew install git` and check if it exists by running `git`
+    </Step>
+    <Step>
+        Next to configure your username run `git config --global user.name "Your username here"` and
+        `git config --global user.email "Your email here"`
+    </Step>
+</Steps>
 
 ### Optional Git configuration
 
 If your Github account is shared across multiple machines, you may run into issues with not being able to push since github wasn't able to properly authenticate, if this is the case follow these steps.
 
-1. Run `ssh-keygen -t ed25519 -C "Your email here"` and follow the prompts on the terminal, You can set up a password but this makes authentication much harder.
-2. Now run `cat ~/.ssh/id_ed25519.pub` and copy that output into you clipboard.
-3. Next go to github.com, click your profile in the top right and hit settings
-4. In the settings menu click `SSH and GPG keys` then click `New SSH key` on that page.
-5. Make sure the new key's type is an Authentication key, give the key an appropriate name and then paste the contents that we copied earlier into the box.
-6. run this command in your terminal
+<Steps>
+    <Step>
+        Run `ssh-keygen -t ed25519 -C "Your email here"` and follow the prompts on the terminal, You can set up a password but this makes authentication much harder.
+    </Step>
+    <Step>
+        Now run `cat ~/.ssh/id_ed25519.pub` and copy that output into you clipboard.
+    </Step>
+    <Step>
+        Next go to github.com, click your profile in the top right and hit settings
+    </Step>
+    <Step>
+        In the settings menu click `SSH and GPG keys` then click `New SSH key` on that page.
+    </Step>
+    <Step>
+        Make sure the new key's type is an Authentication key, give the key an appropriate name and then paste the contents that we copied earlier into the box.
+    </Step>
+    <Step>
+        run this command in your terminal
 
-```bash title="Terminal"
-touch ~/.ssh/config
-echo "Host *
-    IPQoS cs0 cs0
-    AddKeysToAgent yes
-    UseKeychain yes
-    IdentityFile ~/.ssh/id_ed25519
-" >> ~/.ssh/config
-```
+        ```bash title="Terminal"
+        touch ~/.ssh/config
+        echo "Host *
+            IPQoS cs0 cs0
+            AddKeysToAgent yes
+            UseKeychain yes
+            IdentityFile ~/.ssh/id_ed25519
+        " >> ~/.ssh/config
+        ```
+    </Step>
+    <Step>
+        Test that this works by running `ssh -T git@github.com` this should show a message about succesful authentication to github.
+    </Step>
 
-7. Test that this works by running `ssh -T git@github.com` this should show a message about succesful authentication to github.
+</Steps>
 
 <Callout type="warning" title="Warning">
     This includes an extra hoop to jump through with repos you are going to be contributing to. When
@@ -101,33 +143,52 @@ echo "Host *
 
 Next we will lead you through the setup for VSCode and all of the extensions we need.
 
-1. Run `brew install --cask visual-studio-code`
-2. Once the install finishes press `Command + Space` and open VSCode
-3. Follow the installation steps that VSCode prompts you for.
-4. Open the Command Palette (`Command + Shift + P`), search for `Shell Command: Install 'code' command in PATH`, and run it. This lets you run `code .` from the terminal to open the current folder in VSCode, which is handy once you start cloning repos.
-5. Test it by opening a new terminal window and running
+<Steps>
+    <Step>
+        Run `brew install --cask visual-studio-code`
+    </Step>
+    <Step>
+        Once the install finishes press `Command + Space` and open VSCode
+    </Step>
+    <Step>
+        Follow the installation steps that VSCode prompts you for.
+    </Step>
+    <Step>
+        Open the Command Palette (`Command + Shift + P`), search for `Shell Command: Install 'code' command in PATH`, and run it. This lets you run `code .` from the terminal to open the current folder in VSCode, which is handy once you start cloning repos.
+    </Step>
+    <Step>
+        Test it by opening a new terminal window and running
 
-```bash title="Terminal"
-code --version
-```
+        ```bash title="Terminal"
+        code --version
+        ```
 
-You should see a version number and commit hash printed out.
+        You should see a version number and commit hash printed out.
+    </Step>
+    <Step>
+        We use Dev Containers on our repos so everyone gets an identical, pre-configured environment instead of installing tools by hand. Install the following extensions from the Extensions view (`Command + Shift + X`):
 
-6. We use Dev Containers on our repos so everyone gets an identical, pre-configured environment instead of installing tools by hand. Install the following extensions from the Extensions view (`Command + Shift + X`):
-    - [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) (`ms-vscode-remote.remote-containers`), by Microsoft
-    - [Container Tools](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-containers) (`ms-azuretools.vscode-containers`), by Microsoft
+        - [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) (`ms-vscode-remote.remote-containers`), by Microsoft
+        - [Container Tools](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-containers) (`ms-azuretools.vscode-containers`), by Microsoft
 
-<Callout type="info" title="Naming">
-    The marketplace has several similarly named container/Docker extensions. Search by the extension
-    ID above (or paste it into the Extensions view search bar) to make sure you install the right
-    one.
-</Callout>
-7. Nearly finished, now take the [URC-2023 Repo](https://github.com/TrickfireRobotics/urc-2023.git)
-copy the link and `git clone https://github.com/TrickfireRobotics/urc-2023.git` the repo into an
-appropriate folder, then run `code urc-2023` and vscode should open with this new repository opened
-8. A notification should popup that has an option that says "Reopen in Container" click that and
-VSCode will start building and creating the devcontainer, make sure that docker is running in the
-background before you do this otherwise this will fail.
+        <Callout type="info" title="Naming">
+            The marketplace has several similarly named container/Docker extensions. Search by the extension
+            ID above (or paste it into the Extensions view search bar) to make sure you install the right
+            one.
+        </Callout>
+    </Step>
+    <Step>
+        Nearly finished, now take the [URC-2023 Repo](https://github.com/TrickfireRobotics/urc-2023.git)
+        copy the link and `git clone https://github.com/TrickfireRobotics/urc-2023.git` the repo into an
+        appropriate folder, then run `code urc-2023` and vscode should open with this new repository opened
+    </Step>
+    <Step>
+        A notification should popup that has an option that says "Reopen in Container" click that and
+        VSCode will start building and creating the devcontainer, make sure that docker is running in the
+        background before you do this otherwise this will fail.
+    </Step>
+
+</Steps>
 
 A majority of our development is done inside of devcontainers, this is something that you will repeat in the future as you take on more projects.
 

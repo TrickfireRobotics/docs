@@ -4,7 +4,7 @@
     "description": "General TrickFire documentation",
     "icon": "BookOpen",
     "sidebar": [
-        { "label": "General Documentation", "slug": "general-docs" },
+        { "label": "General Documentation", "slug": "index" },
         { "label": "Linux Basics", "slug": "linux" },
         {
             "label": "GitHub",
@@ -18,6 +18,14 @@
             ]
         },
         {
+            "label": "Python",
+            "items": [
+                { "label": "Overview", "slug": "python/general" },
+                { "label": "Common Data Types", "slug": "python/data-types" },
+                { "label": "Writing Classes", "slug": "python/classes" }
+            ]
+        },
+        {
             "label": "C++",
             "items": [
                 { "label": "Overview", "slug": "cpp/general" },
@@ -28,10 +36,9 @@
         { "label": "ROS 2", "slug": "ros" },
         {
             "label": "Software Install",
-            "icon": "Download",
             "items": [
-                { "label": "macOS", "slug": "software-install/macos" },
                 { "label": "Windows", "slug": "software-install/windows" },
+                { "label": "MacOS", "slug": "software-install/macos" },
                 { "label": "Linux", "slug": "software-install/linux" }
             ]
         }
