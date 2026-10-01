@@ -1,0 +1,228 @@
+---
+title: Linux Basics
+description: Terminal basics for people who have never used Linux commands before
+---
+
+You don't need to know Linux to join Trickfire, but you will run into a terminal pretty quickly, our dev containers, the robot's onboard computer, and most of ROS all expect you to be comfortable typing commands instead of clicking around. This page is a starting point for people who have never used a command line before. It won't make you an expert, but it should be enough to get you moving and know what to search for when you get stuck.
+
+<Callout type="info" title="Shell">
+    These examples assume bash, the default shell on most Linux distributions. If `echo $SHELL`
+    doesn't say `bash`, some of the syntax below (especially around environment variables) may
+    differ slightly for your shell.
+</Callout>
+
+## What is a terminal?
+
+A terminal (also called a shell, console, or command line) is a text-based way to talk to your computer. Instead of double-clicking folders and icons, you type commands that tell the computer exactly what to do. It feels slower at first, but it's often faster once you know the commands, and it's the only option for things like a headless robot computer with no screen attached.
+
+You open a terminal differently depending on your setup:
+
+- **Linux**: Usually `Ctrl + Alt + T`, or search for "Terminal" in your applications menu.
+- **macOS**: Open the "Terminal" app from Spotlight (`Cmd + Space`, then type "Terminal").
+- **Windows**: Use WSL (Windows Subsystem for Linux) or Git Bash, since plain Windows CMD/PowerShell don't use the same commands as this page. VSCode's built-in terminal also works if you have WSL set up.
+
+Every command below also works in the integrated terminal inside VSCode (`` Ctrl + ` ``), which is probably where you'll spend most of your time.
+
+## Reading a command
+
+Commands are generally structured like this:
+
+```
+command [options] [arguments]
+```
+
+For example, in `ls -la ~/trickfire`, `ls` is the command, `-la` is a set of options (also called flags) that change how it behaves, and `~/trickfire` is the argument, the thing the command acts on. Options are usually prefixed with a single dash for a short form (`-a`) or two dashes for a long form (`--all`), and you can often combine single-letter options together, so `-l -a` and `-la` mean the same thing.
+
+Most commands also support `--help`, which prints a short usage guide, for example `ls --help`.
+
+## Moving around the filesystem
+
+Everything on a Linux machine lives under a single root directory, `/`, unlike Windows where you have separate drive letters like `C:\`. Your personal files live under `/home/<your username>`, which is shortened to `~`.
+
+| Command        | What it does                                                                                              |
+| -------------- | --------------------------------------------------------------------------------------------------------- |
+| `pwd`          | Print working directory. Shows you where you currently are.                                               |
+| `ls`           | List the files and folders in the current directory.                                                      |
+| `ls -la`       | List everything, including hidden files (ones starting with `.`), with details like size and permissions. |
+| `cd <path>`    | Change directory, move into a folder.                                                                     |
+| `cd ..`        | Move up one folder.                                                                                       |
+| `cd ~` or `cd` | Jump straight back to your home directory.                                                                |
+
+A path can be absolute, starting from `/`, such as `/home/you/trickfire`, or relative to where you currently are, such as `../trickfire` (go up one folder, then into `trickfire`).
+
+```bash title="Example"
+pwd
+# /home/you
+
+ls
+# Desktop  Documents  trickfire
+
+cd trickfire
+pwd
+# /home/you/trickfire
+
+cd ..
+pwd
+# /home/you
+```
+
+<Callout type="idea" title="Tab completion">
+    Start typing a file or folder name and press `Tab` to auto-complete it. This saves a lot of
+    typing and avoids typos, use it constantly.
+</Callout>
+
+## Working with files and folders
+
+| Command                     | What it does                                                                                                                    |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `mkdir <name>`              | Make a new folder.                                                                                                              |
+| `touch <name>`              | Create a new empty file.                                                                                                        |
+| `cp <source> <destination>` | Copy a file. Add `-r` to copy an entire folder.                                                                                 |
+| `mv <source> <destination>` | Move a file, or rename it if the destination is in the same folder.                                                             |
+| `rm <file>`                 | Delete a file.                                                                                                                  |
+| `rm -r <folder>`            | Delete a folder and everything inside it.                                                                                       |
+| `cat <file>`                | Print a whole file's contents to the terminal.                                                                                  |
+| `less <file>`               | View a file one page at a time (press `q` to quit). Better for long files.                                                      |
+| `head <file>`               | Show the first 10 lines of a file.                                                                                              |
+| `tail <file>`               | Show the last 10 lines of a file. Add `-f` to keep watching a file as new lines get added, useful for watching log output live. |
+
+<Callout type="warning" title="rm has no trash can">
+    `rm` deletes files immediately and permanently, there's no recycle bin to recover them from. Be
+    especially careful with `rm -r` and double check the path before you hit enter, and never run
+    `rm -rf /` or anything similar to it.
+</Callout>
+
+## Finding things
+
+Two commands cover most of what you need:
+
+- `find <path> -name "<pattern>"` searches for files and folders by name. For example, `find . -name "*.py"` finds every Python file under the current folder.
+- `grep "<text>" <file>` searches inside files for matching text. Add `-r` to search recursively through a whole folder, for example `grep -r "TODO" .` finds every "TODO" in the current folder and everything inside it.
+
+```bash title="Example"
+# Find all python files in the current folder and its subfolders
+find . -name "*.py"
+
+# Search for the word "publisher" in every file in the current folder
+grep -r "publisher" .
+```
+
+## Permissions and sudo
+
+Every file has an owner and a set of permissions controlling who can read, write, or execute it. You'll mostly interact with this through `sudo`, short for "superuser do", which temporarily runs a command with administrator privileges. You'll need it for things like installing software or managing system services.
+
+```bash title="Example"
+sudo apt-get update
+```
+
+You'll be asked for your password the first time you use `sudo` in a while. Nothing will appear on screen as you type it, that's normal, just type it and press enter.
+
+<Callout type="warning" title="Be careful with sudo">
+    `sudo` lets a command do essentially anything to your system, including break it. Don't run a
+    command with `sudo` unless you understand what it does or a guide you trust told you to.
+</Callout>
+
+If a file isn't executable and you need it to be (a script you downloaded, for example), use `chmod +x <file>` to make it executable, then run it with `./<file>`.
+
+## Package managers
+
+A package manager installs and updates software from the command line instead of downloading installers from websites. On Ubuntu/Debian, that's `apt` or `apt-get`, for example `sudo apt-get install git`.
+
+See the [Software Install](./software-install/linux.mdx) guide for the specific commands we use to set up Docker, Git, and VSCode.
+
+## Environment variables and PATH
+
+An environment variable is a named value that programs can read, similar to a global variable but for your whole terminal session. The most important one is `PATH`, a list of folders the shell searches through when you type a command name, which is how typing `git` finds the actual `git` program.
+
+```bash title="Example"
+# Read a variable
+echo $PATH
+
+# Set a variable for just this terminal session
+export MY_VARIABLE="hello"
+
+# Add something permanently by appending to ~/.bashrc
+echo 'export PATH="$HOME/some/folder:$PATH"' >> ~/.bashrc
+```
+
+If you install something and the terminal says `command not found` even though you're sure it's installed, it's usually a `PATH` problem, or you need to close and reopen your terminal for the change to take effect.
+
+## Processes
+
+Every running program is a process. A few commands to know:
+
+| Command         | What it does                                                                                                                                                        |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ps`            | List processes running in the current terminal. Add `aux` (`ps aux`) to see every process on the system.                                                            |
+| `top` or `htop` | Live, updating view of running processes and how much CPU/memory they're using (`htop` is a nicer version, may need to be installed separately). Press `q` to quit. |
+| `kill <PID>`    | Stop a process by its process ID (the number shown by `ps`/`top`).                                                                                                  |
+| `kill -9 <PID>` | Force-kill a process that won't respond to a normal `kill`.                                                                                                         |
+| `Ctrl + C`      | Stop whatever is currently running in your terminal, like a `ros2 run` node you want to shut down.                                                                  |
+
+## Pipes and redirection
+
+You can chain commands together and send output to files, which is useful constantly once it clicks.
+
+- `|` (pipe) sends the output of one command into another. For example, `ls | grep "test"` lists files and only keeps the ones with "test" in the name.
+- `>` sends output to a file, overwriting it. `ls > files.txt`
+- `>>` sends output to a file, appending instead of overwriting. `echo "new line" >> notes.txt`
+
+```bash title="Example"
+# List running processes and only show lines mentioning ros2
+ps aux | grep ros2
+```
+
+## Connecting to another machine with SSH
+
+SSH lets you open a terminal on a different computer over the network, which is how you'll usually talk to the robot's onboard computer instead of plugging in a monitor and keyboard.
+
+```bash title="Example"
+ssh <username>@<ip address>
+# e.g. ssh trickfire@192.168.1.1 (not necessarily accurate)
+```
+
+Once connected, every command you type runs on the remote machine, not your own, until you type `exit` to disconnect. If it's your first time connecting to a given machine, you'll be asked to confirm its fingerprint, type `yes` to continue.
+
+See the [Software Install](./software-install/linux.mdx) guide's optional SSH key section if you want to set up key-based login so you don't have to type a password every time.
+
+## Editing files in the terminal
+
+Sometimes you need to edit a file without leaving the terminal, for example editing a config file over SSH on the robot where VSCode isn't available. `nano` is the easiest editor to start with:
+
+```bash title="Example"
+sudo nano some-file.txt
+```
+
+The available commands are listed at the bottom of the screen, using `^` to mean `Ctrl`. The two you'll use most are `Ctrl + O` to save (it'll ask you to confirm the filename, just press enter) and `Ctrl + X` to exit.
+
+You'll likely see people use `vim` too, it's far more powerful but has a steeper learning curve. No need to learn it right away, `nano` is perfectly fine for quick edits.
+
+## Quick reference
+
+A short cheat sheet of everything above:
+
+```
+pwd                    Where am I?
+ls / ls -la            List files (including hidden)
+cd <path>              Move into a folder
+mkdir <name>           Make a folder
+touch <name>           Make an empty file
+cp / mv / rm           Copy / move / delete
+cat / less             Print / page through a file
+tail -f <file>         Watch a file update live
+find . -name "<x>"     Find a file by name
+grep -r "<x>" .        Search file contents
+chmod +x <file>        Make a file executable
+sudo <command>         Run as administrator
+ps aux / top           List / monitor running processes
+kill <PID>             Stop a process
+command1 | command2    Pipe output from one command to another
+command > file         Write output to a file
+ssh user@host          Open a terminal on another machine
+nano <file>            Edit a file in the terminal
+```
+
+<Callout type="idea" title="Don't memorize this">
+    You don't need to memorize any of this up front. Keep this page open as a reference and look
+    things up as you need them, within a few weeks it'll be muscle memory.
+</Callout>

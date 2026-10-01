@@ -5,6 +5,7 @@
     "icon": "BookOpen",
     "sidebar": [
         { "label": "General Documentation", "slug": "general-docs" },
+        { "label": "Linux Basics", "slug": "linux" },
         {
             "label": "GitHub",
             "icon": "Github",
