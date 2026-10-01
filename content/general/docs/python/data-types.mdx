@@ -1,0 +1,177 @@
+---
+title: Common Data Types
+description: Choosing primitives, strings, lists, dictionaries, sets, queues, and stacks in Python
+---
+
+Every value in Python has a type, but a variable itself is just a name bound to a value. You don't declare a variable's type; Python figures it out from the value you assign.
+
+## Primitives
+
+| Type    | Use case                                           |
+| ------- | -------------------------------------------------- |
+| `bool`  | A true or false value                              |
+| `int`   | Whole numbers, with no fixed size limit            |
+| `float` | Floating-point measurements                        |
+| `str`   | Text, a single character is just a length-1 string |
+| `None`  | The absence of a value                             |
+
+### Declaring and assigning variables
+
+Write a name and a value; Python infers the type from the value.
+
+```python
+wheel_count = 6
+completed_commands = 0
+distance_meters = 2.5
+enabled = False
+
+# Updating values
+completed_commands = 1
+enabled = True
+```
+
+<Callout type="info" title="Type hints">
+    Python doesn't require a type annotation, but you can add one to document intent. It is not
+    enforced at runtime.
+
+    ```python
+    wheel_count: int = 6
+    max_speed: float = 1.5
+    ```
+
+</Callout>
+
+## Strings
+
+Use `str` for text. Single and double quotes both work and mean the same thing; pick one and stay consistent within a file.
+
+```python
+direction = "forward"
+label = 'left motor'
+```
+
+Use an f-string to build a string from variables.
+
+```python
+speed = 0.5
+message = f"Setting speed to {speed}"
+```
+
+## Containers
+
+A container stores multiple values.
+
+| Type    | When to use it                                         | Mutable |
+| ------- | ------------------------------------------------------ | ------- |
+| `list`  | A sequence that can grow, with access by index         | Yes     |
+| `tuple` | A fixed sequence of values that shouldn't change       | No      |
+| `dict`  | Look up a value by a key instead of a position         | Yes     |
+| `set`   | A collection of unique values with no guaranteed order | Yes     |
+
+All four support `len()` to report how many elements they hold.
+
+## Lists of values
+
+### A general-purpose sequence: `list`
+
+If you want a "list" of values, use `list`. It can grow as needed and lets you access an element by its position.
+
+```python
+distances = [1.2, 2.4, 3.6]
+distances.append(4.8)  # Add an element at the end
+
+first_distance = distances[0]  # Indexes start at 0
+distances[1] = 2.5  # Update the second element
+
+total_distance = 0.0
+for distance in distances:
+    total_distance += distance
+
+if distances:
+    distances.pop()  # Remove the last element
+```
+
+Indexing with `[]` raises an `IndexError` if the index is out of range, unlike C++'s unchecked `[]`. An empty list is falsy, so `if distances:` is a common way to check it has elements.
+
+### Fixed sequences: `tuple`
+
+A `tuple` looks like a `list` but can't be modified after it's created. Use it for values that belong together and shouldn't change, such as a coordinate pair.
+
+```python
+position = (1.5, 2.0)  # (x, y)
+x, y = position  # Unpacking
+
+# position[0] = 3.0  # Error: tuples don't support item assignment
+```
+
+### Key-value pairs: `dict`
+
+Use a `dict` when you want to look values up by a key rather than a position.
+
+```python
+motor_speeds = {"left": 0.5, "right": 0.25}
+motor_speeds["left"] = 0.75  # Update a value
+motor_speeds["back"] = 0.0  # Add a new key
+
+for name, speed in motor_speeds.items():
+    print(f"{name}: {speed}")
+
+if "left" in motor_speeds:
+    del motor_speeds["left"]
+```
+
+Accessing a missing key with `[]` raises a `KeyError`. Use `.get("left", 0.0)` to provide a default instead of raising.
+
+### Unique values: `set`
+
+A `set` stores unique values and is useful for membership checks or removing duplicates.
+
+```python
+seen_ids = {1, 2, 3}
+seen_ids.add(4)
+seen_ids.add(2)  # No effect, 2 is already present
+
+if 3 in seen_ids:
+    seen_ids.remove(3)
+```
+
+## Queues and stacks
+
+Python doesn't have dedicated queue and stack types in the way C++ does; `collections.deque` (double-ended queue) covers both.
+
+### Queues
+
+A queue uses **first in, first out (FIFO)** ordering, like people waiting in line.
+
+```python
+from collections import deque
+
+commands = deque()
+commands.append("drive")
+commands.append("turn")
+
+while commands:
+    next_command = commands.popleft()
+    # Process next_command here: "drive", then "turn".
+```
+
+`append()` adds to the back, and `popleft()` removes and returns the oldest element.
+
+### Stacks
+
+A stack uses **last in, first out (LIFO)** ordering, such as retrieving the most recent action from an undo history. A plain `list` works well here since `append()` and `pop()` both operate on the end.
+
+```python
+history = []
+history.append("move forward")
+history.append("turn left")
+
+while history:
+    last_action = history.pop()
+    # Handle last_action here: "turn left", then "move forward".
+```
+
+<Callout type="warning" title="Don't use list for a queue">
+    `list.pop(0)` removes from the front, but it has to shift every remaining element over, so it
+    gets slow as the list grows. Use `collections.deque` for a queue instead.
+</Callout>

@@ -112,7 +112,7 @@ grep -r "publisher" .
 Every file has an owner and a set of permissions controlling who can read, write, or execute it. You'll mostly interact with this through `sudo`, short for "superuser do", which temporarily runs a command with administrator privileges. You'll need it for things like installing software or managing system services.
 
 ```bash title="Example"
-sudo apt-get update
+sudo apt update
 ```
 
 You'll be asked for your password the first time you use `sudo` in a while. Nothing will appear on screen as you type it, that's normal, just type it and press enter.
@@ -126,7 +126,7 @@ If a file isn't executable and you need it to be (a script you downloaded, for e
 
 ## Package managers
 
-A package manager installs and updates software from the command line instead of downloading installers from websites. On Ubuntu/Debian, that's `apt` or `apt-get`, for example `sudo apt-get install git`.
+A package manager installs and updates software from the command line instead of downloading installers from websites. On Ubuntu/Debian, that's `apt` or `apt`, for example `sudo apt install git`.
 
 See the [Software Install](./software-install/linux.mdx) guide for the specific commands we use to set up Docker, Git, and VSCode.
 

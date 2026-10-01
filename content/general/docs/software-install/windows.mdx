@@ -7,12 +7,19 @@ description: installing docker, git, and visual studio code on a Windows machine
 
 Windows comes with its own package manager called `winget` (the "Windows Package Manager"), and we'll use it to install everything else in this guide. It ships pre-installed as part of "App Installer" on up to date Windows 10 and Windows 11 machines.
 
-1. Open PowerShell by hitting the `Windows` key and typing in `PowerShell`.
-2. Check that winget is installed by running
+<Steps>
+    <Step>
+        Open PowerShell by hitting the `Windows` key and typing in `PowerShell`.
+    </Step>
+    <Step>
+        Check that winget is installed by running
 
-```bash title="PowerShell"
-winget --version
-```
+        ```bash title="PowerShell"
+        winget --version
+        ```
+    </Step>
+
+</Steps>
 
 <Callout type="info" title="Winget missing?">
     If that command isn't found, open the Microsoft Store, search for `App Installer`, and hit
@@ -23,14 +30,27 @@ winget --version
 
 Docker Desktop needs a Linux backend to actually run containers, and the one we'll use is WSL2 (Windows Subsystem for Linux). It works on Windows Home as well as Pro, unlike the older Hyper-V backend, so we'll set it up before installing Docker.
 
-1. Open PowerShell as an Administrator, hit the `Windows` key, type in `PowerShell`, then hit `Ctrl + Shift + Enter` (or right click the result and hit "Run as administrator").
-2. Run
+<Steps>
+    <Step>
+        Open PowerShell as an Administrator, hit the `Windows` key, type in `PowerShell`, then hit `Ctrl + Shift + Enter` (or right click the result and hit "Run as administrator").
+    </Step>
+    <Step>
+        Run
 
-```bash title="PowerShell (Administrator)"
-wsl --install
-```
+        ```bash title="PowerShell (Administrator)"
+        wsl --install
+        ```
 
-This enables the required Windows features, installs the WSL2 kernel, and installs Ubuntu as the default Linux distribution. 3. Restart your computer when prompted. 4. After restarting, Ubuntu will open automatically and ask you to create a Linux username and password, these are separate from your Windows account so pick whatever you'd like.
+        This enables the required Windows features, installs the WSL2 kernel, and installs Ubuntu as the default Linux distribution.
+    </Step>
+    <Step>
+        Restart your computer when prompted.
+    </Step>
+    <Step>
+        After restarting, Ubuntu will open automatically and ask you to create a Linux username and password, these are separate from your Windows account so pick whatever you'd like.
+    </Step>
+
+</Steps>
 
 <Callout type="info" title="Requirements">
     `wsl --install` requires Windows 10 version 2004 (Build 19041) or later, or Windows 11. If
@@ -39,21 +59,31 @@ This enables the required Windows features, installs the WSL2 kernel, and instal
 
 ## Docker
 
-1. Now that WSL2 is set up you can install Docker Desktop by running
+<Steps>
+    <Step>
+        Now that WSL2 is set up you can install Docker Desktop by running
 
-```bash title="PowerShell"
-winget install --id Docker.DockerDesktop -e
-```
+        ```bash title="PowerShell"
+        winget install --id Docker.DockerDesktop -e
+        ```
+    </Step>
+    <Step>
+        Open Docker Desktop by hitting `Windows + S` and typing in Docker you will see a service agreement, accept it and let it finish starting up.
+    </Step>
+    <Step>
+        In Docker Desktop go to `Settings > General` and make sure `Use the WSL 2 based engine` is checked, it should already be on by default.
+    </Step>
+    <Step>
+        Next to check if docker is working, open a **new** PowerShell window and run
 
-2. Open Docker Desktop by hitting `Windows + S` and typing in Docker you will see a service agreement, accept it and let it finish starting up.
-3. In Docker Desktop go to `Settings > General` and make sure `Use the WSL 2 based engine` is checked, it should already be on by default.
-4. Next to check if docker is working, open a **new** PowerShell window and run
+        ```bash title="PowerShell"
+        docker run hello-world
+        ```
 
-```bash title="PowerShell"
-docker run hello-world
-```
+        You should see a few messages about docker running and how it pulled that message down.
+    </Step>
 
-You should see a few messages about docker running and how it pulled that message down.
+</Steps>
 
 ### Docker debugging
 
@@ -66,15 +96,25 @@ If it didn't work try these debug commands.
 
 ## Git
 
-1. Go to the [Github website](https://github.com/) and make an account skip if you have one. Remember the username and email you used to make the account.
-2. Open PowerShell and run
+<Steps>
+    <Step>
+        Go to the [Github website](https://github.com/) and make an account skip if you have one. Remember the username and email you used to make the account.
+    </Step>
+    <Step>
+        Open PowerShell and run
 
-```bash title="PowerShell"
-winget install --id Git.Git -e --source winget
-```
+        ```bash title="PowerShell"
+        winget install --id Git.Git -e --source winget
+        ```
+    </Step>
+    <Step>
+        Close and reopen PowerShell (this refreshes your PATH) and check it exists by running `git --version`
+    </Step>
+    <Step>
+        Next to configure your username run `git config --global user.name "Your username here"` and `git config --global user.email "Your email here"`
+    </Step>
 
-3. Close and reopen PowerShell (this refreshes your PATH) and check it exists by running `git --version`
-4. Next to configure your username run `git config --global user.name "Your username here"` and `git config --global user.email "Your email here"`
+</Steps>
 
 ### Optional Git configuration
 
@@ -84,31 +124,48 @@ If your Github account is shared across multiple machines, you may run into issu
     These steps use the OpenSSH client that ships with Windows itself rather than the one bundled with Git for Windows. To check it's available run `ssh -V` in PowerShell. If that command isn't found, go to `Settings > Apps > Optional Features > Add a feature`, search for `OpenSSH Client`, and install it.
 </Callout>
 
-1. Run `ssh-keygen -t ed25519 -C "Your email here"` and follow the prompts on the terminal, You can set up a password but this makes authentication much harder.
-2. Set the ssh-agent service to start automatically and add your key to it, open PowerShell as an Administrator and run
+<Steps>
+    <Step>
+        Run `ssh-keygen -t ed25519 -C "Your email here"` and follow the prompts on the terminal, You can set up a password but this makes authentication much harder.
+    </Step>
+    <Step>
+        Set the ssh-agent service to start automatically and add your key to it, open PowerShell as an Administrator and run
 
-```bash title="PowerShell (Administrator)"
-Get-Service ssh-agent | Set-Service -StartupType Automatic
-Start-Service ssh-agent
-ssh-add ~/.ssh/id_ed25519
-```
+        ```bash title="PowerShell (Administrator)"
+        Get-Service ssh-agent | Set-Service -StartupType Automatic
+        Start-Service ssh-agent
+        ssh-add ~/.ssh/id_ed25519
+        ```
+    </Step>
+    <Step>
+        Now run `Get-Content ~/.ssh/id_ed25519.pub | clip`, this copies the key directly into your clipboard.
+    </Step>
+    <Step>
+        Next go to github.com, click your profile in the top right and hit settings
+    </Step>
+    <Step>
+        In the settings menu click `SSH and GPG keys` then click `New SSH key` on that page.
+    </Step>
+    <Step>
+        Make sure the new key's type is an Authentication key, give the key an appropriate name and then paste the contents that we copied earlier into the box.
+    </Step>
+    <Step>
+        run this command in your terminal
 
-3. Now run `Get-Content ~/.ssh/id_ed25519.pub | clip`, this copies the key directly into your clipboard.
-4. Next go to github.com, click your profile in the top right and hit settings
-5. In the settings menu click `SSH and GPG keys` then click `New SSH key` on that page.
-6. Make sure the new key's type is an Authentication key, give the key an appropriate name and then paste the contents that we copied earlier into the box.
-7. run this command in your terminal
+        ```bash title="PowerShell"
+        New-Item -Path ~\.ssh\config -ItemType File -Force
+        @"
+        Host *
+            AddKeysToAgent yes
+            IdentityFile ~/.ssh/id_ed25519
+        "@ | Add-Content ~\.ssh\config
+        ```
+    </Step>
+    <Step>
+        Test that this works by running `ssh -T git@github.com` this should show a message about succesful authentication to github.
+    </Step>
 
-```bash title="PowerShell"
-New-Item -Path ~\.ssh\config -ItemType File -Force
-@"
-Host *
-    AddKeysToAgent yes
-    IdentityFile ~/.ssh/id_ed25519
-"@ | Add-Content ~\.ssh\config
-```
-
-8. Test that this works by running `ssh -T git@github.com` this should show a message about succesful authentication to github.
+</Steps>
 
 <Callout type="warning" title="Warning">
     This includes an extra hoop to jump through with repos you are going to be contributing to. When
@@ -120,35 +177,52 @@ Host *
 
 Next we will lead you through the setup for VSCode and all of the extensions we need.
 
-1. Run
+<Steps>
+    <Step>
+        Run
 
-```bash title="PowerShell"
-winget install -e --id Microsoft.VisualStudioCode
-```
+        ```bash title="PowerShell"
+        winget install -e --id Microsoft.VisualStudioCode
+        ```
+    </Step>
+    <Step>
+        Once the install finishes press the `Windows` key and type in `Visual Studio Code` to open it
+    </Step>
+    <Step>
+        Follow the installation steps that VSCode prompts you for.
+    </Step>
+    <Step>
+        Open the Command Palette (`Ctrl + Shift + P`), search for `Shell Command: Install 'code' command in PATH`, and run it. This lets you run `code .` from the terminal to open the current folder in VSCode, which is handy once you start cloning repos.
+    </Step>
+    <Step>
+        Close and reopen PowerShell then test it by running
 
-2. Once the install finishes press the `Windows` key and type in `Visual Studio Code` to open it
-3. Follow the installation steps that VSCode prompts you for.
-4. Open the Command Palette (`Ctrl + Shift + P`), search for `Shell Command: Install 'code' command in PATH`, and run it. This lets you run `code .` from the terminal to open the current folder in VSCode, which is handy once you start cloning repos.
-5. Close and reopen PowerShell then test it by running
+        ```bash title="PowerShell"
+        code --version
+        ```
 
-```bash title="PowerShell"
-code --version
-```
+        You should see a version number and commit hash printed out.
+    </Step>
+    <Step>
+        We use Dev Containers on our repos so everyone gets an identical, pre-configured environment instead of installing tools by hand. Install the following extensions from the Extensions view (`Ctrl + Shift + X`):
 
-You should see a version number and commit hash printed out.
+        - [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) (`ms-vscode-remote.remote-containers`), by Microsoft
+        - [Container Tools](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-containers) (`ms-azuretools.vscode-containers`), by Microsoft
 
-6. We use Dev Containers on our repos so everyone gets an identical, pre-configured environment instead of installing tools by hand. Install the following extensions from the Extensions view (`Ctrl + Shift + X`):
-    - [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) (`ms-vscode-remote.remote-containers`), by Microsoft
-    - [Container Tools](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-containers) (`ms-azuretools.vscode-containers`), by Microsoft
+        <Callout type="info" title="Naming">
+            The marketplace has several similarly named container/Docker extensions. Search by the extension
+            ID above (or paste it into the Extensions view search bar) to make sure you install the right
+            one.
+        </Callout>
+    </Step>
+    <Step>
+        Nearly finished, now take the [URC-2023 Repo](https://github.com/TrickfireRobotics/urc-2023.git) copy the link and `git clone https://github.com/TrickfireRobotics/urc-2023.git` the repo into an appropriate folder, then run `code urc-2023` and vscode should open with this new repository opened
+    </Step>
+    <Step>
+        A notification should popup that has an option that says "Reopen in Container" click that and VSCode will start building and creating the devcontainer, make sure that Docker Desktop is running in the background before you do this otherwise this will fail.
+    </Step>
 
-<Callout type="info" title="Naming">
-    The marketplace has several similarly named container/Docker extensions. Search by the extension
-    ID above (or paste it into the Extensions view search bar) to make sure you install the right
-    one.
-</Callout>
-
-7. Nearly finished, now take the [URC-2023 Repo](https://github.com/TrickfireRobotics/urc-2023.git) copy the link and `git clone https://github.com/TrickfireRobotics/urc-2023.git` the repo into an appropriate folder, then run `code urc-2023` and vscode should open with this new repository opened
-8. A notification should popup that has an option that says "Reopen in Container" click that and VSCode will start building and creating the devcontainer, make sure that Docker Desktop is running in the background before you do this otherwise this will fail.
+</Steps>
 
 <Callout type="info" title="Performance tip">
     Docker Desktop on Windows is noticeably slower building and watching files that live on your
