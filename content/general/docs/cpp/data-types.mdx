@@ -1,0 +1,154 @@
+---
+title: Common Data Types
+description: Choosing primitives, strings, lists, queues, and stacks in C++
+---
+
+Every variable in C++ has a type. That type determines what values the variable can store and what operations you can perform on it.
+
+## Primitives
+
+Primitives are the built-in types.
+
+| Type                         | Use case                                                          |
+| ---------------------------- | ----------------------------------------------------------------- |
+| `bool`                       | A true or false value                                             |
+| `char`                       | A single character                                                |
+| `int`                        | Whole numbers                                                     |
+| `short`, `long`, `long long` | Other integer ranges                                              |
+| `float`                      | Floating-point measurements                                       |
+| `double`                     | Floating-point values with at least as much precision as `float`  |
+| `long double`                | Floating-point values with at least as much precision as `double` |
+
+### Declaring and initializing variables
+
+Write the type, a name, and an initial value. The braces below initialize each variable; empty braces initialize an integer to zero.
+
+```cpp
+int wheelCount = 6;
+int completedCommands; // Starts at 0
+double distanceMeters = 2.5;
+bool enabled = false;
+
+// Updating values
+completedCommands = 1;
+enabled = true;
+```
+
+Use `const` when a value should stay the same after initialization.
+
+```cpp
+const int wheelCount = 6;
+const double maxSpeed = 1.5;
+```
+
+## Strings
+
+Use `std::string` for text. It is a standard library type, rather than a primitive. Single quotes represent a character, such as `'F'`; double quotes represent text, such as `"forward"`.
+
+`#include` makes declarations from a header available to your file. The `std::` prefix identifies names from the C++ standard library. Keep this prefix in your code so it's clear where those names come from.
+
+## Containers
+
+A container stores multiple values. In a type such as `std::vector<int>`, the type inside the angle brackets is the type of each stored value.
+
+| Type             | When to use it                                                                    | Header     |
+| ---------------- | --------------------------------------------------------------------------------- | ---------- |
+| `std::vector<T>` | A sequence that can grow, with access by index                                    | `<vector>` |
+| `std::list<T>`   | A linked sequence with frequent insertions or removals at already-known positions | `<list>`   |
+| `std::queue<T>`  | Process values in the order they arrived                                          | `<queue>`  |
+| `std::stack<T>`  | Process the most recently added value first                                       | `<stack>`  |
+
+All four provide `size()` to report how many elements they hold and `empty()` to check whether they hold none.
+
+## Lists of values
+
+### A general-purpose sequence: `std::vector`
+
+If you want a "list" of values, use `std::vector`. It stores elements next to each other in memory, can grow as needed, and lets you access an element by its position.
+
+```cpp
+#include <vector>
+
+std::vector<double> distances = {1.2, 2.4, 3.6};
+distances.push_back(4.8); // Add an element at the end
+
+double firstDistance = distances.at(0); // Indexes start at 0
+distances.at(1) = 2.5; // Update the second element
+
+double totalDistance = 0.0;
+for (double distance : distances) {
+    totalDistance += distance;
+}
+
+if (!distances.empty()) {
+    distances.pop_back(); // Remove the last element
+}
+```
+
+The range-based `for` loop visits each element in order. `at()` checks the index and throws an exception if it is out of range. You will also see `distances[0]`, but `[]` does not check bounds; accessing an invalid index has undefined behavior.
+
+Adding elements to a vector can move its storage. If you keep a reference, pointer, or iterator to an element, don't assume it remains valid after the vector grows.
+
+### A linked list: `std::list`
+
+`std::list` stores elements in separate nodes linked together. It supports adding and removing elements at either end, and inserting or removing at a position described by an iterator. An iterator is an object that refers to a position in a container.
+
+```cpp
+#include <list>
+#include <string>
+
+std::list<std::string> tasks{"drive", "search"};
+tasks.push_front("initialize");
+tasks.push_back("stop");
+
+auto position = tasks.begin(); // Iterator to the first element
+++position; // Move to "inspect"
+tasks.insert(position, "check battery"); // Insert before "inspect"
+tasks.erase(position); // Remove "inspect"; position is no longer valid
+
+if (!tasks.empty()) {
+    tasks.pop_front(); // Remove "initialize"
+}
+```
+
+## Queues
+
+A queue uses **first in, first out (FIFO)** ordering, like people waiting in line. Use `std::queue` when commands or work items should be processed in the order they were added.
+
+```cpp
+#include <queue>
+#include <string>
+
+std::queue<std::string> commands;
+commands.push("drive");
+commands.push("turn");
+
+while (!commands.empty()) {
+    std::string nextCommand = commands.front();
+    commands.pop();
+    // Process nextCommand here: "drive", then "turn".
+}
+```
+
+`push()` adds to the back, `front()` reads the oldest element, and `pop()` removes that element. `pop()` returns no value, so copy the element before removing it if you need it afterward. A queue does not provide indexing or range-based iteration; its interface is designed around processing the next item.
+
+## Stacks
+
+A stack uses **last in, first out (LIFO)** ordering. Use `std::stack` when you need to work backward through stored items, such as retrieving the most recent action from an undo history.
+
+```cpp
+#include <stack>
+#include <string>
+
+std::stack<std::string> history;
+history.push("move forward");
+history.push("turn left");
+
+while (!history.empty()) {
+    std::string lastAction = history.top();
+    history.pop();
+    // Handle lastAction here: "turn left", then "move forward".
+}
+```
+
+`push()` adds to the top, `top()` reads the newest element, and `pop()` removes it without returning a value.

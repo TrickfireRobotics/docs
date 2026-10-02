@@ -4,7 +4,14 @@
     "description": "General TrickFire documentation",
     "icon": "BookOpen",
     "sidebar": [
-        { "label": "General Documentation", "slug": "general-docs" },
+        { "label": "General Documentation", "slug": "index" },
+        {
+            "label": "Linux",
+            "items": [
+                { "label": "Terminal Basics", "slug": "linux/basics" },
+                { "label": "Working over SSH", "slug": "linux/remote" }
+            ]
+        },
         {
             "label": "GitHub",
             "icon": "Github",
@@ -14,6 +21,31 @@
                 { "label": "Development Practices", "slug": "github/development-practices" },
                 { "label": "Repository Practices", "slug": "github/repo-practices" },
                 { "label": "Commit Rebasing", "slug": "github/rebasing" }
+            ]
+        },
+        {
+            "label": "Python",
+            "items": [
+                { "label": "Overview", "slug": "python/general" },
+                { "label": "Common Data Types", "slug": "python/data-types" },
+                { "label": "Writing Classes", "slug": "python/classes" }
+            ]
+        },
+        {
+            "label": "C++",
+            "items": [
+                { "label": "Overview", "slug": "cpp/general" },
+                { "label": "Common Data Types", "slug": "cpp/data-types" },
+                { "label": "Writing Classes", "slug": "cpp/classes" }
+            ]
+        },
+        { "label": "ROS 2", "slug": "ros" },
+        {
+            "label": "Software Install",
+            "items": [
+                { "label": "Windows", "slug": "software-install/windows" },
+                { "label": "MacOS", "slug": "software-install/macos" },
+                { "label": "Linux", "slug": "software-install/linux" }
             ]
         }
     ]

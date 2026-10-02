@@ -1,0 +1,356 @@
+---
+title: Linux
+description: installing docker, git, and visual studio code on a linux machine.
+---
+
+<Callout type="idea" title="Shell">
+    If you do not know your shell run `echo $SHELL` in your terminal!
+</Callout>
+
+## Docker
+
+<Steps>
+    <Step>
+        Open a terminal and run the following commands to install docker
+
+        <Tabs items={["Bash / Zsh", "Fish"]} groupId="shell" persist>
+            <Tab value="Bash / Zsh">
+
+            ```bash
+            # Add Docker's official apt repository
+            sudo apt update
+            sudo apt install -y ca-certificates curl
+            sudo install -m 0755 -d /etc/apt/keyrings
+            sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+            sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+            sudo tee /etc/apt/sources.list.d/docker.sources > /dev/null <<EOF
+            Types: deb
+            URIs: https://download.docker.com/linux/ubuntu
+            Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+            Components: stable
+            Architectures: $(dpkg --print-architecture)
+            Signed-By: /etc/apt/keyrings/docker.asc
+            EOF
+
+            # Install docker
+            sudo apt update
+            sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+            ```
+
+            </Tab>
+            <Tab value="Fish">
+
+            ```fish
+            # Update your package manager and install docker
+            sudo pacman -Syu
+            sudo pacman -S docker docker-compose docker-buildx containerd
+            ```
+
+            </Tab>
+
+        </Tabs>
+    </Step>
+    <Step>
+        Start the docker service and enable it to start on boot
+
+        <Tabs items={["Bash / Zsh", "Fish"]} groupId="shell" persist>
+            <Tab value="Bash / Zsh">
+
+            ```bash
+            sudo systemctl enable --now docker
+            ```
+
+            </Tab>
+            <Tab value="Fish">
+
+            ```fish
+            sudo systemctl enable --now docker
+            ```
+
+            </Tab>
+
+        </Tabs>
+
+        Reboot or log out and back in for the changes to take effect.
+    </Step>
+    <Step>
+        Check docker is installed and working
+
+        <Callout type="info" title="Docker group">
+            If you didn't add your user to the docker group, you'll need to run this command with `sudo`
+        </Callout>
+
+        <Tabs items={["Bash / Zsh", "Fish"]} groupId="shell" persist>
+            <Tab value="Bash / Zsh">
+
+            ```bash
+            sudo docker --version
+            docker --version
+            docker run hello-world
+            ```
+
+            </Tab>
+            <Tab value="Fish">
+
+            ```fish
+            sudo docker --version
+            docker --version
+            docker run hello-world
+            ```
+
+            </Tab>
+
+        </Tabs>
+
+        You should see a few messages about docker running and how it pulled that message down.
+    </Step>
+
+</Steps>
+
+### Docker debugging
+
+- The command `docker ps` will show you all the running containers
+- `docker ps -a` will show you all containers, including stopped ones
+- If you get a message about not being able to connect to the docker daemon, run `sudo systemctl status docker` to check if the service is running. If it's not, run `sudo systemctl start docker` to start it.
+- Try uninstalling using the commands below and reinstalling with the commands above for a fresh install. If this doesn't work send a message in `general-software` and someone will respond back to you
+
+<Tabs items={["Bash / Zsh", "Fish"]} groupId="shell" persist>
+    <Tab value="Bash / Zsh">
+
+    ```bash
+    sudo apt purge -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    ```
+
+    </Tab>
+    <Tab value="Fish">
+
+    ```fish
+    sudo pacman -Rns docker docker-compose docker-buildx containerd
+    ```
+
+    </Tab>
+
+</Tabs>
+
+## Git
+
+<Steps>
+    <Step>
+        Go to the [Github website](https://github.com) and create an account if you don't already have one. (Make sure to remember the username and email you used to create the account)
+    </Step>
+    <Step>
+        Open your terminal and run the following commands to install git
+
+        <Tabs items={["Bash / Zsh", "Fish"]} groupId="shell" persist>
+            <Tab value="Bash / Zsh">
+
+            ```bash
+            sudo apt update
+            sudo apt install -y git
+            ```
+
+            </Tab>
+            <Tab value="Fish">
+
+            ```fish
+            sudo pacman -Syu
+            sudo pacman -S git
+            ```
+
+            </Tab>
+
+        </Tabs>
+    </Step>
+    <Step>
+        Close and reopen your terminal (this refreshes your PATH) and check it exists by running `git --version`
+    </Step>
+    <Step>
+        Next to configure your username run
+
+        <Tabs items={["Bash / Zsh", "Fish"]} groupId="shell" persist>
+            <Tab value="Bash / Zsh">
+
+            ```bash
+            git config --global user.name "Your username here"
+            git config --global user.email "Your email here"
+            ```
+
+            </Tab>
+            <Tab value="Fish">
+
+            ```fish
+            git config --global user.name "Your username here"
+            git config --global user.email "Your email here"
+            ```
+
+            </Tab>
+
+        </Tabs>
+    </Step>
+
+</Steps>
+
+### Optional Git configuration
+
+If your GitHub account is used on multiple machines you could run into issues with GitHub not properly authenticating.
+If this is the case, follow these steps to set up SSH keys for authentication
+
+<Steps>
+    <Step>
+        Generate an ssh key pair and add it to the ssh-agent
+
+        <Tabs items={["Bash / Zsh", "Fish"]} groupId="shell" persist>
+            <Tab value="Bash / Zsh">
+
+            ```bash
+            ssh-keygen -t ed25519 -C "Your email here"
+            eval "$(ssh-agent -s)"
+            ssh-add ~/.ssh/id_ed25519
+            ```
+
+            </Tab>
+            <Tab value="Fish">
+
+            ```fish
+            ssh-keygen -t ed25519 -C "Your email here"
+            eval (ssh-agent -c)
+            ssh-add ~/.ssh/id_ed25519
+            ```
+
+            </Tab>
+
+        </Tabs>
+    </Step>
+    <Step>
+        Copy the public key to your clipboard (copy the output of the command below)
+
+        <Tabs items={["Bash / Zsh", "Fish"]} groupId="shell" persist>
+            <Tab value="Bash / Zsh">
+
+            ```bash
+            cat ~/.ssh/id_ed25519.pub
+            ```
+
+            </Tab>
+            <Tab value="Fish">
+
+            ```fish
+            cat ~/.ssh/id_ed25519.pub
+            ```
+
+            </Tab>
+
+        </Tabs>
+    </Step>
+    <Step>
+        Go to github.com, click your profile in the top right and hit settings
+    </Step>
+    <Step>
+        In the settings menu click `SSH and GPG keys` then click `New SSH key` on that page
+    </Step>
+    <Step>
+        Make sure the new key's type is an Authentication key, give the key an appropriate name and then paste the contents that we copied earlier into the box.
+    </Step>
+    <Step>
+        Test that this works by running `ssh -T git@github.com`
+    </Step>
+    <Step>
+        When you clone a new repo make sure to hit the `code` button and hit `SSH` then copy that link and git clone
+    </Step>
+
+</Steps>
+
+## Visual Studio Code
+
+VSCode is the code editor we use for development. Follow the steps to install, set up, and configure VSCode
+
+<Steps>
+    <Step>
+        Open your terminal and run the following commands to install VSCode
+
+        <Tabs items={["Bash / Zsh", "Fish"]} groupId="shell" persist>
+            <Tab value="Bash / Zsh">
+
+            ```bash
+            sudo apt update
+            sudo apt install -y wget gpg
+            wget -qO- https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/microsoft.gpg
+
+            sudo tee /etc/apt/sources.list.d/vscode.sources > /dev/null <<EOF
+            Types: deb
+            URIs: https://packages.microsoft.com/repos/code
+            Suites: stable
+            Components: main
+            Architectures: amd64,arm64,armhf
+            Signed-By: /usr/share/keyrings/microsoft.gpg
+            EOF
+
+            sudo apt update
+            sudo apt install -y code
+            ```
+
+            </Tab>
+            <Tab value="Fish">
+
+            ```fish
+            # Install yay, an AUR helper, so future AUR packages (including updates) are easy to manage
+            sudo pacman -S --needed base-devel git
+            git clone https://aur.archlinux.org/yay.git
+            cd yay
+            makepkg -si
+
+            # Install VSCode using yay
+            yay -S visual-studio-code-bin
+            ```
+
+            </Tab>
+
+        </Tabs>
+    </Step>
+    <Step>
+        Open VSCode from your applications menu, or run `code .` from a terminal to open the current folder
+    </Step>
+    <Step>
+        Test it by running
+
+        <Tabs items={["Bash / Zsh", "Fish"]} groupId="shell" persist>
+            <Tab value="Bash / Zsh">
+
+            ```bash
+            code --version
+            ```
+
+            </Tab>
+            <Tab value="Fish">
+
+            ```fish
+            code --version
+            ```
+
+            </Tab>
+
+        </Tabs>
+    </Step>
+    <Step>
+        We use Dev Containers on our repos so everyone gets an identical, pre-configured environment instead of installing tools by hand. Install the following extensions from the Extensions view (`Ctrl + Shift + X`):
+
+        - [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) (`ms-vscode-remote.remote-containers`), by Microsoft
+        - [Container Tools](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-containers) (`ms-azuretools.vscode-containers`), by Microsoft
+
+        <Callout type="info" title="Naming">
+            The marketplace has several similarly named container/Docker extensions. Search by the extension
+            ID above (or paste it into the Extensions view search bar) to make sure you install the right
+            one.
+        </Callout>
+    </Step>
+    <Step>
+        Take the [URC-2023 Repo](https://github.com/TrickfireRobotics/urc-2023) and git clone it into an appropriate folder (I recommend making a trickfire folder), then run `code urc-2023` and vscode should open with this new repository opened
+    </Step>
+    <Step>
+        A notification should pop up asking if you want to reopen the folder in a container, click `Reopen in Container` and wait for the container to build. This may take a while the first time, but future builds will be much faster.
+    </Step>
+
+</Steps>
+
+In the future you may need to install more extensions for specific languages, (EX: Python requires specific python extensions) but VSCode will prompt you for those usually when you open up a new repository.

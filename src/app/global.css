@@ -9,12 +9,15 @@
 
 :root {
     --tf-green: #00fe00;
+    --tf-green-rgb: 0 254 0;
     --tf-pink: #e93cac;
     --tf-purple: #a742f5;
     --color-fd-idea: var(--tf-purple);
+    --tf-dot-rgb: 0 0 0;
 }
 
 .dark {
+    --tf-dot-rgb: 255 255 255;
     --color-fd-primary: var(--tf-green);
     --color-fd-primary-foreground: #06210a;
     --color-fd-ring: var(--tf-green);
@@ -78,4 +81,112 @@ body {
 #nd-sidebar a[href="/"] {
     align-self: flex-start;
     margin-top: -0.625rem;
+}
+
+/* --- home page background layers --- */
+
+/* Channel-list form of the brand colours. Tailwind v4 runs Lightning CSS,
+   which rewrites `color-mix(..., var(--x) N%, transparent)` into a legacy
+   fallback that drops the percentage - i.e. full-brightness #00fe00. Plain
+   `rgb(<channels> / <alpha>)` is left alone and works everywhere. */
+
+/* base dot matrix, masked so it dissolves downward instead of ending on a line */
+.tf-dot-grid {
+    background-image: radial-gradient(
+        circle at center,
+        rgb(var(--tf-dot-rgb) / 0.09) 1px,
+        transparent 1px
+    );
+    background-size: 22px 22px;
+    /* solid through the hero, then fades out partway down the card grid so the
+       two sections sit on one surface instead of meeting at a border */
+    -webkit-mask-image: radial-gradient(
+        ellipse 120% 1100px at 50% -100px,
+        #000 0%,
+        #000 35%,
+        transparent 80%
+    );
+    mask-image: radial-gradient(
+        ellipse 120% 1100px at 50% -100px,
+        #000 0%,
+        #000 35%,
+        transparent 80%
+    );
+}
+
+.tf-hero-glow {
+    background: radial-gradient(
+        ellipse 70% 520px at 50% -60px,
+        rgb(var(--tf-green-rgb) / 0.13) 0%,
+        transparent 72%
+    );
+}
+
+/* lit dots: same grid, same origin as .tf-dot-grid, so they land exactly on
+   top of base dots - each instance masks itself down to a small cluster */
+.tf-led-cluster {
+    background-image: radial-gradient(
+        circle at center,
+        rgb(var(--tf-green-rgb) / 1) 1px,
+        transparent 1px
+    );
+    background-size: 22px 22px;
+    animation: tf-led-pulse 4s ease-in-out infinite;
+}
+
+@keyframes tf-led-pulse {
+    0%,
+    100% {
+        opacity: 0.12;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.tf-logo-glow {
+    filter: drop-shadow(0 0 24px rgb(var(--tf-green-rgb) / 0.45));
+}
+
+/* --- project card pointer spotlight --- */
+
+/* 1px gradient ring, painted only on the border box */
+.tf-card-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: radial-gradient(
+        200px circle at var(--mx, -999px) var(--my, -999px),
+        rgb(var(--tf-green-rgb) / 0.6),
+        transparent 65%
+    );
+    -webkit-mask:
+        linear-gradient(#000, #000) content-box,
+        linear-gradient(#000, #000);
+    mask:
+        linear-gradient(#000, #000) content-box,
+        linear-gradient(#000, #000);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+.tf-card-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(
+        240px circle at var(--mx, -999px) var(--my, -999px),
+        rgb(var(--tf-green-rgb) / 0.08),
+        transparent 70%
+    );
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tf-led-cluster {
+        animation: none;
+        opacity: 0.35;
+    }
 }

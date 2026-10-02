@@ -5,7 +5,11 @@ import { resolveProjectIcon } from "./icon";
 import { GithubIcon, NotionIcon, WebsiteIcon } from "@/components/brand-icons";
 import { NavTitle } from "@/components/nav-title";
 
-const BRAND_ICONS = { website: WebsiteIcon, github: GithubIcon, notion: NotionIcon } as const;
+export const BRAND_ICONS = {
+    website: WebsiteIcon,
+    github: GithubIcon,
+    notion: NotionIcon,
+} as const;
 
 export function baseOptions(): BaseLayoutProps {
     return {

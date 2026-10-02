@@ -1,0 +1,106 @@
+---
+title: Writing Classes
+description: Defining a Python class with attributes, methods, and a usage example
+---
+
+A class groups related data and functions into a type you can use in your program. An **object** is one instance of that type: a `Motor` class describes what a motor stores and does, while `left_motor` and `right_motor` are separate objects with their own values.
+
+Here is a small `Motor` class that stores a name and a requested speed. It does not communicate with hardware.
+
+## Writing the class
+
+Unlike C++, Python has no separate header and source file; a class is defined entirely in one place.
+
+```python title="motor.py"
+class Motor:
+    def __init__(self, name: str):
+        self.name = name
+        self.speed = 0.0
+
+    def set_speed(self, speed: float):
+        self.speed = speed
+
+    def stop(self):
+        self.speed = 0.0
+
+    def get_speed(self) -> float:
+        return self.speed
+```
+
+### The constructor and `self`
+
+`__init__` is the **constructor**. Python calls it automatically when you create an object. The first parameter of every method, conventionally named `self`, refers to the object the method was called on; you don't pass it explicitly when calling the method.
+
+Assigning to `self.name` inside `__init__` creates an attribute on that object. Attributes don't need to be declared anywhere in advance.
+
+### Public and private members
+
+Python doesn't enforce `public` or `private` the way C++ does. By convention, a name prefixed with a single underscore, such as `_speed`, signals that it's internal and callers shouldn't touch it directly, even though nothing stops them.
+
+```python title="motor.py"
+class Motor:
+    def __init__(self, name: str):
+        self.name = name
+        self._speed = 0.0  # Convention: internal, not part of the public interface
+
+    def set_speed(self, speed: float):
+        self._speed = speed
+
+    def get_speed(self) -> float:
+        return self._speed
+```
+
+### Methods
+
+A method is a function defined inside a class. `set_speed` and `stop` return nothing (Python's equivalent of C++'s `void` is simply the absence of a `return` statement, or `return None`), while `get_speed` returns a `float`. The `-> float` is a return type hint; like the parameter hints, it documents intent but isn't enforced at runtime.
+
+## Using the class
+
+```python title="main.py"
+from motor import Motor
+
+left_motor = Motor("left")
+right_motor = Motor("right")
+
+left_motor.set_speed(0.5)
+right_motor.set_speed(0.25)
+
+print(f"Left speed: {left_motor.get_speed()}")
+print(f"Right speed: {right_motor.get_speed()}")
+
+left_motor.stop()
+print(f"Left after stopping: {left_motor.get_speed()}")
+```
+
+Use the dot operator to call a method on an object, same as C++. Each object stores its own `name` and `speed`, so changing `left_motor` does not change `right_motor`.
+
+## Relating classes to ROS
+
+A ROS 2 node written in Python is just a class that inherits from `rclpy.node.Node`. Attributes you set in `__init__`, such as a publisher or subscriber, work exactly like the `Motor` attributes above.
+
+```python title="ExampleNode.py"
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String
+
+
+class BasicNode(Node):
+    def __init__(self):
+        super().__init__("BasicNodePractice")
+        self._publisher = self.create_publisher(String, "our_publisher", 10)
+        self._subscriber = self.create_subscription(
+            String, "some_other_topic", self._subscriber_callback, 10
+        )
+
+    def publish_some_data(self, data: str):
+        pub_data = String()
+        pub_data.data = data
+        self._publisher.publish(pub_data)
+
+    def _subscriber_callback(self, msg: String):
+        print("Received data: " + msg.data)
+```
+
+`super().__init__("BasicNodePractice")` calls the constructor of `Node`, the class `BasicNode` inherits from, and gives the node its name. `self._publisher` and `self._subscriber` are attributes just like `self.name` was on `Motor`, created once in `__init__` and used by the node's methods afterward.
+
+For the full picture of topics, services, and publishers and subscribers in Python and C++, see **[ROS 2](./../ros.mdx)**.
