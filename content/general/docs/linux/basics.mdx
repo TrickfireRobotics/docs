@@ -1,9 +1,9 @@
 ---
-title: Linux Basics
-description: Terminal basics for people who have never used Linux commands before
+title: Terminal Basics
+description: Command line basics for people who have never used a terminal before
 ---
 
-You don't need to know Linux to join Trickfire, but you will run into a terminal pretty quickly, our dev containers, the robot's onboard computer, and most of ROS all expect you to be comfortable typing commands instead of clicking around. This page is a starting point for people who have never used a command line before. It won't make you an expert, but it should be enough to get you moving and know what to search for when you get stuck.
+You don't need to know Linux to join Trickfire, but you will run into a terminal pretty quickly. Our dev containers, the robot's onboard computer, and most of ROS all expect you to be comfortable typing commands instead of clicking around. This page is a starting point for people who have never used a command line before. It won't make you an expert, but it should be enough to get you moving and know what to search for when you get stuck.
 
 <Callout type="info" title="Shell">
     These examples assume bash, the default shell on most Linux distributions. If `echo $SHELL`
@@ -119,16 +119,17 @@ You'll be asked for your password the first time you use `sudo` in a while. Noth
 
 <Callout type="warning" title="Be careful with sudo">
     `sudo` lets a command do essentially anything to your system, including break it. Don't run a
-    command with `sudo` unless you understand what it does or a guide you trust told you to.
+    command with `sudo` unless you understand what it does or a guide you trust told you to. This
+    goes double on the rover, where you're sharing one machine with the whole team.
 </Callout>
 
 If a file isn't executable and you need it to be (a script you downloaded, for example), use `chmod +x <file>` to make it executable, then run it with `./<file>`.
 
 ## Package managers
 
-A package manager installs and updates software from the command line instead of downloading installers from websites. On Ubuntu/Debian, that's `apt` or `apt`, for example `sudo apt install git`.
+A package manager installs and updates software from the command line instead of downloading installers from websites. On Ubuntu/Debian, that's `apt`, for example `sudo apt install git`.
 
-See the [Software Install](./software-install/linux.mdx) guide for the specific commands we use to set up Docker, Git, and VSCode.
+See the [Software Install](../software-install/linux.mdx) guide for the specific commands we use to set up Docker, Git, and VSCode.
 
 ## Environment variables and PATH
 
@@ -172,31 +173,6 @@ You can chain commands together and send output to files, which is useful consta
 ps aux | grep ros2
 ```
 
-## Connecting to another machine with SSH
-
-SSH lets you open a terminal on a different computer over the network, which is how you'll usually talk to the robot's onboard computer instead of plugging in a monitor and keyboard.
-
-```bash title="Example"
-ssh <username>@<ip address>
-# e.g. ssh trickfire@192.168.1.1 (not necessarily accurate)
-```
-
-Once connected, every command you type runs on the remote machine, not your own, until you type `exit` to disconnect. If it's your first time connecting to a given machine, you'll be asked to confirm its fingerprint, type `yes` to continue.
-
-See the [Software Install](./software-install/linux.mdx) guide's optional SSH key section if you want to set up key-based login so you don't have to type a password every time.
-
-## Editing files in the terminal
-
-Sometimes you need to edit a file without leaving the terminal, for example editing a config file over SSH on the robot where VSCode isn't available. `nano` is the easiest editor to start with:
-
-```bash title="Example"
-sudo nano some-file.txt
-```
-
-The available commands are listed at the bottom of the screen, using `^` to mean `Ctrl`. The two you'll use most are `Ctrl + O` to save (it'll ask you to confirm the filename, just press enter) and `Ctrl + X` to exit.
-
-You'll likely see people use `vim` too, it's far more powerful but has a steeper learning curve. No need to learn it right away, `nano` is perfectly fine for quick edits.
-
 ## Quick reference
 
 A short cheat sheet of everything above:
@@ -218,8 +194,6 @@ ps aux / top           List / monitor running processes
 kill <PID>             Stop a process
 command1 | command2    Pipe output from one command to another
 command > file         Write output to a file
-ssh user@host          Open a terminal on another machine
-nano <file>            Edit a file in the terminal
 ```
 
 <Callout type="idea" title="Don't memorize this">

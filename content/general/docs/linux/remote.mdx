@@ -1,0 +1,229 @@
+---
+title: Working over SSH
+description: Connect to a rover's onboard computer, get code onto it, run it, and keep it running when your connection drops
+---
+
+A rover's onboard computer is a full Linux machine bolted to the chassis with no monitor, keyboard, or mouse attached. Everything you do on it, you do from your own laptop over the network using SSH. This page covers the general skills for that: getting onto the machine, getting code onto it, running something that survives a dropped connection, and working out what went wrong when it doesn't.
+
+<Callout type="info" title="Looking for a specific rover?">
+    This page is about the general workflow, not any one robot. For Viator's or Apollo's
+    documentation look at their respective repos.
+</Callout>
+
+## What SSH actually does
+
+SSH (secure shell) opens a shell session on another computer over the network. Your keystrokes go there, its output comes back, and the connection is encrypted the whole way.
+
+The mental model that matters: **once you're connected, every command runs on the rover, not on your laptop.** `ls` lists the rover's files, `pwd` shows a path on the rover's disk, and `rm` deletes the rover's data. This is obvious for about the first ten minutes and then stops being obvious once you have four terminals open and half of them are remote. When you're not sure which machine a terminal is on, run `hostname`.
+
+You also need to actually be able to reach the machine. Rovers usually sit on their own router or access point rather than campus wifi, so step one is almost always "am I on the right network".
+
+## Finding the machine
+
+`ssh` needs a username and an address:
+
+```bash
+ssh trickfire@192.168.0.112
+```
+
+<Callout type="idea" title="Rover IP addresses">
+    For you to be able to connect to the rovers over SSH you need to be on the TrickFire Wifi
+    network. The password is [here in
+    Discord](https://discord.com/channels/541737196915261462/541737917790289955/1555439113845477387).
+
+    The IP adresses of all devices on the network will always be in the `192.168.0.XXX` format. These are the ones you will need:
+
+    - **Viator**: `192.168.0.112`
+    - **Apollo**: `192.168.0.111`
+
+</Callout>
+
+## First connection
+
+The first time you connect to a machine, SSH stops and shows you something like this:
+
+```
+The authenticity of host '192.168.0.112' can't be established.
+ED25519 key fingerprint is SHA256:7Hs9...
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+```
+
+SSH is saying "I've never seen this machine before, is this really it?". Type the full word `yes` and press enter. It saves the machine's key in `~/.ssh/known_hosts` and won't ask again.
+
+Once you're in, your prompt changes to show the remote user and hostname, something like `trickfire@rover:~$`. When you're done, `exit` (or `Ctrl + D`) closes the session and drops you back on your own machine.
+
+## Quick connection
+
+Rather than retyping a user and an IP all day, give the rover an alias in your SSH config:
+
+```ssh-config title="~/.ssh/config"
+Host viator
+    HostName 192.168.0.112
+    User trickfire
+```
+
+Now `ssh viator` is the whole command. `scp`, `rsync`, and VSCode's Remote-SSH extension all read the same file, so the alias works everywhere. When the rover's IP changes, you edit one line instead of relearning a number.
+
+## Getting code onto the rover
+
+The rover has its own clone of the repo, and the rule is: **don't write code on the rover.** Anybody can delete and override it at any time! Develop and test on your laptop, push, then pull on the rover. That way whatever is running on the robot always corresponds to a real commit, which is the difference between "we can reproduce this" and "it worked at the field last week".
+
+```bash
+cd ~/urc-2023
+git status
+git pull
+```
+
+Run `git status` before you pull, not after. The rover's clone is shared, and it's common to find it parked on someone else's branch or sitting on uncommitted changes from a debugging session at the last test. To put it on a specific branch to test:
+
+```bash
+git fetch
+git switch my-feature-branch
+```
+
+<Callout type="warning" title="Don't leave your GitHub credentials on the rover">
+    Pulling a public repo over HTTPS needs no authentication, so a plain `git pull` is fine. Pushing
+    is a different story, and the fix is not to log into GitHub on a machine the whole team shares.
+    Push from your own laptop. If you genuinely need to push from the rover, connect with `ssh -A
+    rover` so the session borrows your laptop's key for as long as you're connected instead of
+    storing one on the robot.
+</Callout>
+
+## Editing files on the rover
+
+Sometimes you do have to change something in place: a network config, a service file, a calibration value. `nano` is the easiest terminal editor:
+
+```bash
+nano /etc/netplan/01-netcfg.yaml
+```
+
+The available commands are listed along the bottom of the screen, where `^` means `Ctrl`. The two you need are `Ctrl + O` to save (it asks you to confirm the filename, just press enter) and `Ctrl + X` to quit. You'll see people use `vim` as well; it's far more capable and has a much steeper learning curve, and there's no need to learn it right now.
+
+For anything bigger than a one-line change, use VSCode's **Remote-SSH** extension instead. Point it at your `rover` alias from the command palette and you get the full editor, file tree, extensions, and an integrated terminal, all running against the rover's filesystem. It installs a small helper on the rover the first time you connect, so the rover needs working internet for that initial setup.
+
+## Keeping things running when your connection drops
+
+This is the one that catches everyone. **When your SSH session ends, everything you started in it is killed.** Shut your laptop lid, walk out of wifi range, or just have the robot's network hiccup, and the launch you started stops dead in the middle of a test.
+
+`tmux` solves this. It runs shells on the rover that stay alive whether or not anyone is attached to them.
+
+<Steps>
+    <Step>
+        SSH into the rover, then start (or rejoin) a named session:
+
+        ```bash
+        tmux new -A -s rover
+        ```
+
+        `-A` means "attach if it already exists, otherwise create it", so this same command works
+        whether you're the first person on today or the fifth.
+    </Step>
+    <Step>
+        Run whatever you want inside it. Builds, launches, log tails, anything long-running.
+    </Step>
+    <Step>
+        Detach with `Ctrl + B` then `D`. Everything keeps running on the rover. You can close the
+        terminal, close your laptop, or lose the connection entirely.
+    </Step>
+    <Step>
+        Later, SSH back in and run `tmux new -A -s rover` again. You land straight back in the same
+        session with all its output still there.
+    </Step>
+
+</Steps>
+
+Every tmux shortcut starts with the prefix `Ctrl + B`, released, then the key:
+
+| Keys                         | What it does                       |
+| ---------------------------- | ---------------------------------- |
+| `Ctrl + B` then `D`          | Detach, leaving everything running |
+| `Ctrl + B` then `C`          | New window                         |
+| `Ctrl + B` then `N` / `P`    | Next / previous window             |
+| `Ctrl + B` then `"`          | Split the pane horizontally        |
+| `Ctrl + B` then `%`          | Split the pane vertically          |
+| `Ctrl + B` then arrow keys   | Move between panes                 |
+| `tmux ls`                    | List running sessions              |
+| `tmux kill-session -t rover` | Kill a session for good            |
+
+<Callout type="idea" title="Everyone can watch the same session">
+    Several people can attach to one tmux session at the same time and all see the same terminal
+    live. During a test, having everyone run `tmux new -A -s rover` turns "what did you just run?"
+    into a much shorter conversation.
+</Callout>
+
+`screen` does roughly the same job and is sometimes already installed when tmux isn't. If you can't install either, `nohup <command> &` will at least keep a single process alive after you disconnect, but you lose the ability to interact with it or see its output.
+
+## Copying files back and forth
+
+For things that don't belong in git: a bag file you recorded, a log, a camera calibration, a photo of something that broke.
+
+`scp` handles single files and uses the same alias from your SSH config:
+
+```bash
+# laptop -> rover
+scp ./calibration.yaml rover:~/urc-2023/config/
+
+# rover -> laptop
+scp rover:~/logs/run-42.log ./
+```
+
+`rsync` is better for directories and anything large, because it only transfers what actually changed and can pick up where it left off if the connection drops:
+
+```bash
+rsync -avz --progress rover:~/bags/ ./bags/
+```
+
+`-a` preserves structure and permissions, `-v` prints what it's doing, and `-z` compresses in transit, which is worth it over field wifi.
+
+<Callout type="warning" title="The trailing slash changes what rsync does">
+    `rover:~/bags/` copies the *contents* of `bags` into the destination. `rover:~/bags` copies the
+    `bags` *folder itself* into the destination, leaving you with `./bags/bags/`. The slash on the
+    source path is the whole difference.
+</Callout>
+
+<Accordions>
+    <Accordion title="Connection refused">
+        You reached the machine but nothing is listening on port 22. Either the SSH server isn't
+        running on it, or the address belongs to a different device on the network.
+    </Accordion>
+    <Accordion title="Connection timed out / No route to host">
+        You can't reach the machine at all. Check you're on the rover's network and not campus wifi,
+        check it's powered on, and `ping` the address to confirm before touching anything else.
+    </Accordion>
+    <Accordion title="Permission denied (publickey,password)">
+        Check the username first, it's by far the most common cause. Otherwise the password is
+        wrong, or the machine only accepts keys and yours hasn't been copied over with `ssh-copy-id`
+        yet.
+    </Accordion>
+    <Accordion title="The session is frozen and Ctrl + C does nothing">
+        The connection dropped and the client hasn't noticed yet. Press `Enter`, then `~`, then `.`
+        to force the SSH client to close, then reconnect.
+    </Accordion>
+    <Accordion title="Everything died when I disconnected">
+        Expected, that's how SSH sessions work. Run long things inside `tmux` so they survive.
+    </Accordion>
+</Accordions>
+
+## Quick reference
+
+```
+ssh user@host              Open a shell on another machine
+ssh rover                  ...using an alias from ~/.ssh/config
+ssh -A rover               Forward your SSH keys for this session
+ssh-copy-id user@host      Set up passwordless login
+ssh-keygen -R host         Forget a machine's old host key
+exit                       Disconnect
+
+tmux new -A -s rover       Start or rejoin a persistent session
+Ctrl+B then D              Detach, leave it running
+tmux ls                    List sessions
+
+scp <file> rover:<path>    Copy a file to the rover
+scp rover:<path> <file>    Copy a file from the rover
+rsync -avz --progress ...  Copy a directory, resumable
+
+hostname                   Which machine am I on?
+ip addr / ping <host>      Network troubleshooting
+tail -f / journalctl -f    Follow logs live
+df -h / htop               Disk / CPU and memory
+```

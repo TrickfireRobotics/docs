@@ -5,7 +5,13 @@
     "icon": "BookOpen",
     "sidebar": [
         { "label": "General Documentation", "slug": "index" },
-        { "label": "Linux Basics", "slug": "linux" },
+        {
+            "label": "Linux",
+            "items": [
+                { "label": "Terminal Basics", "slug": "linux/basics" },
+                { "label": "Working over SSH", "slug": "linux/remote" }
+            ]
+        },
         {
             "label": "GitHub",
             "icon": "Github",
