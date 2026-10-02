@@ -29,6 +29,7 @@ content-sources.generated.ts
 content-sources.map.json
 repos.generated.json
 .meta/
+next-env.d.ts
 
 # editor
 .vscode/*
