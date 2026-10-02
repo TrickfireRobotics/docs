@@ -15,6 +15,7 @@ async function main(): Promise<void> {
     await run("pnpm", ["exec", "next", "dev", "--webpack", "-p", port], {
         cwd: process.cwd(),
         stdio: "inherit",
+        env: { ...process.env, DOCS_DEV_MODE: "site" },
     });
 }
 

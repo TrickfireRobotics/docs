@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Overpass } from "next/font/google";
+import { DevRibbon } from "@/components/dev-ribbon";
 import { Provider } from "@/components/provider";
 import { appName } from "@/lib/shared";
 import "./global.css";
@@ -21,6 +22,7 @@ export default function Layout({ children }: LayoutProps<"/">) {
     return (
         <html lang="en" className={overpass.variable} suppressHydrationWarning>
             <body className="flex flex-col min-h-screen">
+                <DevRibbon />
                 <Provider>{children}</Provider>
             </body>
         </html>

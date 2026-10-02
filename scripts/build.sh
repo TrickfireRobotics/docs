@@ -9,7 +9,11 @@ echo "[trickfire-docs] Build started at $(date)"
 
 cd "$REPO_DIR"
 
-git pull --ff-only origin main
+# reset instead of pull: the build step regenerates files (e.g. next-env.d.ts)
+# that can drift from what's committed, which would make a plain pull abort
+git fetch origin main
+git reset --hard origin/main
+git clean -fd
 pnpm install --frozen-lockfile
 pnpm site:build
 

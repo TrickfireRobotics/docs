@@ -28,5 +28,6 @@ export async function runDev(projectRoot: string, port = 3000): Promise<void> {
     await run("pnpm", ["exec", "next", "dev", "--webpack", "-p", String(port)], {
         cwd: cache,
         stdio: "inherit",
+        env: { ...process.env, DOCS_DEV_MODE: "cli" },
     });
 }
