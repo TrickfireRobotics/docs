@@ -31,10 +31,48 @@ Below are the installation guides for all operating systems.
     />
 </Cards>
 
-## AI Assisted coding
+## Guides
 
-While we are a educational organization we are aware that in industry more and more code is being written with the assistance of AI then in the past few years. However, we recommend that you as an individual should try your best to learn the technologies, frameworks, and programming languages on your own before you start trying to contribute AI generated code.
+There are some guides to walk you through the basics of the main technologies you will most likely be using here at Trickfire.
 
-Trickfire as an organization cares more about you as an inidivudual learning, not as much the speed of the results, we understand that you may be new to this or learning something new. If you are contributing AI generated code, you should be able to explain what each part of the code you are contributing does as if you had written it yourself.
+<Cards>
+    <Card
+        href="./linux/basics.mdx"
+        title="Linux Basics"
+        description="Terminal basics for people who have never used a command line before."
+        icon={<Icon name="Terminal" />}
+    />
+    <Card
+        href="./github/general.mdx"
+        title="GitHub"
+        description="Branch and commit naming, pull requests, and repo practices."
+        icon={<GitHubIcon />}
+    />
+    <Card
+        href="./python/general.mdx"
+        title="Python"
+        description="Data types, containers, and classes for writing Python code."
+        icon={<PythonIcon />}
+    />
+    <Card
+        href="./cpp/general.mdx"
+        title="C++"
+        description="Data types, containers, and classes for writing C++ code."
+        icon={<CppIcon />}
+    />
+    <Card
+        href="./ros.mdx"
+        title="ROS 2"
+        description="Nodes, topics, publishers, subscribers, and services in ROS 2."
+        icon={<RosIcon />}
+    />
+</Cards>
 
-Make sure that you still continue to follow software standards if you do end up generating AI code. In the case of writing AI generated code make sure to follow the REPO's `CLAUDE.md` if there is one, the dashboard has one specifically for this purpose. [Link to file](https://github.com/TrickfireRobotics/dashboard/blob/main/CLAUDE.md)
+<Callout type="error" title="Note on AI assisted coding">
+    While we are a educational organization we are aware that in industry more and more code is being written with the assistance of AI then in the past few years. However, we recommend that you as an individual should try your best to learn the technologies, frameworks, and programming languages on your own before you start trying to contribute AI generated code.
+
+    Trickfire as an organization cares more about you as an inidivudual learning, not as much the speed of the results, we understand that you may be new to this or learning something new. If you are contributing AI generated code, you should be able to explain what each part of the code you are contributing does as if you had written it yourself.
+
+    Make sure that you still continue to follow software standards if you do end up generating AI code. In the case of writing AI generated code make sure to follow the REPO's `CLAUDE.md` or `AGENTS.md` if there is one, and most importantly **make sure the AI agent does not put itself as co-author**. Please put that in your global config or just tell the agent to never co-author things in Git or Github, they will get rejected.
+
+</Callout>
