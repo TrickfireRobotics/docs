@@ -31,6 +31,10 @@ repos.generated.json
 .meta/
 next-env.d.ts
 
+# content
+content/*
+!content/general
+
 # editor
 .vscode/*
 !.vscode/settings.json
