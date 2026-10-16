@@ -9,7 +9,7 @@ import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import type { MDXComponents } from "mdx/types";
 
 function Tabs({ className, ...props }: ComponentProps<typeof TabsBase>) {
-    return <TabsBase className={cn("shadow-md", className)} {...props} />;
+    return <TabsBase className={cn("border border-fd-border", className)} {...props} />;
 }
 
 function Tab({ className, ...props }: ComponentProps<typeof TabBase>) {
@@ -151,9 +151,12 @@ function Callout({
     const iconEl = icon ?? calloutIcons[type];
 
     return (
+        // style guide p.12 text box: #222222 fill, solid 1px #FFFFFF, sharp
+        // corners. The semantic colour rides on a thick left edge so callouts
+        // stay recognisable without inventing a border colour off-palette.
         <div
             className={cn(
-                "flex flex-col gap-2 my-4 rounded-xl border border-(--callout-color)/50 bg-fd-card p-3 text-sm text-fd-card-foreground shadow-md",
+                "flex flex-col gap-2 my-4 border border-fd-border border-l-4 border-l-(--callout-color) bg-fd-card p-3 text-sm text-fd-card-foreground",
                 className
             )}
             style={
@@ -165,7 +168,7 @@ function Callout({
         >
             {title ? (
                 <>
-                    <p className="flex items-center gap-2 font-medium my-0!">
+                    <p className="tf-heading flex items-center gap-2 text-base my-0!">
                         {iconEl}
                         {title}
                     </p>

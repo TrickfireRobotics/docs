@@ -1,0 +1,140 @@
+/*
+ * TrickFire Robotics brand layer - source of truth.
+ *
+ * Mirrors `website/src/_variables.scss` so the two codebases can't drift. Token
+ * names match that file one-for-one ($TrickFireGreen -> --tf-green, etc.) so
+ * porting either direction is a rename, not a redesign.
+ *
+ * Everything here traces to style-guide.pdf v1.0 (August 2025). Page refs are
+ * noted where a rule is prescriptive rather than a judgement call.
+ */
+
+/* --- tokens ------------------------------------------------------------- */
+
+:root {
+    /* palette - style guide p.8. These six are the entire sanctioned set. */
+    --tf-green: #00fe00; /* TrickFire Green */
+    --tf-pink: #e93cac; /* Accent Pink */
+    --tf-eerie-black: #222222; /* Eerie Black */
+    --tf-white: #ffffff; /* White - links, emphasis */
+    --tf-dark-white: #cccccc; /* Dark White - body text */
+    --tf-black: #000000; /* Black */
+
+    /* channel forms, for rgb(... / alpha). Tailwind v4 runs Lightning CSS,
+       which rewrites `color-mix(..., var(--x) N%, transparent)` into a legacy
+       fallback that drops the percentage - i.e. full-brightness #00fe00.
+       Plain `rgb(<channels> / <alpha>)` is left alone and works everywhere. */
+    --tf-green-rgb: 0 254 0;
+    --tf-pink-rgb: 233 60 172;
+    --tf-white-rgb: 255 255 255;
+
+    /* shades and tints - style guide p.9 licenses these as palette extensions.
+       Shade = base + black, tint = base + white, tone = base + gray. */
+    --tf-eerie-shade: #1a1a1a; /* page surface, one step under Eerie Black */
+    --tf-eerie-tint: #2e2e2e; /* hover surface, one step over */
+    --tf-gray-tone: #8f8f8f; /* metadata text */
+    --tf-pink-tint: #f27ac7; /* warning, distinct from error's full pink */
+    --tf-wordmark: #1f1f1f; /* background wordmark - style guide p.12 */
+
+    /* type - style guide p.7 */
+    --tf-font-heading: var(--font-barlow-condensed), "Barlow Condensed", sans-serif;
+    --tf-font-body: var(--font-overpass), "Overpass", system-ui, sans-serif;
+    --tf-font-mono: var(--font-roboto-mono), "Roboto Mono", ui-monospace, monospace;
+
+    /* the one geometric rule: sharp corners, 1px solid white - p.12 */
+    --tf-border: 1px solid var(--tf-white);
+    --tf-offset: 0.55rem; /* hard-shadow offset, scaled from BoxShadowImage */
+}
+
+/* --- brand primitives --------------------------------------------------- */
+
+/* Green -> pink hairline. The website's GradientLine component, minus GSAP -
+   it wipes in on scroll via an animation-timeline instead of a JS observer. */
+.tf-rule {
+    display: block;
+    width: 100%;
+    height: 0.25rem;
+    border: none;
+    background-image: linear-gradient(to right, var(--tf-green), var(--tf-pink));
+    transform-origin: left center;
+}
+
+@supports (animation-timeline: view()) {
+    .tf-rule--reveal {
+        animation: tf-wipe-in linear both;
+        animation-timeline: view();
+        animation-range: entry 10% cover 28%;
+    }
+}
+
+@keyframes tf-wipe-in {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+
+/* Hard offset shadow, zero blur - the website's BoxShadowImage. This is the
+   brand's hover/depth idiom; ambient blurred shadows are not. */
+.tf-offset-frame {
+    border: var(--tf-border);
+    box-shadow: var(--tf-offset) var(--tf-offset) 0 var(--tf-green);
+}
+
+.tf-offset-frame--pink {
+    box-shadow: var(--tf-offset) var(--tf-offset) 0 var(--tf-pink);
+}
+
+/* Lift on hover: the card slides into its own shadow rather than glowing. */
+.tf-lift {
+    transition:
+        transform 0.15s ease-out,
+        box-shadow 0.15s ease-out,
+        background-color 0.15s ease-out;
+}
+
+.tf-lift:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 var(--tf-green);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tf-lift,
+    .tf-rule--reveal {
+        transition: none;
+        animation: none;
+    }
+
+    .tf-lift:hover {
+        transform: none;
+    }
+}
+
+/* RGB split, style guide p.12. Green up-left, pink down-right, black keyline
+   so the glyph edge survives both. Prominent elements only, per the guide. */
+.tf-glitch {
+    color: var(--tf-white);
+    text-shadow:
+        1px 1px 0 var(--tf-black),
+        -1px -1px 0 var(--tf-black),
+        1px -1px 0 var(--tf-black),
+        -1px 1px 0 var(--tf-black),
+        4px 4px 0 var(--tf-pink),
+        -4px -4px 0 var(--tf-green);
+}
+
+/* Background wordmark field - style guide p.12. Giant Barlow Condensed italic
+   bold TRICKFIRE, one letter of offset per row, barely above the surface. */
+.tf-wordmark-field {
+    font-family: var(--tf-font-heading);
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(3.5rem, 9vw, 5.8rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    color: var(--tf-wordmark);
+    white-space: nowrap;
+    user-select: none;
+}

@@ -1,27 +1,63 @@
 @import "tailwindcss";
 @import "fumadocs-ui/css/black.css";
 @import "fumadocs-ui/css/preset.css";
+@import "./brand.css";
 
 @theme inline {
-    --font-sans: var(--font-overpass), system-ui, sans-serif;
-    --font-mono: "Roboto Mono", "SFMono-Regular", ui-monospace, monospace;
+    --font-sans: var(--tf-font-body);
+    --font-mono: var(--tf-font-mono);
+    --font-heading: var(--tf-font-heading);
+}
+
+/* Sharp corners, no rounding - style guide p.12. Flattening the radius scale
+   catches fumadocs' own utilities too: its generated CSS ships `@source
+   inline(...)` safelists, so every `rounded-*` class in the UI is compiled
+   against this theme. `rounded-full` is a static value in Tailwind v4 and
+   survives, which is what we want for avatars and pills. */
+@theme {
+    --radius-xs: 0px;
+    --radius-sm: 0px;
+    --radius-md: 0px;
+    --radius-lg: 0px;
+    --radius-xl: 0px;
+    --radius-2xl: 0px;
+    --radius-3xl: 0px;
+    --radius-4xl: 0px;
 }
 
 :root {
-    --tf-green: #00fe00;
-    --tf-green-rgb: 0 254 0;
-    --tf-pink: #e93cac;
-    --tf-purple: #a742f5;
-    --color-fd-idea: var(--tf-purple);
-    --tf-dot-rgb: 0 0 0;
+    --color-fd-idea: var(--tf-green);
 }
 
 .dark {
-    --tf-dot-rgb: 255 255 255;
+    --color-fd-background: var(--tf-eerie-shade);
+    --color-fd-foreground: var(--tf-white);
+    --color-fd-muted: var(--tf-eerie-black);
+    --color-fd-muted-foreground: var(--tf-gray-tone);
+    --color-fd-card: var(--tf-eerie-black);
+    --color-fd-card-foreground: var(--tf-white);
+    --color-fd-popover: var(--tf-eerie-black);
+    --color-fd-popover-foreground: var(--tf-white);
+    --color-fd-secondary: var(--tf-eerie-black);
+    --color-fd-secondary-foreground: var(--tf-white);
+    --color-fd-accent: var(--tf-eerie-tint);
+    --color-fd-accent-foreground: var(--tf-white);
+
+    /* Full-strength white borders, per the user's call on intensity. The
+       style guide's text-box spec (p.12) is `Solid 1px #FFFFFF`. */
+    --color-fd-border: var(--tf-white);
+
     --color-fd-primary: var(--tf-green);
-    --color-fd-primary-foreground: #06210a;
+    --color-fd-primary-foreground: var(--tf-black);
     --color-fd-ring: var(--tf-green);
+
+    /* Callouts stay inside the sanctioned palette. Warning uses a pink tint
+       and error full pink so the pair is still distinguishable (p.9). */
+    --color-fd-info: var(--tf-white);
+    --color-fd-success: var(--tf-green);
+    --color-fd-warning: var(--tf-pink-tint);
     --color-fd-error: var(--tf-pink);
+    --color-fd-idea: var(--tf-green);
 }
 
 html {
@@ -34,26 +70,173 @@ html > body[data-scroll-locked] {
 }
 
 body {
-    font-family: var(--font-sans);
+    font-family: var(--tf-font-body);
+    background-color: var(--tf-eerie-shade);
+}
+
+/* --- type ---------------------------------------------------------------- */
+
+/* Barlow Condensed Semi Bold, all caps, for every header - style guide p.7.
+   Condensed caps need positive tracking to stay legible at body-adjacent
+   sizes, and they set tighter than Overpass, so the scale runs a touch large. */
+:is(h1, h2, h3, h4, h5, h6),
+.tf-heading {
+    font-family: var(--tf-font-heading);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.015em;
+    color: var(--tf-white);
 }
 
 .prose {
     --tw-prose-size: 0.9;
+    color: var(--tf-dark-white);
+}
+
+.prose :is(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--tf-font-heading);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.015em;
+}
+
+.prose h1 {
+    font-size: 2.9rem;
+    line-height: 1.04;
+}
+
+.prose h2 {
+    font-size: 2.1rem;
+    line-height: 1.1;
+    /* green->pink hairline under every section break, the way the style guide
+       rules off each of its own pages */
+    border-bottom: 2px solid transparent;
+    border-image: linear-gradient(to right, var(--tf-green), var(--tf-pink)) 1;
+    padding-bottom: 0.3rem;
+}
+
+.prose h3 {
+    font-size: 1.6rem;
+    line-height: 1.15;
+}
+
+.prose h4 {
+    font-size: 1.3rem;
+}
+
+.prose :is(p, li) {
+    color: var(--tf-dark-white);
+}
+
+/* White for links and anything needing emphasis - style guide p.8 */
+.prose strong {
+    color: var(--tf-white);
+}
+
+.prose a {
+    color: var(--tf-white);
+    text-decoration-color: var(--tf-green);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+}
+
+.prose a:hover {
+    color: var(--tf-green);
+}
+
+.prose blockquote {
+    border-inline-start: 4px solid var(--tf-green);
+    color: var(--tf-dark-white);
+}
+
+.prose :is(code, kbd, samp, pre) {
+    font-family: var(--tf-font-mono);
+}
+
+/* Code blocks drop to true black so they read as a distinct surface against
+   Eerie Black without inventing a color outside the palette. */
+.prose pre,
+figure[data-rehype-pretty-code-figure] pre {
+    background-color: var(--tf-black) !important;
 }
 
 .tf-prompt {
-    color: var(--color-fd-muted-foreground);
+    color: var(--tf-gray-tone);
     user-select: none;
 }
 
+/* --- chrome -------------------------------------------------------------- */
+
+/* Sidebar sits flush and hard-edged rather than floating as a rounded card. */
 #nd-sidebar {
-    inset-inline-start: 0.625rem;
-    inset-block: 0.625rem;
-    border-radius: 0.75rem;
-    border-inline-end-width: 1px;
-    border-style: solid;
-    border-color: var(--color-fd-border);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    inset-inline-start: 0;
+    inset-block: 0;
+    border-radius: 0;
+    border-inline-end: var(--tf-border);
+    box-shadow: none;
+    background-color: var(--tf-eerie-black);
+}
+
+#nd-sidebar a[href="/"] {
+    align-self: flex-start;
+}
+
+/* Sidebar and nav labels take the header font, same as the website's navbar.
+   The container catches loose text nodes; the explicit descendants are needed
+   because an inherited `text-transform` loses to any rule that matches an
+   element directly, and fumadocs sets its own on the buttons. */
+#nd-sidebar,
+#nd-sidebar a,
+#nd-sidebar button,
+#nd-nav a:not([href="/"]),
+#nd-tocnav,
+#nd-toc,
+#nd-toc a {
+    font-family: var(--tf-font-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+/* Size on the container so folder headings - which are plain divs with no
+   font-size utility - pick it up by inheritance along with the links. */
+#nd-sidebar {
+    font-size: 1.0625rem;
+    font-weight: 600;
+}
+
+/* Folder headings are structure, not secondary text, so they get full white
+   rather than the muted grey fumadocs applies to every nav item. They're the
+   only divs in the sidebar carrying that utility; links and buttons keep it. */
+#nd-sidebar div.text-fd-muted-foreground,
+#nd-sidebar p {
+    color: var(--tf-white);
+}
+
+/* Active page: solid green block with black text. The website's Button
+   treatment - green is a fill, not a 10% tint. */
+#nd-sidebar a[data-active="true"] {
+    background-color: var(--tf-green);
+    color: var(--tf-black);
+}
+
+#nd-sidebar a[data-active="true"] svg {
+    color: var(--tf-black);
+}
+
+#nd-nav {
+    border-bottom: var(--tf-border);
+    background-color: var(--tf-eerie-black);
+}
+
+/* Project tabs: the website's active-link underline, gradient and all. */
+#nd-sidebar [data-active="true"]::after,
+#nd-nav [data-active="true"]::after {
+    background-image: linear-gradient(to right, var(--tf-green), var(--tf-pink));
+}
+
+/* Table of contents marker follows the brand green rather than a muted rail. */
+#nd-toc a[data-active="true"] {
+    color: var(--tf-green);
 }
 
 #nd-docs-layout {
@@ -78,115 +261,36 @@ body {
     padding-inline-start: 1.5625rem;
 }
 
-#nd-sidebar a[href="/"] {
-    align-self: flex-start;
-    margin-top: -0.625rem;
+/* Tables read as the style guide's boxes: hard edges, white rules, caps heads. */
+.prose table {
+    border: var(--tf-border);
+    border-collapse: collapse;
 }
 
-/* --- home page background layers --- */
-
-/* Channel-list form of the brand colours. Tailwind v4 runs Lightning CSS,
-   which rewrites `color-mix(..., var(--x) N%, transparent)` into a legacy
-   fallback that drops the percentage - i.e. full-brightness #00fe00. Plain
-   `rgb(<channels> / <alpha>)` is left alone and works everywhere. */
-
-/* base dot matrix, masked so it dissolves downward instead of ending on a line */
-.tf-dot-grid {
-    background-image: radial-gradient(
-        circle at center,
-        rgb(var(--tf-dot-rgb) / 0.09) 1px,
-        transparent 1px
-    );
-    background-size: 22px 22px;
-    /* solid through the hero, then fades out partway down the card grid so the
-       two sections sit on one surface instead of meeting at a border */
-    -webkit-mask-image: radial-gradient(
-        ellipse 120% 1100px at 50% -100px,
-        #000 0%,
-        #000 35%,
-        transparent 80%
-    );
-    mask-image: radial-gradient(
-        ellipse 120% 1100px at 50% -100px,
-        #000 0%,
-        #000 35%,
-        transparent 80%
-    );
+.prose :is(th, td) {
+    border: 1px solid rgb(var(--tf-white-rgb) / 0.45);
 }
 
-.tf-hero-glow {
-    background: radial-gradient(
-        ellipse 70% 520px at 50% -60px,
-        rgb(var(--tf-green-rgb) / 0.13) 0%,
-        transparent 72%
-    );
+.prose th {
+    font-family: var(--tf-font-heading);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-size: 1.05rem;
+    color: var(--tf-white);
+    background-color: var(--tf-eerie-black);
 }
 
-/* lit dots: same grid, same origin as .tf-dot-grid, so they land exactly on
-   top of base dots - each instance masks itself down to a small cluster */
-.tf-led-cluster {
-    background-image: radial-gradient(
-        circle at center,
-        rgb(var(--tf-green-rgb) / 1) 1px,
-        transparent 1px
-    );
-    background-size: 22px 22px;
-    animation: tf-led-pulse 4s ease-in-out infinite;
+/* fumadocs hardcodes `border-radius: 5px` on inline code in its base layer,
+   so it escapes the radius-scale override above. */
+.prose :not(pre) > code {
+    border-radius: 0;
 }
 
-@keyframes tf-led-pulse {
-    0%,
-    100% {
-        opacity: 0.12;
-    }
-    50% {
-        opacity: 0.8;
-    }
-}
-
-.tf-logo-glow {
-    filter: drop-shadow(0 0 24px rgb(var(--tf-green-rgb) / 0.45));
-}
-
-/* --- project card pointer spotlight --- */
-
-/* 1px gradient ring, painted only on the border box */
-.tf-card-ring {
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    pointer-events: none;
-    background: radial-gradient(
-        200px circle at var(--mx, -999px) var(--my, -999px),
-        rgb(var(--tf-green-rgb) / 0.6),
-        transparent 65%
-    );
-    -webkit-mask:
-        linear-gradient(#000, #000) content-box,
-        linear-gradient(#000, #000);
-    mask:
-        linear-gradient(#000, #000) content-box,
-        linear-gradient(#000, #000);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-}
-
-.tf-card-glow {
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    pointer-events: none;
-    background: radial-gradient(
-        240px circle at var(--mx, -999px) var(--my, -999px),
-        rgb(var(--tf-green-rgb) / 0.08),
-        transparent 70%
-    );
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .tf-led-cluster {
-        animation: none;
-        opacity: 0.35;
-    }
+/* `rounded-full` is a static value in Tailwind v4, so it escapes the radius
+   scale override. That's wanted for genuine circles (avatars, the TOC
+   progress ring), but the search trigger is a box - square it off. */
+#nd-nav :is(button, a).rounded-full,
+#nd-sidebar :is(button, a).rounded-full {
+    border-radius: 0;
 }
