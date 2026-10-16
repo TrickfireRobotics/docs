@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Barlow_Condensed, Overpass, Roboto_Mono } from "next/font/google";
-import { DevRibbon } from "@/components/dev-ribbon";
+import { DevBadge } from "@/components/dev-badge";
 import { Provider } from "@/components/provider";
 import { appName } from "@/lib/shared";
 import "./global.css";
@@ -40,7 +40,7 @@ export default function Layout({ children }: LayoutProps<"/">) {
             suppressHydrationWarning
         >
             <body className="flex flex-col min-h-screen">
-                <DevRibbon />
+                <DevBadge />
                 <Provider>{children}</Provider>
             </body>
         </html>

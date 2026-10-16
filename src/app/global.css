@@ -312,6 +312,23 @@ figure[data-rehype-pretty-code-figure] {
     padding-inline-start: 1.5625rem;
 }
 
+/* Home nav: brand links left, search right. fumadocs stacks both into one
+   right-aligned cluster, so let that cluster spread and pull the link list
+   ahead of the search trigger. */
+#nd-home-layout #nd-nav div.flex-1 {
+    justify-content: space-between;
+}
+
+#nd-home-layout #nd-nav div.flex-1 > ul {
+    order: -1;
+}
+
+/* The slot for non-secondary nav links is unused but still carries `px-6`,
+   which would otherwise indent the icons by 48px. */
+#nd-home-layout #nd-nav ul:empty {
+    display: none;
+}
+
 /* Tables read as the style guide's boxes: hard edges, white rules, caps heads. */
 .prose table {
     border: var(--tf-border);
