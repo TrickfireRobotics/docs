@@ -2,11 +2,20 @@ import { cn } from "@/lib/cn";
 
 const WORDMARK = "TRICKFIRE";
 
-/** Enough repeats to overrun the widest viewport at the largest clamp size. */
-const REPEATS = 6;
+// Both counts deliberately overrun the container, which clips them. Sizing
+// them to fit would mean measuring at runtime; overrunning costs a few
+// thousand characters of static text and can never leave a bald corner.
+//
+// At the 5.8rem clamp ceiling (92.8px) Barlow Condensed italic averages
+// ~0.42em per glyph, so one character is ~39px wide and one line is ~85px
+// tall. 16 repeats is 144 characters, about 5600px - past 5K. 27 rows is
+// about 2300px, past any portrait display, and being a multiple of 9 keeps
+// the one-letter-per-row offset on a whole cycle.
+const REPEATS = 16;
+const DEFAULT_ROWS = 27;
 
 interface WordmarkFieldProps {
-    /** Number of wordmark rows to render. Defaults to `8`. */
+    /** Rows to render. Defaults to a count that overruns any viewport. */
     rows?: number;
     className?: string;
 }
@@ -20,7 +29,7 @@ interface WordmarkFieldProps {
  * dot-matrix-plus-radial-glow treatment, which is generic to every current
  * site template and appears nowhere in TrickFire's own material.
  */
-export function WordmarkField({ rows = 8, className }: WordmarkFieldProps) {
+export function WordmarkField({ rows = DEFAULT_ROWS, className }: WordmarkFieldProps) {
     return (
         <div
             aria-hidden

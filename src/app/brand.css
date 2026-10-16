@@ -35,7 +35,8 @@
        the page floor goes darkest and surfaces lift off it. Without that gap
        everything flattens into one sheet. */
     --tf-eerie-deep: #101010; /* page floor, two steps under Eerie Black */
-    --tf-eerie-shade: #1a1a1a; /* recessed surface - code, inputs */
+    --tf-eerie-raise: #181818; /* in-prose surface, barely off the floor */
+    --tf-eerie-shade: #1a1a1a; /* recessed surface - inputs */
     --tf-eerie-tint: #2e2e2e; /* hover surface, one step over */
     --tf-gray-tone: #a3a3a3; /* metadata text - 7:1 on Eerie Black */
     --tf-pink-tint: #f27ac7; /* warning, distinct from error's full pink */
@@ -59,6 +60,13 @@
        the same zero-blur idiom as BoxShadowImage, just quiet enough to sit
        under every surface on a documentation page. */
     --tf-raise: 3px 3px 0 rgb(0 0 0 / 0.55);
+
+    /* A flat fill reads as a sticker. A 1px lit top edge plus a shallow sheen
+       falling off down the face reads as a surface catching light from above -
+       this is the depth that went missing when the corners went square, not
+       the rounding. Both are white overlays, so they work on any base fill. */
+    --tf-panel-sheen: linear-gradient(to bottom, rgb(var(--tf-white-rgb) / 0.035), transparent 55%);
+    --tf-panel-shadow: inset 0 1px 0 rgb(var(--tf-white-rgb) / 0.07), var(--tf-raise);
 }
 
 /* --- brand primitives --------------------------------------------------- */
@@ -102,10 +110,15 @@
     box-shadow: var(--tf-offset) var(--tf-offset) 0 var(--tf-pink);
 }
 
-/* Lift on hover: the card starts already raised off the page on a black
-   offset, then slides further out and swaps the shadow to green. */
+/* Raised panel. Pair with `.tf-lift` for something interactive. */
+.tf-panel {
+    background-image: var(--tf-panel-sheen);
+    box-shadow: var(--tf-panel-shadow);
+}
+
+/* Lift on hover: the panel slides out of its own shadow, which swaps to
+   green. The lit top edge is kept so the face stays lit while it moves. */
 .tf-lift {
-    box-shadow: var(--tf-raise);
     transition:
         transform 0.15s ease-out,
         box-shadow 0.15s ease-out,
@@ -114,7 +127,9 @@
 
 .tf-lift:hover {
     transform: translate(-3px, -3px);
-    box-shadow: 6px 6px 0 var(--tf-green);
+    box-shadow:
+        inset 0 1px 0 rgb(var(--tf-white-rgb) / 0.09),
+        6px 6px 0 var(--tf-green);
 }
 
 @media (prefers-reduced-motion: reduce) {

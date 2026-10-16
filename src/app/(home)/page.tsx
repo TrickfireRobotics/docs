@@ -10,9 +10,7 @@ export default function HomePage() {
     return (
         <>
             <main className="relative flex-1 overflow-hidden">
-                {/* enough rows to overrun the tallest realistic card grid; the
-                    container clips, so the field reads as full-bleed */}
-                <WordmarkField rows={16} />
+                <WordmarkField />
 
                 <section className="relative px-6 pb-14 pt-20 text-center">
                     <div className="flex flex-col items-center">
@@ -42,15 +40,15 @@ export default function HomePage() {
                             <Link
                                 key={repo.id}
                                 href={`/${repo.id}`}
-                                className="group tf-lift flex min-h-28 flex-col gap-3 border border-fd-border bg-fd-card p-5"
+                                className="group tf-panel tf-lift flex flex-col gap-2 border border-fd-border bg-fd-card px-4 py-3.5"
                             >
                                 <span className="flex items-center gap-3">
                                     {/* green reads as an outline at rest and fills on hover -
                                         seven solid #00FE00 blocks at once is a lot of shouting */}
-                                    <span className="flex size-10 shrink-0 items-center justify-center border border-fd-primary/60 text-fd-primary transition-colors duration-150 group-hover:bg-fd-primary group-hover:text-black">
-                                        {resolveProjectIcon(repo.icon, "size-[1.15rem]")}
+                                    <span className="flex size-8 shrink-0 items-center justify-center border border-fd-primary/60 text-fd-primary transition-colors duration-150 group-hover:bg-fd-primary group-hover:text-black">
+                                        {resolveProjectIcon(repo.icon, "size-4")}
                                     </span>
-                                    <span className="tf-heading truncate text-xl text-fd-card-foreground">
+                                    <span className="tf-heading truncate text-lg text-fd-card-foreground">
                                         {repo.name}
                                     </span>
                                     <ArrowRight className="ms-auto size-4 shrink-0 text-fd-primary opacity-0 transition-opacity duration-150 group-hover:opacity-100" />
