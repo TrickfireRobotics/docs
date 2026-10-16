@@ -10,7 +10,9 @@ export default function HomePage() {
     return (
         <>
             <main className="relative flex-1 overflow-hidden">
-                <WordmarkField rows={5} className="top-10 opacity-90" />
+                {/* enough rows to overrun the tallest realistic card grid; the
+                    container clips, so the field reads as full-bleed */}
+                <WordmarkField rows={16} />
 
                 <section className="relative px-6 pb-14 pt-20 text-center">
                     <div className="flex flex-col items-center">
@@ -23,7 +25,7 @@ export default function HomePage() {
                             className="mb-7"
                         />
                         <h1 className="tf-glitch text-5xl sm:text-7xl">TrickFire Robotics</h1>
-                        <p className="mt-6 max-w-md text-balance text-sm leading-relaxed text-fd-muted-foreground sm:text-base">
+                        <p className="mt-6 max-w-md text-balance leading-relaxed text-fd-muted-foreground">
                             Documentation and guides for technologies and repositories TrickFire
                             uses.
                         </p>
@@ -43,7 +45,9 @@ export default function HomePage() {
                                 className="group tf-lift flex min-h-28 flex-col gap-3 border border-fd-border bg-fd-card p-5"
                             >
                                 <span className="flex items-center gap-3">
-                                    <span className="flex size-10 shrink-0 items-center justify-center bg-fd-primary text-black">
+                                    {/* green reads as an outline at rest and fills on hover -
+                                        seven solid #00FE00 blocks at once is a lot of shouting */}
+                                    <span className="flex size-10 shrink-0 items-center justify-center border border-fd-primary/60 text-fd-primary transition-colors duration-150 group-hover:bg-fd-primary group-hover:text-black">
                                         {resolveProjectIcon(repo.icon, "size-[1.15rem]")}
                                     </span>
                                     <span className="tf-heading truncate text-xl text-fd-card-foreground">
@@ -52,7 +56,7 @@ export default function HomePage() {
                                     <ArrowRight className="ms-auto size-4 shrink-0 text-fd-primary opacity-0 transition-opacity duration-150 group-hover:opacity-100" />
                                 </span>
                                 {repo.description && (
-                                    <span className="line-clamp-2 text-[0.825rem] leading-relaxed text-fd-muted-foreground">
+                                    <span className="line-clamp-2 text-sm leading-relaxed text-fd-muted-foreground">
                                         {repo.description}
                                     </span>
                                 )}
@@ -62,9 +66,8 @@ export default function HomePage() {
                 </section>
             </main>
 
-            <footer className="relative">
-                <GradientRule reveal={false} />
-                <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 bg-fd-card px-6 py-8 text-xs text-fd-muted-foreground sm:flex-row sm:justify-center">
+            <footer className="border-t border-fd-border">
+                <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 py-8 text-xs text-fd-muted-foreground sm:flex-row sm:justify-center">
                     <p>&copy; TrickFire Robotics {new Date().getFullYear()}</p>
                 </div>
             </footer>

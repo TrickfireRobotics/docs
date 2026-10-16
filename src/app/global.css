@@ -43,9 +43,11 @@
     --color-fd-accent: var(--tf-eerie-tint);
     --color-fd-accent-foreground: var(--tf-white);
 
-    /* Full-strength white borders, per the user's call on intensity. The
-       style guide's text-box spec (p.12) is `Solid 1px #FFFFFF`. */
-    --color-fd-border: var(--tf-white);
+    /* Dimmed white rather than the literal #FFFFFF of the text-box spec.
+       Full white on every surface of a long document reads as noise; at 20%
+       the edge still registers and the page stops competing with the prose.
+       Use `--tf-border-strong` where a box is a deliberate accent. */
+    --color-fd-border: rgb(var(--tf-white-rgb) / 0.2);
 
     --color-fd-primary: var(--tf-green);
     --color-fd-primary-foreground: var(--tf-black);
@@ -88,9 +90,20 @@ body {
     color: var(--tf-white);
 }
 
+/* Docs are read for twenty minutes at a stretch, so body copy gets full size
+   and a generous leading. The previous 0.9 scale put running text at 14.4px,
+   which is where most of the "hard to read" came from - the colour was always
+   Dark White on Eerie Black at ~11:1. */
 .prose {
-    --tw-prose-size: 0.9;
+    --tw-prose-size: 1;
     color: var(--tf-dark-white);
+    line-height: 1.75;
+}
+
+/* Cap the measure at a comfortable ~75 characters. Without this the text runs
+   the full width of a wide viewport and the eye loses its place on return. */
+.prose > :is(p, ul, ol, blockquote, h2, h3, h4, h5, h6) {
+    max-width: 75ch;
 }
 
 .prose :is(h1, h2, h3, h4, h5, h6) {
@@ -136,12 +149,15 @@ body {
 .prose a {
     color: var(--tf-white);
     text-decoration-color: var(--tf-green);
-    text-decoration-thickness: 2px;
+    /* 1px at rest, thickening on hover - a 2px green rule under every inline
+       link turns a dense paragraph into a stripe pattern. */
+    text-decoration-thickness: 1px;
     text-underline-offset: 3px;
 }
 
 .prose a:hover {
     color: var(--tf-green);
+    text-decoration-thickness: 2px;
 }
 
 .prose blockquote {
@@ -154,10 +170,18 @@ body {
 }
 
 /* Code blocks drop to true black so they read as a distinct surface against
-   Eerie Black without inventing a color outside the palette. */
-.prose pre,
-figure[data-rehype-pretty-code-figure] pre {
-    background-color: var(--tf-black) !important;
+   Eerie Black without inventing a colour outside the palette.
+   The background belongs on the figure, not the `pre`: the scroll container
+   between them carries its own vertical padding, so colouring the `pre` alone
+   paints a black band that hugs the text and leaves a #222 margin around it. */
+.prose figure.shiki,
+figure[data-rehype-pretty-code-figure] {
+    background-color: var(--tf-black);
+}
+
+/* The filename bar sits on the same black, separated by a hairline. */
+.prose figure.shiki > div:first-child {
+    border-color: rgb(var(--tf-white-rgb) / 0.15);
 }
 
 .tf-prompt {
@@ -268,7 +292,7 @@ figure[data-rehype-pretty-code-figure] pre {
 }
 
 .prose :is(th, td) {
-    border: 1px solid rgb(var(--tf-white-rgb) / 0.45);
+    border: 1px solid rgb(var(--tf-white-rgb) / 0.15);
 }
 
 .prose th {

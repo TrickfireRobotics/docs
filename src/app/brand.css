@@ -32,7 +32,7 @@
        Shade = base + black, tint = base + white, tone = base + gray. */
     --tf-eerie-shade: #1a1a1a; /* page surface, one step under Eerie Black */
     --tf-eerie-tint: #2e2e2e; /* hover surface, one step over */
-    --tf-gray-tone: #8f8f8f; /* metadata text */
+    --tf-gray-tone: #a3a3a3; /* metadata text - 7:1 on Eerie Black */
     --tf-pink-tint: #f27ac7; /* warning, distinct from error's full pink */
     --tf-wordmark: #1f1f1f; /* background wordmark - style guide p.12 */
 
@@ -41,8 +41,13 @@
     --tf-font-body: var(--font-overpass), "Overpass", system-ui, sans-serif;
     --tf-font-mono: var(--font-roboto-mono), "Roboto Mono", ui-monospace, monospace;
 
-    /* the one geometric rule: sharp corners, 1px solid white - p.12 */
-    --tf-border: 1px solid var(--tf-white);
+    /* The geometric rule is sharp corners, 1px solid white (p.12). At the
+       density of a marketing page that reads great; across a 2000-word doc
+       every box at full white turns into noise. So: full white where a box is
+       a deliberate accent, a dimmed white for the long-form surfaces that just
+       need an edge. Same rule, two volumes - p.1 licenses the looser reading. */
+    --tf-border-strong: 1px solid var(--tf-white);
+    --tf-border: 1px solid rgb(var(--tf-white-rgb) / 0.2);
     --tf-offset: 0.55rem; /* hard-shadow offset, scaled from BoxShadowImage */
 }
 
@@ -126,7 +131,9 @@
 }
 
 /* Background wordmark field - style guide p.12. Giant Barlow Condensed italic
-   bold TRICKFIRE, one letter of offset per row, barely above the surface. */
+   bold TRICKFIRE, one letter of offset per row, barely above the surface.
+   Rows are rendered to overflow the container and clip at its edges, so the
+   field reads as full-bleed the way it does on the style guide's own page. */
 .tf-wordmark-field {
     font-family: var(--tf-font-heading);
     font-style: italic;
