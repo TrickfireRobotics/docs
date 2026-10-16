@@ -30,7 +30,12 @@
 
     /* shades and tints - style guide p.9 licenses these as palette extensions.
        Shade = base + black, tint = base + white, tone = base + gray. */
-    --tf-eerie-shade: #1a1a1a; /* page surface, one step under Eerie Black */
+    /* Three steps of Eerie Black give the page depth. The style guide's own
+       layout (p.12) is a near-black field with #222222 boxes sitting on it, so
+       the page floor goes darkest and surfaces lift off it. Without that gap
+       everything flattens into one sheet. */
+    --tf-eerie-deep: #101010; /* page floor, two steps under Eerie Black */
+    --tf-eerie-shade: #1a1a1a; /* recessed surface - code, inputs */
     --tf-eerie-tint: #2e2e2e; /* hover surface, one step over */
     --tf-gray-tone: #a3a3a3; /* metadata text - 7:1 on Eerie Black */
     --tf-pink-tint: #f27ac7; /* warning, distinct from error's full pink */
@@ -49,6 +54,11 @@
     --tf-border-strong: 1px solid var(--tf-white);
     --tf-border: 1px solid rgb(var(--tf-white-rgb) / 0.2);
     --tf-offset: 0.55rem; /* hard-shadow offset, scaled from BoxShadowImage */
+
+    /* Depth without a blurred ambient shadow: a small hard offset in black,
+       the same zero-blur idiom as BoxShadowImage, just quiet enough to sit
+       under every surface on a documentation page. */
+    --tf-raise: 3px 3px 0 rgb(0 0 0 / 0.55);
 }
 
 /* --- brand primitives --------------------------------------------------- */
@@ -92,8 +102,10 @@
     box-shadow: var(--tf-offset) var(--tf-offset) 0 var(--tf-pink);
 }
 
-/* Lift on hover: the card slides into its own shadow rather than glowing. */
+/* Lift on hover: the card starts already raised off the page on a black
+   offset, then slides further out and swaps the shadow to green. */
 .tf-lift {
+    box-shadow: var(--tf-raise);
     transition:
         transform 0.15s ease-out,
         box-shadow 0.15s ease-out,

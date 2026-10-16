@@ -30,7 +30,7 @@
 }
 
 .dark {
-    --color-fd-background: var(--tf-eerie-shade);
+    --color-fd-background: var(--tf-eerie-deep);
     --color-fd-foreground: var(--tf-white);
     --color-fd-muted: var(--tf-eerie-black);
     --color-fd-muted-foreground: var(--tf-gray-tone);
@@ -73,7 +73,7 @@ html > body[data-scroll-locked] {
 
 body {
     font-family: var(--tf-font-body);
-    background-color: var(--tf-eerie-shade);
+    background-color: var(--tf-eerie-deep);
 }
 
 /* --- type ---------------------------------------------------------------- */
@@ -169,19 +169,29 @@ body {
     font-family: var(--tf-font-mono);
 }
 
-/* Code blocks drop to true black so they read as a distinct surface against
-   Eerie Black without inventing a colour outside the palette.
+/* Code sits one shade under the surrounding surfaces so it reads as recessed
+   rather than as a black hole punched in the page.
    The background belongs on the figure, not the `pre`: the scroll container
    between them carries its own vertical padding, so colouring the `pre` alone
-   paints a black band that hugs the text and leaves a #222 margin around it. */
+   paints a band that hugs the text and leaves a margin in the wrong colour. */
 .prose figure.shiki,
 figure[data-rehype-pretty-code-figure] {
-    background-color: var(--tf-black);
+    background-color: var(--tf-eerie-shade);
 }
 
-/* The filename bar sits on the same black, separated by a hairline. */
+/* The filename bar lifts a step to separate header from code. */
 .prose figure.shiki > div:first-child {
-    border-color: rgb(var(--tf-white-rgb) / 0.15);
+    background-color: var(--tf-eerie-black);
+    border-color: rgb(var(--tf-white-rgb) / 0.12);
+}
+
+/* Raised surfaces sit on a hard black offset rather than a blurred ambient
+   shadow. This is what gives the page depth now that corners are square -
+   the separation was never the rounding, it was the value gap plus a shadow. */
+.prose figure.shiki,
+.prose table,
+#nd-docs-layout .prose > div[class*="border-l-4"] {
+    box-shadow: var(--tf-raise);
 }
 
 .tf-prompt {
@@ -205,10 +215,11 @@ figure[data-rehype-pretty-code-figure] {
     align-self: flex-start;
 }
 
-/* Sidebar and nav labels take the header font, same as the website's navbar.
-   The container catches loose text nodes; the explicit descendants are needed
-   because an inherited `text-transform` loses to any rule that matches an
-   element directly, and fumadocs sets its own on the buttons. */
+/* Sidebar and nav take the header font, same as the website's navbar.
+   The style guide's all-caps rule (p.7) is for headers, and a sidebar page
+   title is a nav item, not a header. Twenty doc titles set in condensed caps
+   is a wall; sentence case keeps the typeface and gets the legibility back.
+   Caps are reserved for the folder headings, which really are headers. */
 #nd-sidebar,
 #nd-sidebar a,
 #nd-sidebar button,
@@ -217,23 +228,39 @@ figure[data-rehype-pretty-code-figure] {
 #nd-toc,
 #nd-toc a {
     font-family: var(--tf-font-heading);
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
 }
 
 /* Size on the container so folder headings - which are plain divs with no
    font-size utility - pick it up by inheritance along with the links. */
 #nd-sidebar {
-    font-size: 1.0625rem;
-    font-weight: 600;
+    font-size: 0.9375rem;
+    font-weight: 500;
 }
 
-/* Folder headings are structure, not secondary text, so they get full white
-   rather than the muted grey fumadocs applies to every nav item. They're the
-   only divs in the sidebar carrying that utility; links and buttons keep it. */
+#nd-sidebar a {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Folder headings: small caps-and-tracking section labels, full white. They
+   are the only divs in the sidebar carrying the muted utility; links keep it. */
 #nd-sidebar div.text-fd-muted-foreground,
 #nd-sidebar p {
     color: var(--tf-white);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* The search trigger and project switcher stay capitalised - they are chrome
+   labels rather than content, and there are only two of them. */
+#nd-sidebar button {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.8125rem;
+    font-weight: 600;
 }
 
 /* Active page: solid green block with black text. The website's Button
@@ -317,4 +344,12 @@ figure[data-rehype-pretty-code-figure] {
 #nd-nav :is(button, a).rounded-full,
 #nd-sidebar :is(button, a).rounded-full {
     border-radius: 0;
+}
+
+/* fumadocs ships popovers as `bg-fd-popover/60 backdrop-blur-lg`. Over a dark
+   page that reads as a smear rather than a panel, so force them opaque. */
+[class*="bg-fd-popover/"] {
+    background-color: var(--color-fd-popover);
+    backdrop-filter: none;
+    box-shadow: var(--tf-raise);
 }
