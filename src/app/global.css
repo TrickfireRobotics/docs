@@ -78,97 +78,170 @@ body {
 
 /* --- type ---------------------------------------------------------------- */
 
-/* Barlow Condensed Semi Bold, all caps, for every header - style guide p.7.
-   Condensed caps need positive tracking to stay legible at body-adjacent
-   sizes, and they set tighter than Overpass, so the scale runs a touch large. */
+/* Barlow Condensed is the brand's header face (style guide p.7) and every
+   heading keeps it. All-caps, though, is reserved for the two landmark
+   levels: the page title and the major section breaks. h3 and below recur
+   every few paragraphs, and condensed caps at that frequency stops being a
+   hierarchy and becomes texture. Sentence-case Barlow is still unmistakably
+   the typeface, and it scans. */
 :is(h1, h2, h3, h4, h5, h6),
 .tf-heading {
     font-family: var(--tf-font-heading);
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.015em;
     color: var(--tf-white);
+    text-wrap: balance;
 }
 
-/* Docs are read for twenty minutes at a stretch, so body copy gets full size
-   and a generous leading. The previous 0.9 scale put running text at 14.4px,
-   which is where most of the "hard to read" came from - the colour was always
-   Dark White on Eerie Black at ~11:1. */
+:is(h1, h2),
+.tf-heading {
+    text-transform: uppercase;
+    letter-spacing: 0.015em;
+}
+
+/* --- the reading column -------------------------------------------------- */
+
 .prose {
     --tw-prose-size: 0.9375;
     color: var(--tf-dark-white);
     line-height: 1.7;
 }
 
-/* Cap the measure at a comfortable ~75 characters. Without this the text runs
-   the full width of a wide viewport and the eye loses its place on return. */
-.prose > :is(p, ul, ol, blockquote, h2, h3, h4, h5, h6) {
-    max-width: 75ch;
+.prose p {
+    text-wrap: pretty;
 }
 
-.prose :is(h1, h2, h3, h4, h5, h6) {
-    font-family: var(--tf-font-heading);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.015em;
-}
-.prose h1 {
-    font-size: 2.05rem;
-    line-height: 1.1;
+/* Figures and tables are deliberately left uncapped, so code and data can use
+   the full column while prose holds a readable measure. */
+.prose > :is(p, ul, ol, blockquote, h1, h2, h3, h4, h5, h6) {
+    max-width: var(--tf-measure);
 }
 
-.prose h2 {
-    font-size: 1.5rem;
-    line-height: 1.2;
-    /* green->pink hairline under every section break, the way the style guide
-       rules off each of its own pages */
-    border-bottom: 1px solid transparent;
-    border-image: linear-gradient(to right, var(--tf-green), var(--tf-pink)) 1;
-    padding-bottom: 0.3rem;
+/* A heading belongs to the text beneath it, so the space above it is several
+   times the space below. Rhythm is what gives a long page visible sections -
+   doing that job with rules and colour instead is what made this noisy. */
+/* Scoped to direct children throughout. Headings nested inside components -
+   accordion triggers, step titles - are UI labels that happen to be heading
+   elements for outline purposes, and they must not inherit section rhythm or
+   the document type scale. */
+.prose > :is(h2, h3, h4, h5, h6) {
+    margin-bottom: 0.6rem;
 }
 
-.prose h3 {
-    font-size: 1.2rem;
-    line-height: 1.3;
+.prose > h2 {
+    margin-top: 3.25rem;
 }
-.prose h4 {
+
+.prose > h3 {
+    margin-top: 2.25rem;
+}
+
+.prose > :is(h4, h5, h6) {
+    margin-top: 1.75rem;
+}
+
+/* The page title is rendered as a sibling of `.prose`, not inside it, so it
+   needs its own rule and its own copy of the measure cap. */
+article > h1 {
+    font-size: 1.95rem;
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+    max-width: var(--tf-measure);
+}
+
+.prose > h2 {
+    font-size: 1.55rem;
+    line-height: 1.25;
+    /* a plain hairline. The green-to-pink rule is a brand signature and it
+       belongs on the home page, not repeating down every docs page. */
+    border-bottom: 1px solid rgb(var(--tf-white-rgb) / 0.1);
+    padding-bottom: 0.35rem;
+}
+
+.prose > h3 {
+    font-size: 1.22rem;
+    line-height: 1.35;
+}
+
+.prose > h4 {
     font-size: 1.02rem;
+}
+
+/* A heading that wraps a button is a disclosure trigger, not a section. Give
+   it the body face at UI size: condensed caps-adjacent display type is hard
+   to read on a control you click, and the heading scale makes each row of an
+   accordion as tall as a paragraph. */
+.prose :is(h2, h3, h4, h5, h6):has(> button) {
+    font-family: var(--tf-font-body);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    margin: 0;
 }
 
 .prose :is(p, li) {
     color: var(--tf-dark-white);
 }
 
-/* White for links and anything needing emphasis - style guide p.8 */
+/* White for emphasis and links - style guide p.8. The underline is a dimmed
+   green so links are findable without stippling the paragraph. */
 .prose strong {
     color: var(--tf-white);
+    font-weight: 600;
 }
 
 .prose a {
     color: var(--tf-white);
-    text-decoration-color: var(--tf-green);
-    /* 1px at rest, thickening on hover - a 2px green rule under every inline
-       link turns a dense paragraph into a stripe pattern. */
+    text-decoration-color: rgb(var(--tf-green-rgb) / 0.45);
     text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
+    text-underline-offset: 0.2em;
 }
 
 .prose a:hover {
     color: var(--tf-green);
-    text-decoration-thickness: 2px;
+    text-decoration-color: var(--tf-green);
+}
+
+/* Square bullets in dim green: the sharp-corner rule (p.12) applied at list
+   scale, and a brand accent that helps scanning rather than fighting it. */
+.prose ul {
+    list-style-type: square;
+}
+
+.prose ul > li::marker {
+    color: rgb(var(--tf-green-rgb) / 0.55);
+}
+
+.prose ol > li::marker {
+    color: var(--tf-gray-tone);
+    font-variant-numeric: tabular-nums;
 }
 
 .prose blockquote {
-    border-inline-start: 4px solid var(--tf-green);
-    color: var(--tf-dark-white);
+    border-inline-start: 2px solid rgb(var(--tf-green-rgb) / 0.5);
+    padding-inline-start: 1rem;
+    color: var(--tf-gray-tone);
+    font-style: normal;
 }
 
 .prose :is(code, kbd, samp, pre) {
     font-family: var(--tf-font-mono);
 }
 
-/* Code sits one shade under the surrounding surfaces so it reads as recessed
-   rather than as a black hole punched in the page.
+/* Inline code: a quiet fill, no outline. A border on every inline token turns
+   a technical paragraph into a row of boxes. */
+.prose :not(pre) > code {
+    border: none;
+    border-radius: 0;
+    background-color: var(--tf-eerie-raise);
+    color: var(--tf-dark-white);
+    padding: 0.12em 0.36em;
+    font-size: 0.875em;
+    font-weight: 400;
+}
+
+/* Code sits one shade off the page floor so it reads as a distinct surface
+   without becoming the loudest thing in view.
    The background belongs on the figure, not the `pre`: the scroll container
    between them carries its own vertical padding, so colouring the `pre` alone
    paints a band that hugs the text and leaves a margin in the wrong colour. */
@@ -177,17 +250,20 @@ figure[data-rehype-pretty-code-figure] {
     background-color: var(--tf-eerie-raise);
 }
 
+.prose figure.shiki code {
+    line-height: 1.6;
+}
+
 /* The filename bar separates from the code by a hairline alone. */
 .prose figure.shiki > div:first-child {
     background-color: transparent;
     border-color: rgb(var(--tf-white-rgb) / 0.1);
 }
 
-/* Surfaces inside the reading column sit one step off the page and are held
-   by a hairline - no sheen, no drop shadow. The panel treatment stays on the
-   home page, where popping off the background is the point; here it turned
-   every code block and callout into something competing with the sentence
-   next to it. Depth on a docs page comes from the shell, not the content. */
+/* Surfaces inside the reading column are held by a hairline - no sheen, no
+   drop shadow. The panel treatment stays on the home page, where popping off
+   the background is the point. Depth here comes from the shell, not from
+   every code block leaning toward the reader. */
 .prose figure.shiki,
 .prose table,
 .prose div[class*="border-l-4"] {
@@ -195,14 +271,47 @@ figure[data-rehype-pretty-code-figure] {
     box-shadow: none;
 }
 
-.prose :is(figure.shiki, table, div[class*="border-l-4"]) {
+.prose :is(figure.shiki, div[class*="border-l-4"]) {
     border-color: rgb(var(--tf-white-rgb) / 0.1);
 }
 
-/* Callouts share the in-prose surface value; the semantic colour stays on the
-   left edge and the icon, which is all the signal they need. */
 .prose div[class*="border-l-4"] {
     background-color: var(--tf-eerie-raise);
+}
+
+/* Tables: horizontal rules only. Vertical gridlines double the line count for
+   no added meaning, which on a dark surface reads as a cage. */
+.prose table {
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+    background-color: transparent;
+}
+
+.prose :is(th, td) {
+    border: none;
+    border-bottom: 1px solid rgb(var(--tf-white-rgb) / 0.08);
+    padding: 0.55rem 0.9rem;
+    text-align: start;
+}
+
+.prose :is(th, td):first-child {
+    padding-inline-start: 0;
+}
+
+.prose th {
+    font-family: var(--tf-font-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--tf-gray-tone);
+    background-color: transparent;
+    border-bottom-color: rgb(var(--tf-white-rgb) / 0.18);
+}
+
+.prose tbody tr:last-child :is(th, td) {
+    border-bottom: none;
 }
 
 .tf-prompt {
@@ -294,7 +403,17 @@ figure[data-rehype-pretty-code-figure] {
     background-image: linear-gradient(to right, var(--tf-green), var(--tf-pink));
 }
 
-/* Table of contents marker follows the brand green rather than a muted rail. */
+/* Table of contents: the quietest thing on the page until you need it. The
+   only signal is the active entry picking up green. */
+#nd-toc a {
+    font-size: 0.8125rem;
+    color: var(--tf-gray-tone);
+}
+
+#nd-toc a:hover {
+    color: var(--tf-dark-white);
+}
+
 #nd-toc a[data-active="true"] {
     color: var(--tf-green);
 }
@@ -336,32 +455,6 @@ figure[data-rehype-pretty-code-figure] {
    which would otherwise indent the icons by 48px. */
 #nd-home-layout #nd-nav ul:empty {
     display: none;
-}
-
-/* Tables read as the style guide's boxes: hard edges, white rules, caps heads. */
-.prose table {
-    border: var(--tf-border);
-    border-collapse: collapse;
-}
-
-.prose :is(th, td) {
-    border: 1px solid rgb(var(--tf-white-rgb) / 0.15);
-}
-
-.prose th {
-    font-family: var(--tf-font-heading);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    font-size: 1.05rem;
-    color: var(--tf-white);
-    background-color: var(--tf-eerie-black);
-}
-
-/* fumadocs hardcodes `border-radius: 5px` on inline code in its base layer,
-   so it escapes the radius-scale override above. */
-.prose :not(pre) > code {
-    border-radius: 0;
 }
 
 /* `rounded-full` is a static value in Tailwind v4, so it escapes the radius

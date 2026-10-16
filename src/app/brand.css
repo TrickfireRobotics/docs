@@ -56,6 +56,12 @@
     --tf-border: 1px solid rgb(var(--tf-white-rgb) / 0.2);
     --tf-offset: 0.55rem; /* hard-shadow offset, scaled from BoxShadowImage */
 
+    /* Reading measure, ~75 characters of Overpass at the docs body size.
+       Deliberately rem and not ch: `ch` resolves against each element's own
+       font, so condensed Barlow headings would get a cap ~15% wider than the
+       paragraphs under them and the two would not line up. */
+    --tf-measure: 45rem;
+
     /* Depth without a blurred ambient shadow: a small hard offset in black,
        the same zero-blur idiom as BoxShadowImage, just quiet enough to sit
        under every surface on a documentation page. */

@@ -1,10 +1,9 @@
 import { firstPageUrl, getSource, repoIds } from "@/lib/source";
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/layouts/docs/page";
 import { notFound, redirect } from "next/navigation";
-import { getMDXComponents } from "@/components/mdx";
+import { Card, getMDXComponents } from "@/components/mdx";
 import type { Metadata } from "next";
 import { createRelativeLink } from "fumadocs-ui/mdx";
-import { Card } from "fumadocs-ui/components/card";
 
 interface PageData {
     title: string;
