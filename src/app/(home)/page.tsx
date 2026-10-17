@@ -3,83 +3,64 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { repos } from "@/lib/source";
 import { resolveProjectIcon } from "@/lib/icon";
-import { ProjectGrid } from "@/components/project-grid";
-
-const LED_CLUSTERS = [
-    { x: "16%", y: 140, size: 34, delay: "0s", duration: "4s" },
-    { x: "74%", y: 95, size: 30, delay: "0.8s", duration: "6s" },
-    { x: "84%", y: 205, size: 28, delay: "1.4s", duration: "5.2s" },
-    { x: "8%", y: 265, size: 26, delay: "1.9s", duration: "4.2s" },
-    { x: "26%", y: 310, size: 24, delay: "2.3s", duration: "4.6s" },
-    { x: "90%", y: 360, size: 22, delay: "3.1s", duration: "5s" },
-];
+import { GradientRule } from "@/components/brand/gradient-rule";
+import { WordmarkField } from "@/components/brand/wordmark-field";
 
 export default function HomePage() {
     return (
         <>
             <main className="relative flex-1 overflow-hidden">
-                <div aria-hidden className="tf-dot-grid pointer-events-none absolute inset-0" />
-                <div aria-hidden className="tf-hero-glow pointer-events-none absolute inset-0" />
-                {LED_CLUSTERS.map((led) => (
-                    <div
-                        key={`${led.x}-${led.y}`}
-                        aria-hidden
-                        className="tf-led-cluster pointer-events-none absolute inset-0"
-                        style={{
-                            maskImage: `radial-gradient(circle ${led.size}px at ${led.x} ${led.y}px, #000 0%, transparent 100%)`,
-                            WebkitMaskImage: `radial-gradient(circle ${led.size}px at ${led.x} ${led.y}px, #000 0%, transparent 100%)`,
-                            animationDelay: led.delay,
-                            animationDuration: led.duration,
-                        }}
-                    />
-                ))}
+                <WordmarkField />
 
-                <section className="relative px-6 pb-16 pt-24 text-center">
+                <section className="relative px-6 pb-14 pt-20 text-center">
                     <div className="flex flex-col items-center">
                         <Image
                             src="/logo.png"
                             alt="TrickFire Robotics"
                             width={80}
                             height={148}
-                            className="tf-logo-glow mb-7"
+                            priority
+                            className="mb-7"
                         />
-                        <h1 className="bg-linear-to-b from-fd-foreground to-fd-foreground/60 bg-clip-text text-4xl font-extrabold tracking-tighter text-transparent sm:text-6xl">
-                            TrickFire Robotics
-                        </h1>
-                        <p className="mt-4 max-w-md text-balance text-sm leading-relaxed text-fd-muted-foreground sm:text-base">
-                            Documentation and guides for technologies and repositories Trickfire
+                        <h1 className="tf-glitch text-5xl sm:text-7xl">TrickFire Robotics</h1>
+                        <p className="mt-6 max-w-md text-balance leading-relaxed text-fd-muted-foreground">
+                            Documentation and guides for technologies and repositories TrickFire
                             uses.
                         </p>
                     </div>
                 </section>
 
-                <section className="relative mx-auto max-w-6xl px-6 pb-24">
-                    <ProjectGrid>
+                <div className="relative mx-auto max-w-6xl px-6">
+                    <GradientRule />
+                </div>
+
+                <section className="relative mx-auto max-w-6xl px-6 pb-24 pt-12">
+                    <div className="flex flex-wrap justify-center gap-5 [&>*]:min-w-0 [&>*]:basis-full sm:[&>*]:basis-[calc((100%-1.25rem)/2)] lg:[&>*]:basis-[calc((100%-2.5rem)/3)]">
                         {repos.map((repo) => (
                             <Link
                                 key={repo.id}
                                 href={`/${repo.id}`}
-                                className="group relative flex min-h-28 flex-col gap-3 rounded-2xl border border-fd-border bg-fd-card/70 p-5 backdrop-blur-sm transition-colors duration-300 hover:border-fd-primary/30 hover:bg-fd-card"
+                                className="group tf-panel tf-lift flex flex-col gap-2 border border-fd-border bg-fd-card px-4 py-3.5"
                             >
-                                <span aria-hidden className="tf-card-glow" />
-                                <span aria-hidden className="tf-card-ring" />
-                                <span className="relative flex items-center gap-3">
-                                    <span className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-fd-primary/15 bg-fd-primary/10 text-fd-primary transition-colors duration-300 group-hover:bg-fd-primary/15">
-                                        {resolveProjectIcon(repo.icon, "size-[1.15rem]")}
+                                <span className="flex items-center gap-3">
+                                    {/* green reads as an outline at rest and fills on hover -
+                                        seven solid #00FE00 blocks at once is a lot of shouting */}
+                                    <span className="flex size-8 shrink-0 items-center justify-center border border-fd-primary/60 text-fd-primary transition-colors duration-150 group-hover:bg-fd-primary group-hover:text-black">
+                                        {resolveProjectIcon(repo.icon, "size-4")}
                                     </span>
-                                    <span className="truncate text-[0.975rem] font-semibold text-fd-card-foreground">
+                                    <span className="tf-heading truncate text-lg text-fd-card-foreground">
                                         {repo.name}
                                     </span>
-                                    <ArrowRight className="ms-auto size-4 shrink-0 text-fd-primary opacity-25 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100" />
+                                    <ArrowRight className="ms-auto size-4 shrink-0 text-fd-primary opacity-0 transition-opacity duration-150 group-hover:opacity-100" />
                                 </span>
                                 {repo.description && (
-                                    <span className="relative line-clamp-2 text-[0.825rem] leading-relaxed text-fd-muted-foreground">
+                                    <span className="line-clamp-2 text-sm leading-relaxed text-fd-muted-foreground">
                                         {repo.description}
                                     </span>
                                 )}
                             </Link>
                         ))}
-                    </ProjectGrid>
+                    </div>
                 </section>
             </main>
 

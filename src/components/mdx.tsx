@@ -1,4 +1,5 @@
 import defaultMdxComponents from "fumadocs-ui/mdx";
+import Link from "fumadocs-core/link";
 import { Step, Steps } from "fumadocs-ui/components/steps";
 import { Tab as TabBase, Tabs as TabsBase } from "fumadocs-ui/components/tabs";
 import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
@@ -9,7 +10,7 @@ import type { ComponentProps, CSSProperties, ReactNode } from "react";
 import type { MDXComponents } from "mdx/types";
 
 function Tabs({ className, ...props }: ComponentProps<typeof TabsBase>) {
-    return <TabsBase className={cn("shadow-md", className)} {...props} />;
+    return <TabsBase className={cn("border border-fd-border", className)} {...props} />;
 }
 
 function Tab({ className, ...props }: ComponentProps<typeof TabBase>) {
@@ -151,9 +152,12 @@ function Callout({
     const iconEl = icon ?? calloutIcons[type];
 
     return (
+        // style guide p.12 text box: #222222 fill, solid 1px #FFFFFF, sharp
+        // corners. The semantic colour rides on a thick left edge so callouts
+        // stay recognisable without inventing a border colour off-palette.
         <div
             className={cn(
-                "flex flex-col gap-2 my-4 rounded-xl border border-(--callout-color)/50 bg-fd-card p-3 text-sm text-fd-card-foreground shadow-md",
+                "flex flex-col gap-2 my-4 border border-fd-border border-l-4 border-l-(--callout-color) bg-fd-card p-3 text-sm text-fd-card-foreground",
                 className
             )}
             style={
@@ -165,7 +169,7 @@ function Callout({
         >
             {title ? (
                 <>
-                    <p className="flex items-center gap-2 font-medium my-0!">
+                    <p className="tf-heading flex items-center gap-2 text-[0.9375rem] tracking-[0.05em] my-0!">
                         {iconEl}
                         {title}
                     </p>
@@ -185,6 +189,60 @@ function Callout({
     );
 }
 
+interface CardProps {
+    /** Already resolved to a URL by the link remark plugin before it lands here. */
+    href: string;
+    title: ReactNode;
+    icon?: ReactNode;
+    children?: ReactNode;
+    className?: string;
+}
+
+/**
+ * Navigation card.
+ *
+ * fumadocs' default stacks the icon in a bordered box on its own row above a
+ * 14px title. Condensed Barlow at 14px is narrower than the 14px Overpass
+ * description beneath it, so the title ends up looking like the subordinate
+ * element, and the stacked rows make every card ~115px tall.
+ *
+ * Here the icon shares the title's row and the title carries the weight.
+ */
+export function Card({ href, title, icon, children, className }: CardProps) {
+    return (
+        <Link
+            href={href}
+            className={cn(
+                "not-prose grid grid-cols-[auto_1fr] items-center gap-x-2.5 gap-y-1",
+                "border border-fd-border bg-fd-card px-3.5 py-3 no-underline",
+                "transition-colors duration-150 hover:border-fd-primary/50 hover:bg-fd-accent",
+                className
+            )}
+        >
+            {icon && <span className="flex shrink-0 text-fd-primary [&_svg]:size-4">{icon}</span>}
+            <h3 className="truncate font-heading text-[1.0625rem] font-semibold text-fd-card-foreground my-0!">
+                {title}
+            </h3>
+            {children && (
+                <div
+                    className={cn(
+                        "text-[0.8125rem] leading-snug text-fd-muted-foreground prose-no-margin",
+                        icon && "col-start-2"
+                    )}
+                >
+                    {children}
+                </div>
+            )}
+        </Link>
+    );
+}
+
+function Cards({ className, ...props }: ComponentProps<"div">) {
+    return (
+        <div className={cn("not-prose my-5 grid gap-2.5 sm:grid-cols-2", className)} {...props} />
+    );
+}
+
 export function getMDXComponents(components?: MDXComponents) {
     return {
         ...defaultMdxComponents,
@@ -195,6 +253,8 @@ export function getMDXComponents(components?: MDXComponents) {
         Accordion,
         Accordions,
         Callout,
+        Card,
+        Cards,
         Image,
         Icon,
         WindowsIcon,

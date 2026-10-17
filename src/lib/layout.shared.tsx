@@ -31,6 +31,16 @@ export function baseOptions(): BaseLayoutProps {
     };
 }
 
+/**
+ * Home page options. The hero already carries the flame logo and the wordmark,
+ * so the nav drops its title slot entirely - a third mark in the same viewport
+ * is just repetition. Layout of what's left is handled in `global.css`.
+ */
+export function homeOptions(): BaseLayoutProps {
+    const { nav, ...rest } = baseOptions();
+    return { ...rest, nav: { ...nav, title: undefined } };
+}
+
 export function projectTabs(): LayoutTab[] {
     return repos.map((repo) => ({
         url: `/${repo.id}`,
