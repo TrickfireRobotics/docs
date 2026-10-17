@@ -12,7 +12,7 @@ async function main(): Promise<void> {
 
     log.info(`starting dev server on port ${port}`);
     log.blank();
-    await run("pnpm", ["exec", "next", "dev", "--webpack", "-p", port], {
+    await run("pnpm", ["exec", "next", "dev", "-p", port], {
         cwd: process.cwd(),
         stdio: "inherit",
         env: { ...process.env, DOCS_DEV_MODE: "site" },
