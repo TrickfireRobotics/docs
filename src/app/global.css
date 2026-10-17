@@ -149,8 +149,8 @@ article > h1 {
 }
 
 .prose > h2 {
-    font-size: 1.55rem;
-    line-height: 1.25;
+    font-size: clamp(1.65rem, 2.25vw, 1.85rem);
+    line-height: 1.15;
     /* a plain hairline. The green-to-pink rule is a brand signature and it
        belongs on the home page, not repeating down every docs page. */
     border-bottom: 1px solid rgb(var(--tf-white-rgb) / 0.1);
@@ -158,19 +158,18 @@ article > h1 {
 }
 
 .prose > h3 {
-    font-size: 1.22rem;
-    line-height: 1.35;
+    font-size: clamp(1.35rem, 1.7vw, 1.5rem);
+    line-height: 1.25;
 }
 
 .prose > h4 {
-    font-size: 1.02rem;
+    font-size: 1.2rem;
+    line-height: 1.3;
 }
 
-/* A heading that wraps a button is a disclosure trigger, not a section. Give
-   it the body face at UI size: condensed caps-adjacent display type is hard
-   to read on a control you click, and the heading scale makes each row of an
-   accordion as tall as a paragraph. */
-.prose :is(h2, h3, h4, h5, h6):has(> button) {
+/* Accordion headings are disclosure triggers, not document sections. Give
+   them the body face at UI size so their rows stay compact and readable. */
+.prose :is(h2, h3, h4, h5, h6)[data-accordion-value] {
     font-family: var(--tf-font-body);
     font-size: 0.9375rem;
     font-weight: 500;
